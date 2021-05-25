@@ -22,13 +22,10 @@ public class ProduitEnVente implements Serializable {
     private double prix;
     @Column(name = "description")
     private String description;
-
-//    private Marque marque;
     @Column(name = "nombreDisponible")
     private int nombreDisponible;
 
     public ProduitEnVente() {
-
     }
 
     public ProduitEnVente(String nom, double prix, String description, int nombreDisponible) {

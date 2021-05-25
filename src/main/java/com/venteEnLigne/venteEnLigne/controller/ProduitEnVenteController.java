@@ -41,6 +41,7 @@ public class ProduitEnVenteController {
 
         if (produitEnVenteData.isPresent()) {
             ProduitEnVente _produitEnVente = produitEnVenteData.get();
+            _produitEnVente.setId(produitEnVenteData.get().getId());
             _produitEnVente.setNom(produitEnVente.getNom());
             _produitEnVente.setPrix(produitEnVente.getPrix());
             _produitEnVente.setDescription(produitEnVente.getDescription());

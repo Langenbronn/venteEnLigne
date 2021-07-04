@@ -20,20 +20,20 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public String initData() {
+    public ResponseEntity<HttpStatus> initData() {
         productRepository.saveAll(Arrays.asList(new Product("Smartphone", 200.00, "Iphone 5", 5)
                 , new Product("Calculette", 250, "XXX", 5)
                 , new Product("Blouson", 100, "dddd", 5)
                 , new Product("Canapé", 600.00, "zzzz", 5)));
-        return "Customers are created";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public String create(@RequestBody Product product) {
+    public ResponseEntity<HttpStatus> create(@RequestBody Product product) {
         productRepository.save(new Product(product.getName(),
                 product.getPrice(),
                 product.getDescription(),
                 5));
-        return "Customer is created";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<Product> update(long id, Product product) {

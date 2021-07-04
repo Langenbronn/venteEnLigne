@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -18,12 +16,12 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/initData")
-    public String initData() {
+    public ResponseEntity<HttpStatus>  initData() {
         return productService.initData();
     }
 
     @PostMapping("/create")
-    public String create(@RequestBody Product product) {
+    public ResponseEntity<HttpStatus>  create(@RequestBody Product product) {
         return productService.create(product);
     }
 

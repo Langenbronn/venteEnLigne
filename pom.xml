@@ -15,6 +15,10 @@
 	<description>Vente en ligne</description>
 	<properties>
 		<java.version>11</java.version>
+		<springfox.swagger.ui.version>2.9.2</springfox.swagger.ui.version>
+		<springfox.swagger2.version>2.9.2</springfox.swagger2.version>
+		<swagger.annotations.version>1.6.1</swagger.annotations.version>
+		<swagger.core.version>1.6.1</swagger.core.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -54,8 +58,25 @@
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox.swagger.ui.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>3.0.0</version>
+			<version>${springfox.swagger2.version}</version>
+		</dependency>
+
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger.annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-core</artifactId>
+			<version>${swagger.core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

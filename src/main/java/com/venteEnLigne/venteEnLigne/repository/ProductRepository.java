@@ -1,6 +1,7 @@
-package com.venteenligne.venteenligne.repository;
+package com.venteEnLigne.venteEnLigne.repository;
 
-import com.venteenligne.venteenligne.model.Product;
+
+import com.venteEnLigne.venteEnLigne.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

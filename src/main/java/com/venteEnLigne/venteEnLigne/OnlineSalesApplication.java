@@ -1,4 +1,4 @@
-package com.venteenligne.venteenligne;
+package com.venteEnLigne.venteEnLigne;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

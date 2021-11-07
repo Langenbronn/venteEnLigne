@@ -1,4 +1,4 @@
-package com.venteenligne.venteenligne.model;
+package com.venteEnLigne.venteEnLigne.model;
 
 import javax.persistence.*;
 

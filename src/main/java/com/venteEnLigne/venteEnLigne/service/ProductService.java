@@ -1,7 +1,7 @@
-package com.venteenligne.venteenligne.service;
+package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteenligne.venteenligne.model.Product;
-import com.venteenligne.venteenligne.repository.ProductRepository;
+import com.venteEnLigne.venteEnLigne.model.Product;
+import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
-package com.venteenligne.venteenligne.controller;
+package com.venteEnLigne.venteEnLigne.controller;
 
-import com.venteenligne.venteenligne.model.Product;
-import com.venteenligne.venteenligne.service.ProductService;
+import com.venteEnLigne.venteEnLigne.model.Product;
+import com.venteEnLigne.venteEnLigne.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.venteenligne.venteenligne;
+package com.venteEnLigne.venteEnLigne;
 
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.PathSelectors;

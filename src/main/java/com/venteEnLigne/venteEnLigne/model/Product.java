@@ -22,14 +22,18 @@ public class Product implements Serializable {
     private String description;
     @Column(name = "numberAvailable")
     private int numberAvailable;
+    @JoinColumn(name = "seller", nullable = false)
+    @ManyToOne
+    private Seller seller;
 
     public Product() {
     }
 
-    public Product(String name, double price, String description, int numberAvailable) {
+    public Product(String name, double price, String description, int numberAvailable, Seller seller) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.numberAvailable = numberAvailable;
+        this.seller = seller;
     }
 }

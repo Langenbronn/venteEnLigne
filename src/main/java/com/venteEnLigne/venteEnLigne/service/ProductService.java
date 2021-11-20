@@ -1,6 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.model.Product;
+import com.venteEnLigne.venteEnLigne.model.Seller;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+
 @Data
 @Service
 public class ProductService {
@@ -21,10 +23,10 @@ public class ProductService {
     ProductRepository productRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        productRepository.saveAll(Arrays.asList(new Product("Smartphone", 200.00, "Iphone 5", 5)
-                , new Product("Calculette", 250, "XXX", 5)
-                , new Product("Blouson", 100, "dddd", 5)
-                , new Product("Canapé", 600.00, "zzzz", 5)));
+        productRepository.saveAll(Arrays.asList(new Product("Smartphone", 200.00, "Iphone 5", 5, new Seller("Philibert"))
+                , new Product("Calculette", 250, "XXX", 5, new Seller("Philibert"))
+                , new Product("Blouson", 100, "dddd", 5, new Seller("Philibert"))
+                , new Product("Canapé", 600.00, "zzzz", 5, new Seller("Philibert"))));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -32,7 +34,8 @@ public class ProductService {
         productRepository.save(new Product(product.getName(),
                 product.getPrice(),
                 product.getDescription(),
-                5));
+                product.getNumberAvailable(),
+                product.getSeller()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

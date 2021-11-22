@@ -3,6 +3,7 @@ package com.venteEnLigne.venteEnLigne.service;
 import com.venteEnLigne.venteEnLigne.model.Product;
 import com.venteEnLigne.venteEnLigne.model.Seller;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
+import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,21 +22,26 @@ public class ProductService {
 
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        productRepository.saveAll(Arrays.asList(new Product("Smartphone", 200.00, "Iphone 5", 5, new Seller("Philibert"))
-                , new Product("Calculette", 250, "XXX", 5, new Seller("Philibert"))
-                , new Product("Blouson", 100, "dddd", 5, new Seller("Philibert"))
-                , new Product("Canapé", 600.00, "zzzz", 5, new Seller("Philibert"))));
+        Seller seller = toSeller(new Seller("Philibert"));
+        productRepository.saveAll(Arrays.asList(new Product("Smartphone", 200.00, "Iphone 5", 5, seller)
+                , new Product("Calculette", 250, "XXX", 5, seller)
+                , new Product("Blouson", 100, "dddd", 5, seller)
+                , new Product("Canapé", 600.00, "zzzz", 5, seller)));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<HttpStatus> create(@RequestBody Product product) {
+        Seller seller = toSeller(product.getSeller());
+
         productRepository.save(new Product(product.getName(),
                 product.getPrice(),
                 product.getDescription(),
                 product.getNumberAvailable(),
-                product.getSeller()));
+                seller));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -72,6 +78,11 @@ public class ProductService {
     public ResponseEntity<List<Product>> finddAll() {
         List<Product> productData = productRepository.findAll();
         return new ResponseEntity<>(productData, HttpStatus.OK);
+    }
+
+    private Seller toSeller(Seller seller) throws IllegalStateException {
+        return sellerRepository.findByName(seller.getName())
+                .orElseThrow(() -> new IllegalStateException(seller.getName() + " does not exist"));
     }
 
 }

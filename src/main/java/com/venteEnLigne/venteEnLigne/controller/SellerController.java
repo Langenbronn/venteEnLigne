@@ -43,8 +43,8 @@ public class SellerController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Seller>> finddAll() {
-        return sellerService.finddAll();
+    public ResponseEntity<List<SellerView>> finddAll() {
+        return new ResponseEntity<>(sellerService.finddAll(), HttpStatus.OK);
     }
 
 }

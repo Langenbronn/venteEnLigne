@@ -2,6 +2,7 @@ package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.model.Seller;
 import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
+import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Data
 @Service
@@ -62,9 +64,11 @@ public class SellerService {
         return sellerData.map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<List<Seller>> finddAll() {
+    public List<SellerView> finddAll() {
         List<Seller> sellerData = sellerRepository.findAll();
-        return new ResponseEntity<>(sellerData, HttpStatus.OK);
+        return sellerData.stream()
+                .map(e -> sellerMapper.map(e))
+                .collect(Collectors.toList());
     }
 
 }

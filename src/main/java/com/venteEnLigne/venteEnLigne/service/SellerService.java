@@ -59,15 +59,15 @@ public class SellerService {
         }
     }
 
-    public ResponseEntity<Seller> getSellerById(long id) {
+    public Optional<SellerView> getSellerById(long id) {
         Optional<Seller> sellerData = sellerRepository.findById(id);
-        return sellerData.map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 
     public List<SellerView> finddAll() {
         List<Seller> sellerData = sellerRepository.findAll();
         return sellerData.stream()
-                .map(e -> sellerMapper.map(e))
+                .map(e -> sellerMapper.entityToView(e))
                 .collect(Collectors.toList());
     }
 

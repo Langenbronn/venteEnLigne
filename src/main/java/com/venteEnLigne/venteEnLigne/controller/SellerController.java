@@ -38,8 +38,8 @@ public class SellerController {
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<Seller> getProduitById(@PathVariable("id") long id) {
-        return sellerService.getSellerById(id);
+    public ResponseEntity<SellerView> getProduitById(@PathVariable("id") long id) {
+        return sellerService.getSellerById(id).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/findAll")

@@ -1,7 +1,8 @@
-package com.venteEnLigne.venteEnLigne.model;
+package com.venteEnLigne.venteEnLigne.model.data;
 
 import javax.persistence.*;
 
+import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "product")
-public class Product implements Serializable {
+public class ProductEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -24,16 +25,16 @@ public class Product implements Serializable {
     private int numberAvailable;
     @JoinColumn(name = "seller", nullable = false)
     @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-    private Seller seller;
+    private SellerEntity sellerEntity;
 
-    public Product() {
+    public ProductEntity() {
     }
 
-    public Product(String name, double price, String description, int numberAvailable, Seller seller) {
+    public ProductEntity(String name, double price, String description, int numberAvailable, SellerEntity sellerEntity) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.numberAvailable = numberAvailable;
-        this.seller = seller;
+        this.sellerEntity = sellerEntity;
     }
 }

@@ -1,6 +1,6 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
-import com.venteEnLigne.venteEnLigne.model.Product;
+import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
 import com.venteEnLigne.venteEnLigne.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,13 +21,13 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus>  create(@RequestBody Product product) {
-        return productService.create(product);
+    public ResponseEntity<HttpStatus>  create(@RequestBody ProductEntity productEntity) {
+        return productService.create(productEntity);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Product> update(@PathVariable("id") long id, @RequestBody Product product) {
-        return productService.update(id, product);
+    public ResponseEntity<ProductEntity> update(@PathVariable("id") long id, @RequestBody ProductEntity productEntity) {
+        return productService.update(id, productEntity);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -36,12 +36,12 @@ public class ProductController {
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<Product> getProduitById(@PathVariable("id") long id) {
+    public ResponseEntity<ProductEntity> getProduitById(@PathVariable("id") long id) {
         return productService.getProduitById(id);
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Product>> finddAll() {
+    public ResponseEntity<List<ProductEntity>> finddAll() {
         return productService.finddAll();
     }
 

@@ -1,6 +1,6 @@
 package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
 import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
@@ -25,26 +25,26 @@ public class SellerService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        sellerRepository.saveAll(Arrays.asList(new Seller("Philibert")
-                , new Seller("Domino")
-                , new Seller("Saturn")
-                , new Seller("Ikea")));
+        sellerRepository.saveAll(Arrays.asList(new SellerEntity("Philibert")
+                , new SellerEntity("Domino")
+                , new SellerEntity("Saturn")
+                , new SellerEntity("Ikea")));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> create(@RequestBody Seller seller) {
-        sellerRepository.save(new Seller(seller.getName()));
+    public ResponseEntity<HttpStatus> create(@RequestBody SellerEntity sellerEntity) {
+        sellerRepository.save(new SellerEntity(sellerEntity.getName()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Seller> update(long id, Seller seller) {
-        Optional<Seller> sellerData = sellerRepository.findById(id);
+    public ResponseEntity<SellerEntity> update(long id, SellerEntity sellerEntity) {
+        Optional<SellerEntity> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
-            Seller _seller = sellerData.get();
-            _seller.setId(sellerData.get().getId());
-            _seller.setName(seller.getName());
-            return new ResponseEntity<>(sellerRepository.save(_seller), HttpStatus.OK);
+            SellerEntity _sellerEntity = sellerData.get();
+            _sellerEntity.setId(sellerData.get().getId());
+            _sellerEntity.setName(sellerEntity.getName());
+            return new ResponseEntity<>(sellerRepository.save(_sellerEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -60,13 +60,13 @@ public class SellerService {
     }
 
     public Optional<SellerView> getSellerById(long id) {
-        Optional<Seller> sellerData = sellerRepository.findById(id);
+        Optional<SellerEntity> sellerData = sellerRepository.findById(id);
         return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 
     public List<SellerView> finddAll() {
-        List<Seller> sellerData = sellerRepository.findAll();
-        return sellerData.stream()
+        List<SellerEntity> sellerEntityData = sellerRepository.findAll();
+        return sellerEntityData.stream()
                 .map(e -> sellerMapper.entityToView(e))
                 .collect(Collectors.toList());
     }

@@ -1,7 +1,6 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
-import com.venteEnLigne.venteEnLigne.model.Product;
-import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,13 @@ public class SellerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus>  create(@RequestBody Seller seller) {
-        return sellerService.create(seller);
+    public ResponseEntity<HttpStatus>  create(@RequestBody SellerEntity sellerEntity) {
+        return sellerService.create(sellerEntity);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Seller> update(@PathVariable("id") long id, @RequestBody Seller seller) {
-        return sellerService.update(id, seller);
+    public ResponseEntity<SellerEntity> update(@PathVariable("id") long id, @RequestBody SellerEntity sellerEntity) {
+        return sellerService.update(id, sellerEntity);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -1,7 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteEnLigne.venteEnLigne.model.Product;
-import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
+import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
@@ -26,36 +26,36 @@ public class ProductService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        Seller seller = toSeller(new Seller("Philibert"));
-        productRepository.saveAll(Arrays.asList(new Product("Smartphone", 200.00, "Iphone 5", 5, seller)
-                , new Product("Calculette", 250, "XXX", 5, seller)
-                , new Product("Blouson", 100, "dddd", 5, seller)
-                , new Product("Canapé", 600.00, "zzzz", 5, seller)));
+        SellerEntity sellerEntity = toSeller(new SellerEntity("Philibert"));
+        productRepository.saveAll(Arrays.asList(new ProductEntity("Smartphone", 200.00, "Iphone 5", 5, sellerEntity)
+                , new ProductEntity("Calculette", 250, "XXX", 5, sellerEntity)
+                , new ProductEntity("Blouson", 100, "dddd", 5, sellerEntity)
+                , new ProductEntity("Canapé", 600.00, "zzzz", 5, sellerEntity)));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> create(@RequestBody Product product) {
-        Seller seller = toSeller(product.getSeller());
+    public ResponseEntity<HttpStatus> create(@RequestBody ProductEntity productEntity) {
+        SellerEntity sellerEntity = toSeller(productEntity.getSellerEntity());
 
-        productRepository.save(new Product(product.getName(),
-                product.getPrice(),
-                product.getDescription(),
-                product.getNumberAvailable(),
-                seller));
+        productRepository.save(new ProductEntity(productEntity.getName(),
+                productEntity.getPrice(),
+                productEntity.getDescription(),
+                productEntity.getNumberAvailable(),
+                sellerEntity));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Product> update(long id, Product product) {
-        Optional<Product> productData = productRepository.findById(id);
+    public ResponseEntity<ProductEntity> update(long id, ProductEntity productEntity) {
+        Optional<ProductEntity> productData = productRepository.findById(id);
 
         if (productData.isPresent()) {
-            Product _product = productData.get();
-            _product.setId(productData.get().getId());
-            _product.setName(product.getName());
-            _product.setPrice(product.getPrice());
-            _product.setDescription(product.getDescription());
-            _product.setNumberAvailable(product.getNumberAvailable());
-            return new ResponseEntity<>(productRepository.save(_product), HttpStatus.OK);
+            ProductEntity _productEntity = productData.get();
+            _productEntity.setId(productData.get().getId());
+            _productEntity.setName(productEntity.getName());
+            _productEntity.setPrice(productEntity.getPrice());
+            _productEntity.setDescription(productEntity.getDescription());
+            _productEntity.setNumberAvailable(productEntity.getNumberAvailable());
+            return new ResponseEntity<>(productRepository.save(_productEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -70,19 +70,19 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Product> getProduitById(long id) {
-        Optional<Product> productData = productRepository.findById(id);
-        return productData.map(product -> new ResponseEntity<>(product, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<ProductEntity> getProduitById(long id) {
+        Optional<ProductEntity> productData = productRepository.findById(id);
+        return productData.map(productEntity -> new ResponseEntity<>(productEntity, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<List<Product>> finddAll() {
-        List<Product> productData = productRepository.findAll();
-        return new ResponseEntity<>(productData, HttpStatus.OK);
+    public ResponseEntity<List<ProductEntity>> finddAll() {
+        List<ProductEntity> productEntityData = productRepository.findAll();
+        return new ResponseEntity<>(productEntityData, HttpStatus.OK);
     }
 
-    private Seller toSeller(Seller seller) throws IllegalStateException {
-        return sellerRepository.findByName(seller.getName())
-                .orElseThrow(() -> new IllegalStateException(seller.getName() + " does not exist"));
+    private SellerEntity toSeller(SellerEntity sellerEntity) throws IllegalStateException {
+        return sellerRepository.findByName(sellerEntity.getName())
+                .orElseThrow(() -> new IllegalStateException(sellerEntity.getName() + " does not exist"));
     }
 
 }

@@ -32,9 +32,9 @@ public class SellerService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> create(@RequestBody SellerEntity sellerEntity) {
-        sellerRepository.save(new SellerEntity(sellerEntity.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public SellerView create(@RequestBody SellerEntity sellerEntity) {
+        SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerEntity.getName()));
+        return sellerMapper.entityToView(sellerData);
     }
 
     public ResponseEntity<SellerEntity> update(long id, SellerEntity sellerEntity) {

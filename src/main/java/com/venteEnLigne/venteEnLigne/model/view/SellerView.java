@@ -2,7 +2,6 @@ package com.venteEnLigne.venteEnLigne.model.view;
 
 import lombok.Data;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Data

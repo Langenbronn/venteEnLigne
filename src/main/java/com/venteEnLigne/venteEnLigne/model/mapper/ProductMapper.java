@@ -18,5 +18,8 @@ public interface ProductMapper {
             @Mapping(source = "sellerEntity", target = "sellerView"),
     })
     ProductView entityToView(ProductEntity productEntity);
-    ProductEntity entityToView(ProductView productView);
+    @Mappings({
+            @Mapping(source = "sellerView", target = "sellerEntity"),
+    })
+    ProductEntity viewToEntity(ProductView productView);
 }

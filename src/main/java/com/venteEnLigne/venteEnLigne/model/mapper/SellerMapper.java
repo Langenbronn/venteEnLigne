@@ -11,5 +11,5 @@ public interface SellerMapper {
     SellerMapper INSTANCE = Mappers.getMapper(SellerMapper.class);
 
     SellerView entityToView(SellerEntity sellerEntity);
-    SellerEntity entityToView(SellerView sellerView);
+    SellerEntity viewToEntity(SellerView sellerView);
 }

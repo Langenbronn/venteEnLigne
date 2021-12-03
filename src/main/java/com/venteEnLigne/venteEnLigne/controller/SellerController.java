@@ -23,7 +23,8 @@ public class SellerController {
 
     @PostMapping("/create")
     public ResponseEntity<HttpStatus>  create(@RequestBody SellerEntity sellerEntity) {
-        return sellerService.create(sellerEntity);
+        sellerService.create(sellerEntity);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")

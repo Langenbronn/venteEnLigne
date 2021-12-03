@@ -1,6 +1,7 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
 import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
+import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +42,8 @@ public class ProductController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<ProductEntity>> finddAll() {
-        return productService.finddAll();
+    public ResponseEntity<List<ProductView>> finddAll() {
+        return new ResponseEntity<>(productService.finddAll(), HttpStatus.OK);
     }
 
 }

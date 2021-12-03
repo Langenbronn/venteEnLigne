@@ -2,6 +2,9 @@ package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
 import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
+import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
+import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
+import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
@@ -14,12 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Data
 @Service
 public class ProductService {
-
+    @Autowired
+    ProductMapper productMapper;
     @Autowired
     ProductRepository productRepository;
     @Autowired
@@ -75,9 +80,11 @@ public class ProductService {
         return productData.map(productEntity -> new ResponseEntity<>(productEntity, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<List<ProductEntity>> finddAll() {
+    public List<ProductView> finddAll() {
         List<ProductEntity> productEntityData = productRepository.findAll();
-        return new ResponseEntity<>(productEntityData, HttpStatus.OK);
+        return productEntityData.stream()
+                .map(e -> productMapper.entityToView(e))
+                .collect(Collectors.toList());
     }
 
     private SellerEntity toSeller(SellerEntity sellerEntity) throws IllegalStateException {

@@ -2,6 +2,7 @@ package com.venteEnLigne.venteEnLigne.controller;
 
 import com.venteEnLigne.venteEnLigne.model.Product;
 import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

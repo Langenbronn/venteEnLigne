@@ -1,6 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,8 @@ import java.util.Optional;
 @Data
 @Service
 public class SellerService {
-
+    @Autowired
+    SellerMapper sellerMapper;
     @Autowired
     SellerRepository sellerRepository;
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,11 @@ public class SellerService {
     }
 
     public SellerView create(@RequestBody SellerEntity sellerEntity) {
+
+        // Check if dish already exists
+        if (!Objects.isNull(sellerRepository.findByName(sellerEntity.getName()))) {
+            throw new IllegalStateException(sellerEntity.getName() + " does already exist");
+        }
         SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerEntity.getName()));
         return sellerMapper.entityToView(sellerData);
     }
@@ -69,6 +75,11 @@ public class SellerService {
         return sellerEntityData.stream()
                 .map(e -> sellerMapper.entityToView(e))
                 .collect(Collectors.toList());
+    }
+
+    public Optional<SellerView> getSellerByName(String name) {
+        Optional<SellerEntity> sellerData = sellerRepository.findByName(name);
+        return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 
 }

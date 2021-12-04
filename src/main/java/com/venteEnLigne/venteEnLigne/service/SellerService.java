@@ -5,6 +5,7 @@ import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
 import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class SellerService {
 
     public SellerView create(@RequestBody SellerEntity sellerEntity) {
 
-        if (!Objects.isNull(sellerRepository.findByName(sellerEntity.getName()))) {
+        if (sellerRepository.findByName(sellerEntity.getName()).isPresent()) {
             throw new IllegalStateException(sellerEntity.getName() + " does already exist");
         }
         SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerEntity.getName()));

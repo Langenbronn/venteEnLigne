@@ -35,7 +35,6 @@ public class SellerService {
 
     public SellerView create(@RequestBody SellerEntity sellerEntity) {
 
-        // Check if dish already exists
         if (!Objects.isNull(sellerRepository.findByName(sellerEntity.getName()))) {
             throw new IllegalStateException(sellerEntity.getName() + " does already exist");
         }

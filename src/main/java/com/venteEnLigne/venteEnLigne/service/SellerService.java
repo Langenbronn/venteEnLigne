@@ -34,7 +34,7 @@ public class SellerService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public SellerView create(@RequestBody SellerEntity sellerEntity) {
+    public SellerView create(@RequestBody SellerEntity sellerEntity) throws IllegalStateException {
 
         if (sellerRepository.findByName(sellerEntity.getName()).isPresent()) {
             throw new IllegalStateException(sellerEntity.getName() + " does already exist");
@@ -56,13 +56,11 @@ public class SellerService {
         }
     }
 
-    public ResponseEntity<HttpStatus> delete(long id) {
-        try {
-            sellerRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public void delete(long id) throws IllegalStateException {
+        if (sellerRepository.findById(id).isEmpty()) {
+            throw new IllegalStateException(id + " don't exist");
         }
+        sellerRepository.deleteById(id);
     }
 
     public Optional<SellerView> getSellerById(long id) {

@@ -39,8 +39,15 @@ public class SellerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
-        return sellerService.delete(id);
+    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+        try {
+            sellerService.delete(id);
+            return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
+        }  catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/read/{id}")

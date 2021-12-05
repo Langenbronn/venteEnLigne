@@ -17,28 +17,49 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/initData")
-    public ResponseEntity<HttpStatus>  initData() {
+    public ResponseEntity<HttpStatus> initData() {
         return productService.initData();
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus>  create(@RequestBody ProductEntity productEntity) {
-        return productService.create(productEntity);
+    public ResponseEntity<String> create(@RequestBody ProductEntity productEntity) {
+        try {
+            ProductView productView = productService.create(productEntity);
+            return new ResponseEntity<>(productView.getName() + " has been created", HttpStatus.CREATED);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProductEntity> update(@PathVariable("id") long id, @RequestBody ProductEntity productEntity) {
-        return productService.update(id, productEntity);
+    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody ProductEntity productEntity) {
+        try {
+            ProductView productView = productService.update(id, productEntity);
+            return new ResponseEntity<>(productView.getName() + " has been updated", HttpStatus.CREATED);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
-        return productService.delete(id);
+    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+        try {
+            productService.delete(id);
+            return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<ProductEntity> getProduitById(@PathVariable("id") long id) {
-        return productService.getProduitById(id);
+    public ResponseEntity<ProductView> getProduitById(@PathVariable("id") long id) {
+        return productService.getProduitById(id).map(product -> new ResponseEntity<>(product, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/findAll")

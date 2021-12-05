@@ -3,7 +3,6 @@ package com.venteEnLigne.venteEnLigne.service;
 import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
 import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
-import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
 import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
@@ -39,18 +38,22 @@ public class ProductService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> create(@RequestBody ProductEntity productEntity) {
+    public ProductView create(@RequestBody ProductEntity productEntity) {
         SellerEntity sellerEntity = toSeller(productEntity.getSellerEntity());
 
-        productRepository.save(new ProductEntity(productEntity.getName(),
+        if (productRepository.findByName(productEntity.getName()).isPresent()) {
+            throw new IllegalStateException(productEntity.getName() + " does already exist");
+        }
+
+        ProductEntity productData = productRepository.save(new ProductEntity(productEntity.getName(),
                 productEntity.getPrice(),
                 productEntity.getDescription(),
                 productEntity.getNumberAvailable(),
                 sellerEntity));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return productMapper.entityToView(productData);
     }
 
-    public ResponseEntity<ProductEntity> update(long id, ProductEntity productEntity) {
+    public ProductView update(long id, ProductEntity productEntity) {
         Optional<ProductEntity> productData = productRepository.findById(id);
 
         if (productData.isPresent()) {
@@ -60,24 +63,23 @@ public class ProductService {
             _productEntity.setPrice(productEntity.getPrice());
             _productEntity.setDescription(productEntity.getDescription());
             _productEntity.setNumberAvailable(productEntity.getNumberAvailable());
-            return new ResponseEntity<>(productRepository.save(_productEntity), HttpStatus.OK);
+            productRepository.save(_productEntity);
+            return productMapper.entityToView(_productEntity);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalStateException(id + " don't exist");
         }
     }
 
-    public ResponseEntity<HttpStatus> delete(long id) {
-        try {
-            productRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public void delete(long id) {
+        if (productRepository.findById(id).isEmpty()) {
+            throw new IllegalStateException(id + " don't exist");
         }
+        productRepository.deleteById(id);
     }
 
-    public ResponseEntity<ProductEntity> getProduitById(long id) {
+    public Optional<ProductView> getProduitById(long id) {
         Optional<ProductEntity> productData = productRepository.findById(id);
-        return productData.map(productEntity -> new ResponseEntity<>(productEntity, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return productData.map(product -> productMapper.entityToView(product));
     }
 
     public List<ProductView> finddAll() {

@@ -43,16 +43,17 @@ public class SellerService {
         return sellerMapper.entityToView(sellerData);
     }
 
-    public ResponseEntity<SellerEntity> update(long id, SellerEntity sellerEntity) {
+    public SellerView update(long id, SellerEntity sellerEntity) {
         Optional<SellerEntity> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
             SellerEntity _sellerEntity = sellerData.get();
-            _sellerEntity.setId(sellerData.get().getId());
+            _sellerEntity.setId(_sellerEntity.getId());
             _sellerEntity.setName(sellerEntity.getName());
-            return new ResponseEntity<>(sellerRepository.save(_sellerEntity), HttpStatus.OK);
+            sellerRepository.save(_sellerEntity);
+            return sellerMapper.entityToView(_sellerEntity);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalStateException(id + " don't exist");
         }
     }
 

@@ -34,8 +34,15 @@ public class SellerController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<SellerEntity> update(@PathVariable("id") long id, @RequestBody SellerEntity sellerEntity) {
-        return sellerService.update(id, sellerEntity);
+    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody SellerEntity sellerEntity) {
+        try{
+            SellerView sellerView = sellerService.update(id, sellerEntity);
+            return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
+        }  catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")

@@ -23,7 +23,7 @@ public class ProductEntity implements Serializable {
     @Column(name = "numberAvailable")
     private int numberAvailable;
     @JoinColumn(name = "seller", nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private SellerEntity sellerEntity;
 
     public ProductEntity() {

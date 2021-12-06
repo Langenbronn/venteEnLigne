@@ -35,7 +35,7 @@ public class SellerService {
     public SellerView create(@RequestBody SellerEntity sellerEntity) throws IllegalStateException {
 
         if (sellerRepository.findByName(sellerEntity.getName()).isPresent()) {
-            throw new IllegalStateException(sellerEntity.getName() + " does already exist");
+            throw new IllegalStateException("seller " + sellerEntity.getName() + " does already exist");
         }
         SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerEntity.getName()));
         return sellerMapper.entityToView(sellerData);
@@ -51,13 +51,13 @@ public class SellerService {
             sellerRepository.save(_sellerEntity);
             return sellerMapper.entityToView(_sellerEntity);
         } else {
-            throw new IllegalStateException(id + " don't exist");
+            throw new IllegalStateException("seller " + id + " don't exist");
         }
     }
 
     public void delete(long id) throws IllegalStateException {
         if (sellerRepository.findById(id).isEmpty()) {
-            throw new IllegalStateException(id + " don't exist");
+            throw new IllegalStateException("seller " + id + " don't exist");
         }
         sellerRepository.deleteById(id);
     }

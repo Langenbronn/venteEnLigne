@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -14,6 +15,9 @@ public class SellerEntity implements Serializable {
     private Long id;
     @Column(name = "name", unique=true)
     private String name;
+    @JoinColumn(name = "product")
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<ProductEntity> productEntity;
 
     public SellerEntity() {
     }

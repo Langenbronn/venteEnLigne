@@ -5,6 +5,7 @@ import javax.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,18 +23,17 @@ public class ProductEntity implements Serializable {
     private String description;
     @Column(name = "numberAvailable")
     private int numberAvailable;
-    @JoinColumn(name = "seller", nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
-    private SellerEntity sellerEntity;
+    @JoinColumn(name = "seller")
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<SellerEntity> sellerEntity;
 
     public ProductEntity() {
     }
 
-    public ProductEntity(String name, double price, String description, int numberAvailable, SellerEntity sellerEntity) {
+    public ProductEntity(String name, double price, String description, int numberAvailable) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.numberAvailable = numberAvailable;
-        this.sellerEntity = sellerEntity;
     }
 }

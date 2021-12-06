@@ -30,16 +30,14 @@ public class ProductService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        SellerEntity sellerEntity = toSeller(new SellerEntity("Philibert"));
-        productRepository.saveAll(Arrays.asList(new ProductEntity("Smartphone", 200.00, "Iphone 5", 5, sellerEntity)
-                , new ProductEntity("Calculette", 250, "XXX", 5, sellerEntity)
-                , new ProductEntity("Blouson", 100, "dddd", 5, sellerEntity)
-                , new ProductEntity("Canapé", 600.00, "zzzz", 5, sellerEntity)));
+        productRepository.saveAll(Arrays.asList(new ProductEntity("Smartphone", 200.00, "Iphone 5", 5)
+                , new ProductEntity("Calculette", 250, "XXX", 5)
+                , new ProductEntity("Blouson", 100, "dddd", 5)
+                , new ProductEntity("Canapé", 600.00, "zzzz", 5)));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ProductView create(@RequestBody ProductEntity productEntity) throws IllegalStateException {
-        SellerEntity sellerEntity = toSeller(productEntity.getSellerEntity());
 
         if (productRepository.findByName(productEntity.getName()).isPresent()) {
             throw new IllegalStateException("product " + productEntity.getName() + " does already exist");
@@ -48,8 +46,7 @@ public class ProductService {
         ProductEntity productData = productRepository.save(new ProductEntity(productEntity.getName(),
                 productEntity.getPrice(),
                 productEntity.getDescription(),
-                productEntity.getNumberAvailable(),
-                sellerEntity));
+                productEntity.getNumberAvailable()));
         return productMapper.entityToView(productData);
     }
 

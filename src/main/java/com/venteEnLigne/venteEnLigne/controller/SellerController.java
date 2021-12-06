@@ -1,7 +1,7 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
-import com.venteEnLigne.venteEnLigne.model.Product;
-import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
+import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,28 +22,54 @@ public class SellerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus>  create(@RequestBody Seller seller) {
-        return sellerService.create(seller);
+    public ResponseEntity<String>  create(@RequestBody SellerEntity sellerEntity) {
+        try {
+            SellerView sellerView = sellerService.create(sellerEntity);
+            return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
+        }  catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Seller> update(@PathVariable("id") long id, @RequestBody Seller seller) {
-        return sellerService.update(id, seller);
+    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody SellerEntity sellerEntity) {
+        try{
+            SellerView sellerView = sellerService.update(id, sellerEntity);
+            return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
+        }  catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
-        return sellerService.delete(id);
+    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+        try {
+            sellerService.delete(id);
+            return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
+        }  catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<Seller> getProduitById(@PathVariable("id") long id) {
-        return sellerService.getSellerById(id);
+    public ResponseEntity<SellerView> getProduitById(@PathVariable("id") long id) {
+        return sellerService.getSellerById(id).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Seller>> finddAll() {
-        return sellerService.finddAll();
+    public ResponseEntity<List<SellerView>> finddAll() {
+        return new ResponseEntity<>(sellerService.finddAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/read/name/{name}")
+    public ResponseEntity<SellerView> findByName(@PathVariable("name") String name) {
+        return sellerService.getSellerByName(name).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

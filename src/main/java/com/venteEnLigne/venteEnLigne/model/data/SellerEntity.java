@@ -1,4 +1,4 @@
-package com.venteEnLigne.venteEnLigne.model;
+package com.venteEnLigne.venteEnLigne.model.data;
 
 import lombok.Data;
 
@@ -8,18 +8,17 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "seller")
-public class Seller implements Serializable {
+public class SellerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(name = "name")
+    @Column(name = "name", unique=true)
     private String name;
 
-    public Seller() {
+    public SellerEntity() {
     }
 
-    public Seller(String name) {
+    public SellerEntity(String name) {
         this.name = name;
     }
 }

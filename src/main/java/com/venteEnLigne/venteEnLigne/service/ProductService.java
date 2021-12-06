@@ -1,7 +1,9 @@
 package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteEnLigne.venteEnLigne.model.Product;
-import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
+import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
+import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
+import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
@@ -14,75 +16,82 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Data
 @Service
 public class ProductService {
-
+    @Autowired
+    ProductMapper productMapper;
     @Autowired
     ProductRepository productRepository;
     @Autowired
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        Seller seller = toSeller(new Seller("Philibert"));
-        productRepository.saveAll(Arrays.asList(new Product("Smartphone", 200.00, "Iphone 5", 5, seller)
-                , new Product("Calculette", 250, "XXX", 5, seller)
-                , new Product("Blouson", 100, "dddd", 5, seller)
-                , new Product("Canapé", 600.00, "zzzz", 5, seller)));
+        SellerEntity sellerEntity = toSeller(new SellerEntity("Philibert"));
+        productRepository.saveAll(Arrays.asList(new ProductEntity("Smartphone", 200.00, "Iphone 5", 5, sellerEntity)
+                , new ProductEntity("Calculette", 250, "XXX", 5, sellerEntity)
+                , new ProductEntity("Blouson", 100, "dddd", 5, sellerEntity)
+                , new ProductEntity("Canapé", 600.00, "zzzz", 5, sellerEntity)));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> create(@RequestBody Product product) {
-        Seller seller = toSeller(product.getSeller());
+    public ProductView create(@RequestBody ProductEntity productEntity) throws IllegalStateException {
+        SellerEntity sellerEntity = toSeller(productEntity.getSellerEntity());
 
-        productRepository.save(new Product(product.getName(),
-                product.getPrice(),
-                product.getDescription(),
-                product.getNumberAvailable(),
-                seller));
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (productRepository.findByName(productEntity.getName()).isPresent()) {
+            throw new IllegalStateException("product " + productEntity.getName() + " does already exist");
+        }
+
+        ProductEntity productData = productRepository.save(new ProductEntity(productEntity.getName(),
+                productEntity.getPrice(),
+                productEntity.getDescription(),
+                productEntity.getNumberAvailable(),
+                sellerEntity));
+        return productMapper.entityToView(productData);
     }
 
-    public ResponseEntity<Product> update(long id, Product product) {
-        Optional<Product> productData = productRepository.findById(id);
+    public ProductView update(long id, ProductEntity productEntity) {
+        Optional<ProductEntity> productData = productRepository.findById(id);
 
         if (productData.isPresent()) {
-            Product _product = productData.get();
-            _product.setId(productData.get().getId());
-            _product.setName(product.getName());
-            _product.setPrice(product.getPrice());
-            _product.setDescription(product.getDescription());
-            _product.setNumberAvailable(product.getNumberAvailable());
-            return new ResponseEntity<>(productRepository.save(_product), HttpStatus.OK);
+            ProductEntity _productEntity = productData.get();
+            _productEntity.setId(productData.get().getId());
+            _productEntity.setName(productEntity.getName());
+            _productEntity.setPrice(productEntity.getPrice());
+            _productEntity.setDescription(productEntity.getDescription());
+            _productEntity.setNumberAvailable(productEntity.getNumberAvailable());
+            productRepository.save(_productEntity);
+            return productMapper.entityToView(_productEntity);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalStateException("product " + id + " don't exist");
         }
     }
 
-    public ResponseEntity<HttpStatus> delete(long id) {
-        try {
-            productRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public void delete(long id) {
+        if (productRepository.findById(id).isEmpty()) {
+            throw new IllegalStateException("product " + id + " don't exist");
         }
+        productRepository.deleteById(id);
     }
 
-    public ResponseEntity<Product> getProduitById(long id) {
-        Optional<Product> productData = productRepository.findById(id);
-        return productData.map(product -> new ResponseEntity<>(product, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<ProductView> getProduitById(long id) {
+        Optional<ProductEntity> productData = productRepository.findById(id);
+        return productData.map(product -> productMapper.entityToView(product));
     }
 
-    public ResponseEntity<List<Product>> finddAll() {
-        List<Product> productData = productRepository.findAll();
-        return new ResponseEntity<>(productData, HttpStatus.OK);
+    public List<ProductView> finddAll() {
+        List<ProductEntity> productEntityData = productRepository.findAll();
+        return productEntityData.stream()
+                .map(e -> productMapper.entityToView(e))
+                .collect(Collectors.toList());
     }
 
-    private Seller toSeller(Seller seller) throws IllegalStateException {
-        return sellerRepository.findByName(seller.getName())
-                .orElseThrow(() -> new IllegalStateException(seller.getName() + " does not exist"));
+    private SellerEntity toSeller(SellerEntity sellerEntity) throws IllegalStateException {
+        return sellerRepository.findByName(sellerEntity.getName())
+                .orElseThrow(() -> new IllegalStateException("seller " + sellerEntity.getName() + " does not exist"));
     }
 
 }

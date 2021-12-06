@@ -1,6 +1,8 @@
 package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteEnLigne.venteEnLigne.model.Seller;
+import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
+import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
+import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,57 +14,69 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Data
 @Service
 public class SellerService {
-
+    @Autowired
+    SellerMapper sellerMapper;
     @Autowired
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        sellerRepository.saveAll(Arrays.asList(new Seller("Philibert")
-                , new Seller("Domino")
-                , new Seller("Saturn")
-                , new Seller("Ikea")));
+        sellerRepository.saveAll(Arrays.asList(new SellerEntity("Philibert")
+                , new SellerEntity("Domino")
+                , new SellerEntity("Saturn")
+                , new SellerEntity("Ikea")));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> create(@RequestBody Seller seller) {
-        sellerRepository.save(new Seller(seller.getName()));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public SellerView create(@RequestBody SellerEntity sellerEntity) throws IllegalStateException {
+
+        if (sellerRepository.findByName(sellerEntity.getName()).isPresent()) {
+            throw new IllegalStateException("seller " + sellerEntity.getName() + " does already exist");
+        }
+        SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerEntity.getName()));
+        return sellerMapper.entityToView(sellerData);
     }
 
-    public ResponseEntity<Seller> update(long id, Seller seller) {
-        Optional<Seller> sellerData = sellerRepository.findById(id);
+    public SellerView update(long id, SellerEntity sellerEntity) {
+        Optional<SellerEntity> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
-            Seller _seller = sellerData.get();
-            _seller.setId(sellerData.get().getId());
-            _seller.setName(seller.getName());
-            return new ResponseEntity<>(sellerRepository.save(_seller), HttpStatus.OK);
+            SellerEntity _sellerEntity = sellerData.get();
+            _sellerEntity.setId(_sellerEntity.getId());
+            _sellerEntity.setName(sellerEntity.getName());
+            sellerRepository.save(_sellerEntity);
+            return sellerMapper.entityToView(_sellerEntity);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalStateException("seller " + id + " don't exist");
         }
     }
 
-    public ResponseEntity<HttpStatus> delete(long id) {
-        try {
-            sellerRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public void delete(long id) throws IllegalStateException {
+        if (sellerRepository.findById(id).isEmpty()) {
+            throw new IllegalStateException("seller " + id + " don't exist");
         }
+        sellerRepository.deleteById(id);
     }
 
-    public ResponseEntity<Seller> getSellerById(long id) {
-        Optional<Seller> sellerData = sellerRepository.findById(id);
-        return sellerData.map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<SellerView> getSellerById(long id) {
+        Optional<SellerEntity> sellerData = sellerRepository.findById(id);
+        return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 
-    public ResponseEntity<List<Seller>> finddAll() {
-        List<Seller> sellerData = sellerRepository.findAll();
-        return new ResponseEntity<>(sellerData, HttpStatus.OK);
+    public List<SellerView> finddAll() {
+        List<SellerEntity> sellerEntityData = sellerRepository.findAll();
+        return sellerEntityData.stream()
+                .map(e -> sellerMapper.entityToView(e))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<SellerView> getSellerByName(String name) {
+        Optional<SellerEntity> sellerData = sellerRepository.findByName(name);
+        return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 
 }

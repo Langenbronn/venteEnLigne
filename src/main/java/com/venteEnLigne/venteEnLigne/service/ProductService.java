@@ -97,10 +97,4 @@ public class ProductService {
                 .map(e -> productMapper.entityToView(e))
                 .collect(Collectors.toList());
     }
-
-    private SellerEntity toSeller(SellerEntity sellerEntity) throws IllegalStateException {
-        return sellerRepository.findByName(sellerEntity.getName())
-                .orElseThrow(() -> new IllegalStateException("seller " + sellerEntity.getName() + " does not exist"));
-    }
-
 }

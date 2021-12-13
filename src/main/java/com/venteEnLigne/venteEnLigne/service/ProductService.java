@@ -70,6 +70,10 @@ public class ProductService {
         ProductEntity productEntity = productRepository.findById(idProduct)
                 .orElseThrow(() -> new IllegalStateException("product " + idProduct + " does not exist"));
 
+        if (productEntity.getSellersEntity().stream().anyMatch(seller -> seller.getId().equals(idSeller))) {
+            throw new IllegalStateException("seller " + idSeller + " already sell product " + idProduct);
+        }
+
         productEntity.addSellerEntity(sellerEntity);
         productRepository.save(productEntity);
         return productMapper.entityToView(productEntity);

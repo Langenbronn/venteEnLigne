@@ -30,16 +30,14 @@ public class ProductService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        SellerEntity sellerEntity = toSeller(new SellerEntity("Philibert"));
-        productRepository.saveAll(Arrays.asList(new ProductEntity("Smartphone", 200.00, "Iphone 5", 5, sellerEntity)
-                , new ProductEntity("Calculette", 250, "XXX", 5, sellerEntity)
-                , new ProductEntity("Blouson", 100, "dddd", 5, sellerEntity)
-                , new ProductEntity("Canapé", 600.00, "zzzz", 5, sellerEntity)));
+        productRepository.saveAll(Arrays.asList(new ProductEntity("Smartphone", 200.00, "Iphone 5", 5)
+                , new ProductEntity("Calculette", 250, "XXX", 5)
+                , new ProductEntity("Blouson", 100, "dddd", 5)
+                , new ProductEntity("Canapé", 600.00, "zzzz", 5)));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ProductView create(@RequestBody ProductEntity productEntity) throws IllegalStateException {
-        SellerEntity sellerEntity = toSeller(productEntity.getSellerEntity());
 
         if (productRepository.findByName(productEntity.getName()).isPresent()) {
             throw new IllegalStateException("product " + productEntity.getName() + " does already exist");
@@ -48,26 +46,33 @@ public class ProductService {
         ProductEntity productData = productRepository.save(new ProductEntity(productEntity.getName(),
                 productEntity.getPrice(),
                 productEntity.getDescription(),
-                productEntity.getNumberAvailable(),
-                sellerEntity));
+                productEntity.getNumberAvailable()));
         return productMapper.entityToView(productData);
     }
 
     public ProductView update(long id, ProductEntity productEntity) {
-        Optional<ProductEntity> productData = productRepository.findById(id);
+        ProductEntity productData = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("product " + id + " does not exist"));
 
-        if (productData.isPresent()) {
-            ProductEntity _productEntity = productData.get();
-            _productEntity.setId(productData.get().getId());
-            _productEntity.setName(productEntity.getName());
-            _productEntity.setPrice(productEntity.getPrice());
-            _productEntity.setDescription(productEntity.getDescription());
-            _productEntity.setNumberAvailable(productEntity.getNumberAvailable());
-            productRepository.save(_productEntity);
-            return productMapper.entityToView(_productEntity);
-        } else {
-            throw new IllegalStateException("product " + id + " don't exist");
-        }
+        productData.setId(productData.getId());
+            productData.setName(productEntity.getName());
+            productData.setPrice(productEntity.getPrice());
+            productData.setDescription(productEntity.getDescription());
+            productData.setNumberAvailable(productEntity.getNumberAvailable());
+            productRepository.save(productData);
+            return productMapper.entityToView(productData);
+    }
+
+    public ProductView addSeller(long idProduct, long idSeller) {
+        SellerEntity sellerEntity = sellerRepository.findById(idSeller)
+                .orElseThrow(() -> new IllegalStateException("seller " + idSeller + " does not exist"));
+
+        ProductEntity productEntity = productRepository.findById(idProduct)
+                .orElseThrow(() -> new IllegalStateException("product " + idProduct + " does not exist"));
+
+        productEntity.addSellerEntity(sellerEntity);
+        productRepository.save(productEntity);
+        return productMapper.entityToView(productEntity);
     }
 
     public void delete(long id) {

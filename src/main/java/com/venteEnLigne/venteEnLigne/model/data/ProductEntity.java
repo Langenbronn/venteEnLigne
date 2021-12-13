@@ -1,12 +1,17 @@
 package com.venteEnLigne.venteEnLigne.model.data;
 
+import lombok.*;
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
-
-import lombok.Data;
-
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "product")
 public class ProductEntity implements Serializable {
@@ -22,18 +27,33 @@ public class ProductEntity implements Serializable {
     private String description;
     @Column(name = "numberAvailable")
     private int numberAvailable;
-    @JoinColumn(name = "seller", nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
-    private SellerEntity sellerEntity;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "product_seller",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "seller_id"))
+    private List<SellerEntity> sellersEntity;
 
-    public ProductEntity() {
-    }
-
-    public ProductEntity(String name, double price, String description, int numberAvailable, SellerEntity sellerEntity) {
+    public ProductEntity(String name, double price, String description, int numberAvailable) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.numberAvailable = numberAvailable;
-        this.sellerEntity = sellerEntity;
+    }
+
+    public void addSellerEntity(SellerEntity sellerEntity) {
+        sellersEntity.add(sellerEntity);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ProductEntity product = (ProductEntity) o;
+        return id != null && Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

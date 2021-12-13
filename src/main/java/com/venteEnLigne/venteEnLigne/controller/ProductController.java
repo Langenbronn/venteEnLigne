@@ -37,7 +37,19 @@ public class ProductController {
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody ProductEntity productEntity) {
         try {
             ProductView productView = productService.update(id, productEntity);
-            return new ResponseEntity<>(productView.getName() + " has been updated", HttpStatus.CREATED);
+            return new ResponseEntity<>(productView.getName() + " has been updated", HttpStatus.OK);
+        } catch (IllegalStateException ise) {
+            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/addSeller/{id}")
+    public ResponseEntity<String> addSeller(@PathVariable("id") long id, @RequestBody long idSeller) {
+        try {
+            ProductView productView = productService.addSeller(id, idSeller);
+            return new ResponseEntity<>("seller " + idSeller + " has been add", HttpStatus.OK);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {

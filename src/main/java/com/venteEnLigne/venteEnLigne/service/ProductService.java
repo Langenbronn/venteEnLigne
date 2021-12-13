@@ -51,20 +51,28 @@ public class ProductService {
     }
 
     public ProductView update(long id, ProductEntity productEntity) {
-        Optional<ProductEntity> productData = productRepository.findById(id);
+        ProductEntity productData = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("product " + id + " does not exist"));
 
-        if (productData.isPresent()) {
-            ProductEntity _productEntity = productData.get();
-            _productEntity.setId(productData.get().getId());
-            _productEntity.setName(productEntity.getName());
-            _productEntity.setPrice(productEntity.getPrice());
-            _productEntity.setDescription(productEntity.getDescription());
-            _productEntity.setNumberAvailable(productEntity.getNumberAvailable());
-            productRepository.save(_productEntity);
-            return productMapper.entityToView(_productEntity);
-        } else {
-            throw new IllegalStateException("product " + id + " don't exist");
-        }
+        productData.setId(productData.getId());
+            productData.setName(productEntity.getName());
+            productData.setPrice(productEntity.getPrice());
+            productData.setDescription(productEntity.getDescription());
+            productData.setNumberAvailable(productEntity.getNumberAvailable());
+            productRepository.save(productData);
+            return productMapper.entityToView(productData);
+    }
+
+    public ProductView addSeller(long idProduct, long idSeller) {
+        SellerEntity sellerEntity = sellerRepository.findById(idSeller)
+                .orElseThrow(() -> new IllegalStateException("seller " + idSeller + " does not exist"));
+
+        ProductEntity productEntity = productRepository.findById(idProduct)
+                .orElseThrow(() -> new IllegalStateException("product " + idProduct + " does not exist"));
+
+        productEntity.addSellerEntity(sellerEntity);
+        productRepository.save(productEntity);
+        return productMapper.entityToView(productEntity);
     }
 
     public void delete(long id) {

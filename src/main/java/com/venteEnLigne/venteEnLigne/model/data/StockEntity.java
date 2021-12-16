@@ -37,6 +37,12 @@ public class StockEntity implements Serializable {
         this.quantity = quantity;
     }
 
+    public StockEntity(int quantity, ProductEntity productEntity, SellerEntity sellerEntity) {
+        this.quantity = quantity;
+        this.productEntity = productEntity;
+        this.sellerEntity = sellerEntity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

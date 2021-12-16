@@ -1,19 +1,19 @@
 package com.venteEnLigne.venteEnLigne.service;
 
+import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
 import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.model.data.StockEntity;
+import com.venteEnLigne.venteEnLigne.model.dto.stock.StockCreationDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.StockMapper;
-import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.model.view.StockView;
+import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
+import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import com.venteEnLigne.venteEnLigne.repository.StockRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +25,10 @@ public class StockService {
     StockMapper stockMapper;
     @Autowired
     StockRepository stockRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    SellerRepository sellerRepository;
 
 //    public ResponseEntity<HttpStatus> initData() {
 //        stockRepository.saveAll(Arrays.asList(new SellerEntity("Philibert")
@@ -34,12 +38,20 @@ public class StockService {
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
 
-    public StockView create(@RequestBody StockEntity stockEntity) throws IllegalStateException {
-//TODO
-//        if (stockRepository.findById(stockEntity.getId()).isPresent()) {
-//            throw new IllegalStateException("seller " + stockEntity.getId() + " does already exist");
-//        }
-        StockEntity stockData = stockRepository.save(new StockEntity(stockEntity.getQuantity()));
+    public StockView create(@RequestBody StockCreationDto stockCreationDto) throws IllegalStateException {
+        SellerEntity sellerEntity = sellerRepository.findById(stockCreationDto.getIdSeller())
+                .orElseThrow(() -> new IllegalStateException("seller " + stockCreationDto.getIdSeller() + " does not exist"));
+
+        ProductEntity productEntity = productRepository.findById(stockCreationDto.getIdProduct())
+                .orElseThrow(() -> new IllegalStateException("product " + stockCreationDto.getIdProduct() + " does not exist"));
+
+        Optional<StockEntity> stockEntity = stockRepository.findFirstBySellerEntityId(stockCreationDto.getIdSeller());
+
+        if (stockEntity.isPresent()) {
+            throw new IllegalStateException("stock: seller " + sellerEntity.getId() + " already have a stock of product " + productEntity.getId() );
+        }
+
+        StockEntity stockData = stockRepository.save(new StockEntity(stockCreationDto.getQuantity(), productEntity, sellerEntity));
         return stockMapper.entityToView(stockData);
     }
 

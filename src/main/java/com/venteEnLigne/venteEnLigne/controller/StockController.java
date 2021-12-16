@@ -1,6 +1,7 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
 import com.venteEnLigne.venteEnLigne.model.data.StockEntity;
+import com.venteEnLigne.venteEnLigne.model.dto.stock.StockCreationDto;
 import com.venteEnLigne.venteEnLigne.model.view.StockView;
 import com.venteEnLigne.venteEnLigne.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ public class StockController {
 //    }
 
     @PostMapping("/create")
-    public ResponseEntity<String>  create(@RequestBody StockEntity stockEntity) {
+    public ResponseEntity<String>  create(@RequestBody StockCreationDto stockCreationDto) {
         try {
-            StockView stockView = stockService.create(stockEntity);
+            StockView stockView = stockService.create(stockCreationDto);
             return new ResponseEntity<>(stockView.getId() + " has been created", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);

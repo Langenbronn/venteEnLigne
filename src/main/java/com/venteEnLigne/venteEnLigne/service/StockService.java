@@ -45,7 +45,7 @@ public class StockService {
         ProductEntity productEntity = productRepository.findById(stockCreationDto.getIdProduct())
                 .orElseThrow(() -> new IllegalStateException("product " + stockCreationDto.getIdProduct() + " does not exist"));
 
-        Optional<StockEntity> stockEntity = stockRepository.findFirstBySellerEntityId(stockCreationDto.getIdSeller());
+        Optional<StockEntity> stockEntity = stockRepository.findFirstBySellerEntityIdAndProductEntityId(stockCreationDto.getIdSeller(), stockCreationDto.getIdProduct());
 
         if (stockEntity.isPresent()) {
             throw new IllegalStateException("stock: seller " + sellerEntity.getId() + " already have a stock of product " + productEntity.getId() );

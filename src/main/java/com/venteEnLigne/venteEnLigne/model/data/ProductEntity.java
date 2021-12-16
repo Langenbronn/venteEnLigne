@@ -27,11 +27,6 @@ public class ProductEntity implements Serializable {
     private String description;
     @Column(name = "numberAvailable")
     private int numberAvailable;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "product_seller",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "seller_id"))
-    private List<SellerEntity> sellersEntity;
 
     public ProductEntity(String name, double price, String description, int numberAvailable) {
         this.name = name;
@@ -40,9 +35,9 @@ public class ProductEntity implements Serializable {
         this.numberAvailable = numberAvailable;
     }
 
-    public void addSellerEntity(SellerEntity sellerEntity) {
-        sellersEntity.add(sellerEntity);
-    }
+//    public void addSellerEntity(SellerEntity sellerEntity) {
+//        sellersEntity.add(sellerEntity);
+//    }
 
     @Override
     public boolean equals(Object o) {

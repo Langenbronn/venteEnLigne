@@ -20,8 +20,6 @@ public class SellerEntity implements Serializable {
     private Long id;
     @Column(name = "name", unique=true)
     private String name;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "sellersEntity")
-    private List<ProductEntity> productsEntity;
 
     public SellerEntity(String name) {
         this.name = name;

@@ -45,17 +45,17 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/addSeller/{id}")
-    public ResponseEntity<String> addSeller(@PathVariable("id") long id, @RequestBody long idSeller) {
-        try {
-            ProductView productView = productService.addSeller(id, idSeller);
-            return new ResponseEntity<>("seller " + idSeller + " has been add", HttpStatus.OK);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/addSeller/{id}")
+//    public ResponseEntity<String> addSeller(@PathVariable("id") long id, @RequestBody long idSeller) {
+//        try {
+//            ProductView productView = productService.addSeller(id, idSeller);
+//            return new ResponseEntity<>("seller " + idSeller + " has been add", HttpStatus.OK);
+//        } catch (IllegalStateException ise) {
+//            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {

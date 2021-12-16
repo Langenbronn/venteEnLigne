@@ -1,11 +1,13 @@
 package com.venteEnLigne.venteEnLigne.model.data;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -18,7 +20,7 @@ public class SellerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "name", unique=true)
+    @Column(name = "name", unique = true)
     private String name;
 
     public SellerEntity(String name) {

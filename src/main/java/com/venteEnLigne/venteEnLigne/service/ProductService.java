@@ -1,7 +1,6 @@
 package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
-import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
 import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
@@ -11,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,9 +30,9 @@ public class ProductService {
 
     public ResponseEntity<HttpStatus> initData() {
         productRepository.saveAll(Arrays.asList(new ProductEntity("Unlock ! Game Adventures", 30.71, "Jeux", "Dans Unlock! Games Adventures, plongez dans l'univers de Mysterium, Aventuriers du Rail et Pandemic")
-                , new ProductEntity("7 Wonders : Architects", 35.00, "Jeux",  "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
-                , new ProductEntity("Thorgun", 2.99,"Inconnu",  "Plaid, gris-vert clair120x160 cm")
-                , new ProductEntity("GODMORGON / ODENSVIK", 559.00,"Meuble",   "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
+                , new ProductEntity("7 Wonders : Architects", 35.00, "Jeux", "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
+                , new ProductEntity("Thorgun", 2.99, "Inconnu", "Plaid, gris-vert clair120x160 cm")
+                , new ProductEntity("GODMORGON / ODENSVIK", 559.00, "Meuble", "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -55,11 +54,11 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalStateException("product " + id + " does not exist"));
 
         productData.setId(productData.getId());
-            productData.setName(productEntity.getName());
-            productData.setPrice(productEntity.getPrice());
-            productData.setDescription(productEntity.getDescription());
-            productRepository.save(productData);
-            return productMapper.entityToView(productData);
+        productData.setName(productEntity.getName());
+        productData.setPrice(productEntity.getPrice());
+        productData.setDescription(productEntity.getDescription());
+        productRepository.save(productData);
+        return productMapper.entityToView(productData);
     }
 
     public void delete(long id) {

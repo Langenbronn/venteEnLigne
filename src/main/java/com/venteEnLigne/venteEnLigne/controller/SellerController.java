@@ -17,30 +17,30 @@ public class SellerController {
     SellerService sellerService;
 
     @GetMapping("/initData")
-    public ResponseEntity<HttpStatus>  initData() {
+    public ResponseEntity<HttpStatus> initData() {
         return sellerService.initData();
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String>  create(@RequestBody SellerEntity sellerEntity) {
+    public ResponseEntity<String> create(@RequestBody SellerEntity sellerEntity) {
         try {
             SellerView sellerView = sellerService.create(sellerEntity);
             return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody SellerEntity sellerEntity) {
-        try{
+        try {
             SellerView sellerView = sellerService.update(id, sellerEntity);
             return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -52,7 +52,7 @@ public class SellerController {
             return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

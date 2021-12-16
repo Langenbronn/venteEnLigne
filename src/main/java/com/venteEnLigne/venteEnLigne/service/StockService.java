@@ -11,12 +11,9 @@ import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import com.venteEnLigne.venteEnLigne.repository.StockRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +40,7 @@ public class StockService {
         Optional<StockEntity> stockEntity = stockRepository.findFirstBySellerEntityIdAndProductEntityId(stockCreationDto.getIdSeller(), stockCreationDto.getIdProduct());
 
         if (stockEntity.isPresent()) {
-            throw new IllegalStateException("stock: seller " + sellerEntity.getId() + " already have a stock of product " + productEntity.getId() );
+            throw new IllegalStateException("stock: seller " + sellerEntity.getId() + " already have a stock of product " + productEntity.getId());
         }
 
         StockEntity stockData = stockRepository.save(new StockEntity(stockCreationDto.getQuantity(), productEntity, sellerEntity));

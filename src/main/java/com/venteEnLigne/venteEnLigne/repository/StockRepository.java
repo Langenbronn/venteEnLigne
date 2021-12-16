@@ -1,6 +1,5 @@
 package com.venteEnLigne.venteEnLigne.repository;
 
-import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.model.data.StockEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

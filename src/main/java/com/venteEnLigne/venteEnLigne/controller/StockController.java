@@ -23,25 +23,25 @@ public class StockController {
 //    }
 
     @PostMapping("/create")
-    public ResponseEntity<String>  create(@RequestBody StockCreationDto stockCreationDto) {
+    public ResponseEntity<String> create(@RequestBody StockCreationDto stockCreationDto) {
         try {
             StockView stockView = stockService.create(stockCreationDto);
             return new ResponseEntity<>(stockView.getId() + " has been created", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody StockEntity stockEntity) {
-        try{
+        try {
             StockView stockView = stockService.update(id, stockEntity);
             return new ResponseEntity<>(stockView.getId() + " has been updated", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -53,7 +53,7 @@ public class StockController {
             return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

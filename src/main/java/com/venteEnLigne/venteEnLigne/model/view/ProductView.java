@@ -13,7 +13,7 @@ public class ProductView implements Serializable {
     private double price;
     private String description;
     private int numberAvailable;
-    private List<SellerView> sellersView;
+//    private List<SellerView> sellersView;
 
     public ProductView() {
     }

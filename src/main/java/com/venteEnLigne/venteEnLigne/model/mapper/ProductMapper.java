@@ -14,12 +14,12 @@ import org.mapstruct.factory.Mappers;
 public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
-    @Mappings({
-            @Mapping(source = "sellersEntity", target = "sellersView"),
-    })
+//    @Mappings({
+//            @Mapping(source = "sellersEntity", target = "sellersView"),
+//    })
     ProductView entityToView(ProductEntity productEntity);
-    @Mappings({
-            @Mapping(source = "sellersView", target = "sellersEntity"),
-    })
+//    @Mappings({
+//            @Mapping(source = "sellersView", target = "sellersEntity"),
+//    })
     ProductEntity viewToEntity(ProductView productView);
 }

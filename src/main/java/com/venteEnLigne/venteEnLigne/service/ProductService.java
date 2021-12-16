@@ -30,10 +30,10 @@ public class ProductService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        productRepository.saveAll(Arrays.asList(new ProductEntity("Smartphone", 200.00, "Iphone 5", 5)
-                , new ProductEntity("Calculette", 250, "XXX", 5)
-                , new ProductEntity("Blouson", 100, "dddd", 5)
-                , new ProductEntity("Canapé", 600.00, "zzzz", 5)));
+        productRepository.saveAll(Arrays.asList(new ProductEntity("Unlock ! Game Adventures", 30.71, "Jeux", "Dans Unlock! Games Adventures, plongez dans l'univers de Mysterium, Aventuriers du Rail et Pandemic")
+                , new ProductEntity("7 Wonders : Architects", 35.00, "Jeux",  "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
+                , new ProductEntity("Thorgun", 2.99,"Inconnu",  "Plaid, gris-vert clair120x160 cm")
+                , new ProductEntity("GODMORGON / ODENSVIK", 559.00,"Meuble",   "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -45,8 +45,8 @@ public class ProductService {
 
         ProductEntity productData = productRepository.save(new ProductEntity(productEntity.getName(),
                 productEntity.getPrice(),
-                productEntity.getDescription(),
-                productEntity.getNumberAvailable()));
+                productEntity.getCategorie(),
+                productEntity.getDescription()));
         return productMapper.entityToView(productData);
     }
 
@@ -58,21 +58,8 @@ public class ProductService {
             productData.setName(productEntity.getName());
             productData.setPrice(productEntity.getPrice());
             productData.setDescription(productEntity.getDescription());
-            productData.setNumberAvailable(productEntity.getNumberAvailable());
             productRepository.save(productData);
             return productMapper.entityToView(productData);
-    }
-
-    public ProductView addSeller(long idProduct, long idSeller) {
-        SellerEntity sellerEntity = sellerRepository.findById(idSeller)
-                .orElseThrow(() -> new IllegalStateException("seller " + idSeller + " does not exist"));
-
-        ProductEntity productEntity = productRepository.findById(idProduct)
-                .orElseThrow(() -> new IllegalStateException("product " + idProduct + " does not exist"));
-
-        productEntity.addSellerEntity(sellerEntity);
-        productRepository.save(productEntity);
-        return productMapper.entityToView(productEntity);
     }
 
     public void delete(long id) {
@@ -93,10 +80,4 @@ public class ProductService {
                 .map(e -> productMapper.entityToView(e))
                 .collect(Collectors.toList());
     }
-
-    private SellerEntity toSeller(SellerEntity sellerEntity) throws IllegalStateException {
-        return sellerRepository.findByName(sellerEntity.getName())
-                .orElseThrow(() -> new IllegalStateException("seller " + sellerEntity.getName() + " does not exist"));
-    }
-
 }

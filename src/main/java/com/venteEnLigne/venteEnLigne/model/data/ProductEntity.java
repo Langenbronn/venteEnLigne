@@ -23,25 +23,16 @@ public class ProductEntity implements Serializable {
     private String name;
     @Column(name = "price")
     private double price;
+    @Column(name = "categorie")
+    private String categorie;
     @Column(name = "description")
     private String description;
-    @Column(name = "numberAvailable")
-    private int numberAvailable;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "product_seller",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "seller_id"))
-    private List<SellerEntity> sellersEntity;
 
-    public ProductEntity(String name, double price, String description, int numberAvailable) {
+    public ProductEntity(String name, double price, String categorie, String description) {
         this.name = name;
         this.price = price;
+        this.categorie = categorie;
         this.description = description;
-        this.numberAvailable = numberAvailable;
-    }
-
-    public void addSellerEntity(SellerEntity sellerEntity) {
-        sellersEntity.add(sellerEntity);
     }
 
     @Override

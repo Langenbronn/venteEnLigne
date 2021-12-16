@@ -11,9 +11,12 @@ import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import com.venteEnLigne.venteEnLigne.repository.StockRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,14 +32,6 @@ public class StockService {
     ProductRepository productRepository;
     @Autowired
     SellerRepository sellerRepository;
-
-//    public ResponseEntity<HttpStatus> initData() {
-//        stockRepository.saveAll(Arrays.asList(new SellerEntity("Philibert")
-//                , new SellerEntity("Domino")
-//                , new SellerEntity("Saturn")
-//                , new SellerEntity("Ikea")));
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
 
     public StockView create(@RequestBody StockCreationDto stockCreationDto) throws IllegalStateException {
         SellerEntity sellerEntity = sellerRepository.findById(stockCreationDto.getIdSeller())
@@ -87,5 +82,4 @@ public class StockService {
                 .map(e -> stockMapper.entityToView(e))
                 .collect(Collectors.toList());
     }
-
 }

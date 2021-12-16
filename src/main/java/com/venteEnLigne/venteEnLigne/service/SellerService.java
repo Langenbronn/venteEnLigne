@@ -25,7 +25,7 @@ public class SellerService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        sellerRepository.saveAll(Arrays.asList(new SellerEntity("Philibert")
+        sellerRepository.saveAll(Arrays.asList(new SellerEntity("Space Cowboys")
                 , new SellerEntity("Domino")
                 , new SellerEntity("Saturn")
                 , new SellerEntity("Ikea")));

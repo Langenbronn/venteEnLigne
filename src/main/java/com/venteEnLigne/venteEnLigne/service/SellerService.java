@@ -1,6 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
+import com.venteEnLigne.venteEnLigne.model.dto.SellerDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
 import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
@@ -32,22 +33,22 @@ public class SellerService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public SellerView create(@RequestBody SellerEntity sellerEntity) throws IllegalStateException {
+    public SellerView create(@RequestBody SellerDto sellerDto) throws IllegalStateException {
 
-        if (sellerRepository.findByName(sellerEntity.getName()).isPresent()) {
-            throw new IllegalStateException("seller " + sellerEntity.getName() + " does already exist");
+        if (sellerRepository.findByName(sellerDto.getName()).isPresent()) {
+            throw new IllegalStateException("seller " + sellerDto.getName() + " does already exist");
         }
-        SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerEntity.getName()));
+        SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerDto.getName()));
         return sellerMapper.entityToView(sellerData);
     }
 
-    public SellerView update(long id, SellerEntity sellerEntity) {
+    public SellerView update(long id, SellerDto sellerDto) {
         Optional<SellerEntity> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
             SellerEntity _sellerEntity = sellerData.get();
             _sellerEntity.setId(_sellerEntity.getId());
-            _sellerEntity.setName(sellerEntity.getName());
+            _sellerEntity.setName(sellerDto.getName());
             sellerRepository.save(_sellerEntity);
             return sellerMapper.entityToView(_sellerEntity);
         } else {

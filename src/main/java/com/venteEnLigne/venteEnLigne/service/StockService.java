@@ -3,7 +3,7 @@ package com.venteEnLigne.venteEnLigne.service;
 import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
 import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
 import com.venteEnLigne.venteEnLigne.model.data.StockEntity;
-import com.venteEnLigne.venteEnLigne.model.dto.stock.StockCreationDto;
+import com.venteEnLigne.venteEnLigne.model.dto.StockDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.StockMapper;
 import com.venteEnLigne.venteEnLigne.model.view.StockView;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
@@ -30,30 +30,30 @@ public class StockService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public StockView create(@RequestBody StockCreationDto stockCreationDto) throws IllegalStateException {
-        SellerEntity sellerEntity = sellerRepository.findById(stockCreationDto.getIdSeller())
-                .orElseThrow(() -> new IllegalStateException("seller " + stockCreationDto.getIdSeller() + " does not exist"));
+    public StockView create(@RequestBody StockDto stockDto) throws IllegalStateException {
+        SellerEntity sellerEntity = sellerRepository.findById(stockDto.getIdSeller())
+                .orElseThrow(() -> new IllegalStateException("seller " + stockDto.getIdSeller() + " does not exist"));
 
-        ProductEntity productEntity = productRepository.findById(stockCreationDto.getIdProduct())
-                .orElseThrow(() -> new IllegalStateException("product " + stockCreationDto.getIdProduct() + " does not exist"));
+        ProductEntity productEntity = productRepository.findById(stockDto.getIdProduct())
+                .orElseThrow(() -> new IllegalStateException("product " + stockDto.getIdProduct() + " does not exist"));
 
-        Optional<StockEntity> stockEntity = stockRepository.findFirstBySellerEntityIdAndProductEntityId(stockCreationDto.getIdSeller(), stockCreationDto.getIdProduct());
+        Optional<StockEntity> stockEntity = stockRepository.findFirstBySellerEntityIdAndProductEntityId(stockDto.getIdSeller(), stockDto.getIdProduct());
 
         if (stockEntity.isPresent()) {
             throw new IllegalStateException("stock: seller " + sellerEntity.getId() + " already have a stock of product " + productEntity.getId());
         }
 
-        StockEntity stockData = stockRepository.save(new StockEntity(stockCreationDto.getQuantity(), productEntity, sellerEntity));
+        StockEntity stockData = stockRepository.save(new StockEntity(stockDto.getQuantity(), productEntity, sellerEntity));
         return stockMapper.entityToView(stockData);
     }
 
-    public StockView update(long id, StockEntity stockEntity) {
+    public StockView update(long id, StockDto stockDto) {
         Optional<StockEntity> stockData = stockRepository.findById(id);
 
         if (stockData.isPresent()) {
             StockEntity _stockEntity = stockData.get();
             _stockEntity.setId(_stockEntity.getId());
-            _stockEntity.setQuantity(stockEntity.getQuantity());
+            _stockEntity.setQuantity(stockDto.getQuantity());
             stockRepository.save(_stockEntity);
             return stockMapper.entityToView(_stockEntity);
         } else {

@@ -1,7 +1,6 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
-import com.venteEnLigne.venteEnLigne.model.data.StockEntity;
-import com.venteEnLigne.venteEnLigne.model.dto.stock.StockCreationDto;
+import com.venteEnLigne.venteEnLigne.model.dto.StockDto;
 import com.venteEnLigne.venteEnLigne.model.view.StockView;
 import com.venteEnLigne.venteEnLigne.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +16,10 @@ public class StockController {
     @Autowired
     StockService stockService;
 
-//    @GetMapping("/initData")
-//    public ResponseEntity<HttpStatus>  initData() {
-//        return stockService.initData();
-//    }
-
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody StockCreationDto stockCreationDto) {
+    public ResponseEntity<String> create(@RequestBody StockDto stockDto) {
         try {
-            StockView stockView = stockService.create(stockCreationDto);
+            StockView stockView = stockService.create(stockDto);
             return new ResponseEntity<>(stockView.getId() + " has been created", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
@@ -35,9 +29,9 @@ public class StockController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody StockEntity stockEntity) {
+    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody StockDto stockDto) {
         try {
-            StockView stockView = stockService.update(id, stockEntity);
+            StockView stockView = stockService.update(id, stockDto);
             return new ResponseEntity<>(stockView.getId() + " has been updated", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);

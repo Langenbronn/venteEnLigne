@@ -12,9 +12,9 @@ public interface StockMapper {
 
     StockMapper INSTANCE = Mappers.getMapper(StockMapper.class);
 
-        @Mappings({
+    @Mappings({
             @Mapping(source = "productEntity", target = "productView"),
-                @Mapping(source = "sellerEntity", target = "sellerView")
+            @Mapping(source = "sellerEntity", target = "sellerView")
     })
     StockView entityToView(StockEntity stockEntity);
 

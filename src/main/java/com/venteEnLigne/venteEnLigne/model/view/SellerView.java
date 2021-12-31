@@ -12,8 +12,4 @@ public class SellerView implements Serializable {
     public SellerView() {
     }
 
-//    TODO
-    public SellerView(String name) {
-        this.name = name;
-    }
 }

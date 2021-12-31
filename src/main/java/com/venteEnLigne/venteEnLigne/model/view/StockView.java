@@ -11,8 +11,8 @@ public class StockView implements Serializable {
     private Long id;
     private int quantity;
 //    TODO
-    private ProductEntity productEntity;
-    private SellerEntity sellerEntity;
+    private ProductView productView;
+    private SellerView sellerView;
 
     public StockView() {
     }

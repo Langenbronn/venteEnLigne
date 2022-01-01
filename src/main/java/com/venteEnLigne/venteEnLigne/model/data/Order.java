@@ -28,7 +28,7 @@ public class Order implements Serializable {
 
     @JoinColumn(name = "stock")
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<StockEntity> stockEntities;
+    private List<Stock> stockEntities;
 
 
     @Override

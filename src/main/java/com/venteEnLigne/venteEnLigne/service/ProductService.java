@@ -1,6 +1,6 @@
 package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
+import com.venteEnLigne.venteEnLigne.model.data.Product;
 import com.venteEnLigne.venteEnLigne.model.dto.ProductDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
 import com.venteEnLigne.venteEnLigne.model.view.ProductView;
@@ -30,10 +30,10 @@ public class ProductService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        productRepository.saveAll(Arrays.asList(new ProductEntity("Unlock ! Game Adventures", 30.71, "Jeux", "Dans Unlock! Games Adventures, plongez dans l'univers de Mysterium, Aventuriers du Rail et Pandemic")
-                , new ProductEntity("7 Wonders : Architects", 35.00, "Jeux", "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
-                , new ProductEntity("Thorgun", 2.99, "Inconnu", "Plaid, gris-vert clair120x160 cm")
-                , new ProductEntity("GODMORGON / ODENSVIK", 559.00, "Meuble", "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
+        productRepository.saveAll(Arrays.asList(new Product("Unlock ! Game Adventures", 30.71, "Jeux", "Dans Unlock! Games Adventures, plongez dans l'univers de Mysterium, Aventuriers du Rail et Pandemic")
+                , new Product("7 Wonders : Architects", 35.00, "Jeux", "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
+                , new Product("Thorgun", 2.99, "Inconnu", "Plaid, gris-vert clair120x160 cm")
+                , new Product("GODMORGON / ODENSVIK", 559.00, "Meuble", "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -43,7 +43,7 @@ public class ProductService {
             throw new IllegalStateException("product " + productEntity.getName() + " does already exist");
         }
 
-        ProductEntity productData = productRepository.save(new ProductEntity(productEntity.getName(),
+        Product productData = productRepository.save(new Product(productEntity.getName(),
                 productEntity.getPrice(),
                 productEntity.getCategorie(),
                 productEntity.getDescription()));
@@ -51,7 +51,7 @@ public class ProductService {
     }
 
     public ProductView update(long id, ProductDto productEntity) {
-        ProductEntity productData = productRepository.findById(id)
+        Product productData = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("product " + id + " does not exist"));
 
         productData.setId(productData.getId());
@@ -70,13 +70,13 @@ public class ProductService {
     }
 
     public Optional<ProductView> getProduitById(long id) {
-        Optional<ProductEntity> productData = productRepository.findById(id);
+        Optional<Product> productData = productRepository.findById(id);
         return productData.map(product -> productMapper.entityToView(product));
     }
 
     public List<ProductView> finddAll() {
-        List<ProductEntity> productEntityData = productRepository.findAll();
-        return productEntityData.stream()
+        List<Product> productData = productRepository.findAll();
+        return productData.stream()
                 .map(e -> productMapper.entityToView(e))
                 .collect(Collectors.toList());
     }

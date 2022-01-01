@@ -12,7 +12,4 @@ public class SellerView implements Serializable {
     public SellerView() {
     }
 
-    public SellerView(String name) {
-        this.name = name;
-    }
 }

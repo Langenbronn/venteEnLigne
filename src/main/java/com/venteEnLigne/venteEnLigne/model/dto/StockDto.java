@@ -1,9 +1,9 @@
-package com.venteEnLigne.venteEnLigne.model.dto.stock;
+package com.venteEnLigne.venteEnLigne.model.dto;
 
 import lombok.Data;
 
 @Data
-public class StockCreationDto {
+public class StockDto {
     private Long idProduct;
     private Long idSeller;
     private int quantity;

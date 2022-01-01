@@ -1,6 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
+import com.venteEnLigne.venteEnLigne.model.dto.ProductDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
 import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
@@ -36,7 +37,7 @@ public class ProductService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ProductView create(@RequestBody ProductEntity productEntity) throws IllegalStateException {
+    public ProductView create(@RequestBody ProductDto productEntity) throws IllegalStateException {
 
         if (productRepository.findByName(productEntity.getName()).isPresent()) {
             throw new IllegalStateException("product " + productEntity.getName() + " does already exist");
@@ -49,7 +50,7 @@ public class ProductService {
         return productMapper.entityToView(productData);
     }
 
-    public ProductView update(long id, ProductEntity productEntity) {
+    public ProductView update(long id, ProductDto productEntity) {
         ProductEntity productData = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("product " + id + " does not exist"));
 

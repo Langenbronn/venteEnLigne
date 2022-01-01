@@ -1,6 +1,6 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
-import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
+import com.venteEnLigne.venteEnLigne.model.dto.SellerDto;
 import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ public class SellerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody SellerEntity sellerEntity) {
+    public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
         try {
-            SellerView sellerView = sellerService.create(sellerEntity);
+            SellerView sellerView = sellerService.create(sellerDto);
             return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
@@ -34,9 +34,9 @@ public class SellerController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody SellerEntity sellerEntity) {
+    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody SellerDto sellerDto) {
         try {
-            SellerView sellerView = sellerService.update(id, sellerEntity);
+            SellerView sellerView = sellerService.update(id, sellerDto);
             return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
         } catch (IllegalStateException ise) {
             return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);

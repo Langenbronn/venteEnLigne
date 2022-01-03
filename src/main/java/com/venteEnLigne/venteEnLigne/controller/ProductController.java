@@ -23,26 +23,14 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody ProductDto productDto) {
-        try {
             ProductView productView = productService.create(productDto);
             return new ResponseEntity<>(productView.getName() + " has been created", HttpStatus.CREATED);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody ProductDto productDto) {
-        try {
             ProductView productView = productService.update(id, productDto);
             return new ResponseEntity<>(productView.getName() + " has been updated", HttpStatus.OK);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
 //    @PostMapping("/addSeller/{id}")
@@ -59,14 +47,8 @@ public class ProductController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
-        try {
             productService.delete(id);
             return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @GetMapping("/read/{id}")

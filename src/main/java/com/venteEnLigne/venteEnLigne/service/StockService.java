@@ -1,5 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
+import com.venteEnLigne.venteEnLigne.exception.BadRequestException;
+import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
 import com.venteEnLigne.venteEnLigne.model.data.Product;
 import com.venteEnLigne.venteEnLigne.model.data.Seller;
 import com.venteEnLigne.venteEnLigne.model.data.Stock;
@@ -32,15 +34,15 @@ public class StockService {
 
     public StockView create(@RequestBody StockDto stockDto) throws IllegalStateException {
         Seller seller = sellerRepository.findById(stockDto.getIdSeller())
-                .orElseThrow(() -> new IllegalStateException("seller " + stockDto.getIdSeller() + " does not exist"));
+                .orElseThrow(() -> new NotFoundRequestException("seller " + stockDto.getIdSeller() + " does not exist"));
 
         Product product = productRepository.findById(stockDto.getIdProduct())
-                .orElseThrow(() -> new IllegalStateException("product " + stockDto.getIdProduct() + " does not exist"));
+                .orElseThrow(() -> new NotFoundRequestException("product " + stockDto.getIdProduct() + " does not exist"));
 
         Optional<Stock> stockEntity = stockRepository.findFirstBySellerIdAndProductId(stockDto.getIdSeller(), stockDto.getIdProduct());
 
         if (stockEntity.isPresent()) {
-            throw new IllegalStateException("stock: seller " + seller.getId() + " already have a stock of product " + product.getId());
+            throw new BadRequestException("stock: seller " + seller.getId() + " already have a stock of product " + product.getId());
         }
 
         Stock stockData = stockRepository.save(new Stock(stockDto.getQuantity(), product, seller));
@@ -57,13 +59,13 @@ public class StockService {
             stockRepository.save(_stock);
             return stockMapper.entityToView(_stock);
         } else {
-            throw new IllegalStateException("stock " + id + " don't exist");
+            throw new NotFoundRequestException("stock " + id + " don't exist");
         }
     }
 
     public void delete(long id) throws IllegalStateException {
         if (stockRepository.findById(id).isEmpty()) {
-            throw new IllegalStateException("stock " + id + " don't exist");
+            throw new NotFoundRequestException("stock " + id + " don't exist");
         }
         stockRepository.deleteById(id);
     }

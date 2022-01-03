@@ -1,5 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
+import com.venteEnLigne.venteEnLigne.exception.BadRequestException;
+import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
 import com.venteEnLigne.venteEnLigne.model.data.Seller;
 import com.venteEnLigne.venteEnLigne.model.dto.SellerDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
@@ -36,7 +38,7 @@ public class SellerService {
     public SellerView create(@RequestBody SellerDto sellerDto) throws IllegalStateException {
 
         if (sellerRepository.findByName(sellerDto.getName()).isPresent()) {
-            throw new IllegalStateException("seller " + sellerDto.getName() + " does already exist");
+            throw new BadRequestException("seller " + sellerDto.getName() + " does already exist");
         }
         Seller sellerData = sellerRepository.save(new Seller(sellerDto.getName()));
         return sellerMapper.entityToView(sellerData);
@@ -52,13 +54,13 @@ public class SellerService {
             sellerRepository.save(_seller);
             return sellerMapper.entityToView(_seller);
         } else {
-            throw new IllegalStateException("seller " + id + " don't exist");
+            throw new NotFoundRequestException("seller " + id + " don't exist");
         }
     }
 
     public void delete(long id) throws IllegalStateException {
         if (sellerRepository.findById(id).isEmpty()) {
-            throw new IllegalStateException("seller " + id + " don't exist");
+            throw new NotFoundRequestException("seller " + id + " don't exist");
         }
         sellerRepository.deleteById(id);
     }

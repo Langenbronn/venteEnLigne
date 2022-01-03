@@ -1,5 +1,7 @@
 package com.venteEnLigne.venteEnLigne.service;
 
+import com.venteEnLigne.venteEnLigne.exception.BadRequestException;
+import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
 import com.venteEnLigne.venteEnLigne.model.data.Product;
 import com.venteEnLigne.venteEnLigne.model.dto.ProductDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
@@ -38,9 +40,8 @@ public class ProductService {
     }
 
     public ProductView create(@RequestBody ProductDto productEntity) throws IllegalStateException {
-
         if (productRepository.findByName(productEntity.getName()).isPresent()) {
-            throw new IllegalStateException("product " + productEntity.getName() + " does already exist");
+            throw new BadRequestException("product " + productEntity.getName() + " does already exist");
         }
 
         Product productData = productRepository.save(new Product(productEntity.getName(),
@@ -52,7 +53,7 @@ public class ProductService {
 
     public ProductView update(long id, ProductDto productEntity) {
         Product productData = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("product " + id + " does not exist"));
+                .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));
 
         productData.setId(productData.getId());
         productData.setName(productEntity.getName());
@@ -64,7 +65,7 @@ public class ProductService {
 
     public void delete(long id) {
         if (productRepository.findById(id).isEmpty()) {
-            throw new IllegalStateException("product " + id + " don't exist");
+            throw new NotFoundRequestException("product " + id + " don't exist");
         }
         productRepository.deleteById(id);
     }

@@ -18,38 +18,20 @@ public class StockController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody StockDto stockDto) {
-        try {
-            StockView stockView = stockService.create(stockDto);
-            return new ResponseEntity<>(stockView.getId() + " has been created", HttpStatus.CREATED);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        StockView stockView = stockService.create(stockDto);
+        return new ResponseEntity<>(stockView.getId() + " has been created", HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody StockDto stockDto) {
-        try {
-            StockView stockView = stockService.update(id, stockDto);
-            return new ResponseEntity<>(stockView.getId() + " has been updated", HttpStatus.CREATED);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        StockView stockView = stockService.update(id, stockDto);
+        return new ResponseEntity<>(stockView.getId() + " has been updated", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
-        try {
-            stockService.delete(id);
-            return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        stockService.delete(id);
+        return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")

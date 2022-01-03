@@ -39,26 +39,26 @@ public class ProductService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ProductView create(@RequestBody ProductDto productEntity) throws IllegalStateException {
-        if (productRepository.findByName(productEntity.getName()).isPresent()) {
-            throw new BadRequestException("product " + productEntity.getName() + " does already exist");
+    public ProductView create(@RequestBody ProductDto productDto) throws IllegalStateException {
+        if (productRepository.findByName(productDto.getName()).isPresent()) {
+            throw new BadRequestException("product " + productDto.getName() + " does already exist");
         }
 
-        Product productData = productRepository.save(new Product(productEntity.getName(),
-                productEntity.getPrice(),
-                productEntity.getCategorie(),
-                productEntity.getDescription()));
-        return productMapper.entityToView(productData);
+        Product product = productRepository.save(new Product(productDto.getName(),
+                productDto.getPrice(),
+                productDto.getCategorie(),
+                productDto.getDescription()));
+        return productMapper.entityToView(product);
     }
 
-    public ProductView update(long id, ProductDto productEntity) {
+    public ProductView update(long id, ProductDto productDto) {
         Product productData = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));
 
         productData.setId(productData.getId());
-        productData.setName(productEntity.getName());
-        productData.setPrice(productEntity.getPrice());
-        productData.setDescription(productEntity.getDescription());
+        productData.setName(productDto.getName());
+        productData.setPrice(productDto.getPrice());
+        productData.setDescription(productDto.getDescription());
         productRepository.save(productData);
         return productMapper.entityToView(productData);
     }

@@ -16,27 +16,33 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "order")
-public class Order implements Serializable {
+@Table(name = "orderedItem")
+public class OrderedItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JoinColumn(name = "customer")
-    @OneToOne(fetch = FetchType.EAGER)
-    private Customer customer;
+    @Column(name = "quantity")
+    private int quantity;
+
+    @Column(name = "price")
+    private double price;
 
     @JoinColumn(name = "stock")
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Stock> stocks;
+    @OneToOne(fetch = FetchType.EAGER)
+    private Stock stock;
 
-
+    public OrderedItem(int quantity, double price, Stock stock) {
+        this.quantity = quantity;
+        this.price = price;
+        this.stock = stock;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Order product = (Order) o;
+        OrderedItem product = (OrderedItem) o;
         return id != null && Objects.equals(id, product.id);
     }
 

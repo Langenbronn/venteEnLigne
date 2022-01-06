@@ -52,6 +52,8 @@ public class StockService {
     public StockView update(long id, StockDto stockDto) {
         Optional<Stock> stockData = stockRepository.findById(id);
 
+//        TODO check for update idProduct, idSeller
+
         if (stockData.isPresent()) {
             Stock _stock = stockData.get();
             _stock.setId(_stock.getId());

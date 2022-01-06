@@ -10,13 +10,6 @@ public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    //    @Mappings({
-//            @Mapping(source = "sellersEntity", target = "sellersView"),
-//    })
     ProductView entityToView(Product product);
-
-    //    @Mappings({
-//            @Mapping(source = "sellersView", target = "sellersEntity"),
-//    })
     Product viewToEntity(ProductView productView);
 }

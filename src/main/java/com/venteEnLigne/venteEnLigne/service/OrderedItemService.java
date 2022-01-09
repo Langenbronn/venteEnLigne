@@ -1,13 +1,10 @@
 package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
-import com.venteEnLigne.venteEnLigne.model.data.Customer;
 import com.venteEnLigne.venteEnLigne.model.data.OrderedItem;
 import com.venteEnLigne.venteEnLigne.model.data.Stock;
-import com.venteEnLigne.venteEnLigne.model.dto.CustomerDto;
 import com.venteEnLigne.venteEnLigne.model.dto.OrderedItemDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.OrdererItemMapper;
-import com.venteEnLigne.venteEnLigne.model.view.CustomerView;
 import com.venteEnLigne.venteEnLigne.model.view.OrdererItemView;
 import com.venteEnLigne.venteEnLigne.repository.OrderedItemRepository;
 import com.venteEnLigne.venteEnLigne.repository.StockRepository;

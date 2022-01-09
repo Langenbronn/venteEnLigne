@@ -11,5 +11,6 @@ public interface OrdererMapper {
     OrdererMapper INSTANCE = Mappers.getMapper(OrdererMapper.class);
 
     OrdererView entityToView(Ordered ordered);
+
     Ordered viewToEntity(OrdererView ordererView);
 }

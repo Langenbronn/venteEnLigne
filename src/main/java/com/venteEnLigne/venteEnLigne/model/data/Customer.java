@@ -1,6 +1,5 @@
 package com.venteEnLigne.venteEnLigne.model.data;
 
-import com.venteEnLigne.venteEnLigne.model.Gender;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

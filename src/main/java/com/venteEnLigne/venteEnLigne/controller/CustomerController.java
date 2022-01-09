@@ -1,9 +1,7 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
 import com.venteEnLigne.venteEnLigne.model.dto.CustomerDto;
-import com.venteEnLigne.venteEnLigne.model.dto.ProductDto;
 import com.venteEnLigne.venteEnLigne.model.view.CustomerView;
-import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,20 +18,20 @@ public class CustomerController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody CustomerDto customerDto) {
-            CustomerView customerView = customerService.create(customerDto);
-            return new ResponseEntity<>(customerView.getFirstname() + " - " + customerView.getLastname() + " has been created", HttpStatus.CREATED);
+        CustomerView customerView = customerService.create(customerDto);
+        return new ResponseEntity<>(customerView.getFirstname() + " - " + customerView.getLastname() + " has been created", HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody CustomerDto customerDto) {
         CustomerView customerView = customerService.update(id, customerDto);
-            return new ResponseEntity<>(customerView.getFirstname() + " - " + customerView.getLastname() + " has been updated", HttpStatus.OK);
+        return new ResponseEntity<>(customerView.getFirstname() + " - " + customerView.getLastname() + " has been updated", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
-            customerService.delete(id);
-            return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
+        customerService.delete(id);
+        return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")

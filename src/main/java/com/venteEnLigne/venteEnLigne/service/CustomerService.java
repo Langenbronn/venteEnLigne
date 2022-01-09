@@ -3,12 +3,9 @@ package com.venteEnLigne.venteEnLigne.service;
 import com.venteEnLigne.venteEnLigne.exception.BadRequestException;
 import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
 import com.venteEnLigne.venteEnLigne.model.data.Customer;
-import com.venteEnLigne.venteEnLigne.model.data.Product;
 import com.venteEnLigne.venteEnLigne.model.dto.CustomerDto;
-import com.venteEnLigne.venteEnLigne.model.dto.ProductDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.CustomerMapper;
 import com.venteEnLigne.venteEnLigne.model.view.CustomerView;
-import com.venteEnLigne.venteEnLigne.model.view.ProductView;
 import com.venteEnLigne.venteEnLigne.repository.CustomerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +32,7 @@ public class CustomerService {
 
         Customer customer = customerRepository.save(new Customer(customerDto.getFirstname(),
                 customerDto.getLastname(),
-                customerDto.getGender().toString()
+                customerDto.getGender()
         ));
         return customerMapper.entityToView(customer);
     }
@@ -47,7 +44,7 @@ public class CustomerService {
         customer.setId(customer.getId());
         customer.setFirstname(customerDto.getFirstname());
         customer.setLastname(customerDto.getLastname());
-        customer.setGender(customerDto.getGender().toString());
+        customer.setGender(customerDto.getGender());
         customerRepository.save(customer);
         return customerMapper.entityToView(customer);
     }

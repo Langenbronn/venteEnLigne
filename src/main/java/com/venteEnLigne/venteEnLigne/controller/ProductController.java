@@ -23,14 +23,14 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody ProductDto productDto) {
-            ProductView productView = productService.create(productDto);
-            return new ResponseEntity<>(productView.getName() + " has been created", HttpStatus.CREATED);
+        ProductView productView = productService.create(productDto);
+        return new ResponseEntity<>(productView.getName() + " has been created", HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody ProductDto productDto) {
-            ProductView productView = productService.update(id, productDto);
-            return new ResponseEntity<>(productView.getName() + " has been updated", HttpStatus.OK);
+        ProductView productView = productService.update(id, productDto);
+        return new ResponseEntity<>(productView.getName() + " has been updated", HttpStatus.OK);
     }
 
 //    @PostMapping("/addSeller/{id}")
@@ -47,8 +47,8 @@ public class ProductController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
-            productService.delete(id);
-            return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
+        productService.delete(id);
+        return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")

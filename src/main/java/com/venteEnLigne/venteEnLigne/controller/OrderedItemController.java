@@ -1,9 +1,7 @@
 package com.venteEnLigne.venteEnLigne.controller;
 
 import com.venteEnLigne.venteEnLigne.model.dto.OrderedItemDto;
-import com.venteEnLigne.venteEnLigne.model.dto.StockDto;
 import com.venteEnLigne.venteEnLigne.model.view.OrdererItemView;
-import com.venteEnLigne.venteEnLigne.model.view.StockView;
 import com.venteEnLigne.venteEnLigne.service.OrderedItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

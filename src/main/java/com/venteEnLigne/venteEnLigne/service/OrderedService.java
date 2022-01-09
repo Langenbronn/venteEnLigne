@@ -4,7 +4,6 @@ import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
 import com.venteEnLigne.venteEnLigne.model.data.Customer;
 import com.venteEnLigne.venteEnLigne.model.data.Ordered;
 import com.venteEnLigne.venteEnLigne.model.data.OrderedItem;
-import com.venteEnLigne.venteEnLigne.model.dto.CustomerDto;
 import com.venteEnLigne.venteEnLigne.model.dto.OrderedDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.OrdererMapper;
 import com.venteEnLigne.venteEnLigne.model.view.OrdererView;

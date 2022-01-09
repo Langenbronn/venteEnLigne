@@ -11,5 +11,6 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     ProductView entityToView(Product product);
+
     Product viewToEntity(ProductView productView);
 }

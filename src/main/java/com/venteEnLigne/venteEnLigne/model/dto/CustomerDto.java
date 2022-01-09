@@ -1,5 +1,6 @@
 package com.venteEnLigne.venteEnLigne.model.dto;
 
+import com.venteEnLigne.venteEnLigne.model.Gender;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -11,6 +12,6 @@ import java.util.Objects;
 public class CustomerDto implements Serializable {
     private String firstname;
     private String lastname;
-    private String gender;
+    private Gender gender;
 
 }

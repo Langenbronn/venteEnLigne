@@ -35,7 +35,7 @@ public class CustomerService {
 
         Customer customer = customerRepository.save(new Customer(customerDto.getFirstname(),
                 customerDto.getLastname(),
-                customerDto.getGender()
+                customerDto.getGender().toString()
         ));
         return customerMapper.entityToView(customer);
     }
@@ -47,7 +47,7 @@ public class CustomerService {
         customer.setId(customer.getId());
         customer.setFirstname(customerDto.getFirstname());
         customer.setLastname(customerDto.getLastname());
-        customer.setGender(customerDto.getGender());
+        customer.setGender(customerDto.getGender().toString());
         customerRepository.save(customer);
         return customerMapper.entityToView(customer);
     }

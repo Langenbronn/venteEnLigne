@@ -1,5 +1,6 @@
 package com.venteEnLigne.venteEnLigne.model.data;
 
+import com.venteEnLigne.venteEnLigne.model.Gender;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,11 +22,11 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "firstname", unique = true)
+    @Column(name = "firstname")
     private String firstname;
-    @Column(name = "lastname", unique = true)
+    @Column(name = "lastname")
     private String lastname;
-    @Column(name = "gender", unique = true)
+    @Column(name = "gender")
     private String gender;
 
     public Customer(String firstname, String lastname, String gender) {

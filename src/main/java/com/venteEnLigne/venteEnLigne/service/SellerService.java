@@ -1,6 +1,8 @@
 package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteEnLigne.venteEnLigne.model.data.SellerEntity;
+import com.venteEnLigne.venteEnLigne.exception.BadRequestException;
+import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
+import com.venteEnLigne.venteEnLigne.model.data.Seller;
 import com.venteEnLigne.venteEnLigne.model.dto.SellerDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.SellerMapper;
 import com.venteEnLigne.venteEnLigne.model.view.SellerView;
@@ -26,57 +28,57 @@ public class SellerService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        sellerRepository.saveAll(Arrays.asList(new SellerEntity("Space Cowboys")
-                , new SellerEntity("Domino")
-                , new SellerEntity("Saturn")
-                , new SellerEntity("Ikea")));
+        sellerRepository.saveAll(Arrays.asList(new Seller("Space Cowboys")
+                , new Seller("Domino")
+                , new Seller("Saturn")
+                , new Seller("Ikea")));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public SellerView create(@RequestBody SellerDto sellerDto) throws IllegalStateException {
 
         if (sellerRepository.findByName(sellerDto.getName()).isPresent()) {
-            throw new IllegalStateException("seller " + sellerDto.getName() + " does already exist");
+            throw new BadRequestException("seller " + sellerDto.getName() + " does already exist");
         }
-        SellerEntity sellerData = sellerRepository.save(new SellerEntity(sellerDto.getName()));
+        Seller sellerData = sellerRepository.save(new Seller(sellerDto.getName()));
         return sellerMapper.entityToView(sellerData);
     }
 
     public SellerView update(long id, SellerDto sellerDto) {
-        Optional<SellerEntity> sellerData = sellerRepository.findById(id);
+        Optional<Seller> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
-            SellerEntity _sellerEntity = sellerData.get();
-            _sellerEntity.setId(_sellerEntity.getId());
-            _sellerEntity.setName(sellerDto.getName());
-            sellerRepository.save(_sellerEntity);
-            return sellerMapper.entityToView(_sellerEntity);
+            Seller _seller = sellerData.get();
+            _seller.setId(_seller.getId());
+            _seller.setName(sellerDto.getName());
+            sellerRepository.save(_seller);
+            return sellerMapper.entityToView(_seller);
         } else {
-            throw new IllegalStateException("seller " + id + " don't exist");
+            throw new NotFoundRequestException("seller " + id + " don't exist");
         }
     }
 
     public void delete(long id) throws IllegalStateException {
         if (sellerRepository.findById(id).isEmpty()) {
-            throw new IllegalStateException("seller " + id + " don't exist");
+            throw new NotFoundRequestException("seller " + id + " don't exist");
         }
         sellerRepository.deleteById(id);
     }
 
     public Optional<SellerView> getSellerById(long id) {
-        Optional<SellerEntity> sellerData = sellerRepository.findById(id);
+        Optional<Seller> sellerData = sellerRepository.findById(id);
         return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 
     public List<SellerView> finddAll() {
-        List<SellerEntity> sellerEntityData = sellerRepository.findAll();
-        return sellerEntityData.stream()
+        List<Seller> sellerData = sellerRepository.findAll();
+        return sellerData.stream()
                 .map(e -> sellerMapper.entityToView(e))
                 .collect(Collectors.toList());
     }
 
     public Optional<SellerView> getSellerByName(String name) {
-        Optional<SellerEntity> sellerData = sellerRepository.findByName(name);
+        Optional<Seller> sellerData = sellerRepository.findByName(name);
         return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 

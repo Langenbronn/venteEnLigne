@@ -15,24 +15,31 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "seller")
-public class SellerEntity implements Serializable {
+@Table(name = "customer")
+public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "name", unique = true)
-    private String name;
 
-    public SellerEntity(String name) {
-        this.name = name;
+    @Column(name = "firstname")
+    private String firstname;
+    @Column(name = "lastname")
+    private String lastname;
+    @Column(name = "gender")
+    private String gender;
+
+    public Customer(String firstname, String lastname, String gender) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SellerEntity that = (SellerEntity) o;
-        return id != null && Objects.equals(id, that.id);
+        Customer product = (Customer) o;
+        return id != null && Objects.equals(id, product.id);
     }
 
     @Override

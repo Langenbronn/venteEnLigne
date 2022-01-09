@@ -1,6 +1,8 @@
 package com.venteEnLigne.venteEnLigne.service;
 
-import com.venteEnLigne.venteEnLigne.model.data.ProductEntity;
+import com.venteEnLigne.venteEnLigne.exception.BadRequestException;
+import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
+import com.venteEnLigne.venteEnLigne.model.data.Product;
 import com.venteEnLigne.venteEnLigne.model.dto.ProductDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.ProductMapper;
 import com.venteEnLigne.venteEnLigne.model.view.ProductView;
@@ -30,53 +32,52 @@ public class ProductService {
     SellerRepository sellerRepository;
 
     public ResponseEntity<HttpStatus> initData() {
-        productRepository.saveAll(Arrays.asList(new ProductEntity("Unlock ! Game Adventures", 30.71, "Jeux", "Dans Unlock! Games Adventures, plongez dans l'univers de Mysterium, Aventuriers du Rail et Pandemic")
-                , new ProductEntity("7 Wonders : Architects", 35.00, "Jeux", "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
-                , new ProductEntity("Thorgun", 2.99, "Inconnu", "Plaid, gris-vert clair120x160 cm")
-                , new ProductEntity("GODMORGON / ODENSVIK", 559.00, "Meuble", "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
+        productRepository.saveAll(Arrays.asList(new Product("Unlock ! Game Adventures", 30.71, "Jeux", "Dans Unlock! Games Adventures, plongez dans l'univers de Mysterium, Aventuriers du Rail et Pandemic")
+                , new Product("7 Wonders : Architects", 35.00, "Jeux", "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
+                , new Product("Thorgun", 2.99, "Inconnu", "Plaid, gris-vert clair120x160 cm")
+                , new Product("GODMORGON / ODENSVIK", 559.00, "Meuble", "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ProductView create(@RequestBody ProductDto productEntity) throws IllegalStateException {
-
-        if (productRepository.findByName(productEntity.getName()).isPresent()) {
-            throw new IllegalStateException("product " + productEntity.getName() + " does already exist");
+    public ProductView create(@RequestBody ProductDto productDto) throws IllegalStateException {
+        if (productRepository.findByName(productDto.getName()).isPresent()) {
+            throw new BadRequestException("product " + productDto.getName() + " does already exist");
         }
 
-        ProductEntity productData = productRepository.save(new ProductEntity(productEntity.getName(),
-                productEntity.getPrice(),
-                productEntity.getCategorie(),
-                productEntity.getDescription()));
-        return productMapper.entityToView(productData);
+        Product product = productRepository.save(new Product(productDto.getName(),
+                productDto.getPrice(),
+                productDto.getCategorie(),
+                productDto.getDescription()));
+        return productMapper.entityToView(product);
     }
 
-    public ProductView update(long id, ProductDto productEntity) {
-        ProductEntity productData = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("product " + id + " does not exist"));
+    public ProductView update(long id, ProductDto productDto) {
+        Product productData = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));
 
         productData.setId(productData.getId());
-        productData.setName(productEntity.getName());
-        productData.setPrice(productEntity.getPrice());
-        productData.setDescription(productEntity.getDescription());
+        productData.setName(productDto.getName());
+        productData.setPrice(productDto.getPrice());
+        productData.setDescription(productDto.getDescription());
         productRepository.save(productData);
         return productMapper.entityToView(productData);
     }
 
     public void delete(long id) {
         if (productRepository.findById(id).isEmpty()) {
-            throw new IllegalStateException("product " + id + " don't exist");
+            throw new NotFoundRequestException("product " + id + " don't exist");
         }
         productRepository.deleteById(id);
     }
 
     public Optional<ProductView> getProduitById(long id) {
-        Optional<ProductEntity> productData = productRepository.findById(id);
+        Optional<Product> productData = productRepository.findById(id);
         return productData.map(product -> productMapper.entityToView(product));
     }
 
     public List<ProductView> finddAll() {
-        List<ProductEntity> productEntityData = productRepository.findAll();
-        return productEntityData.stream()
+        List<Product> productData = productRepository.findAll();
+        return productData.stream()
                 .map(e -> productMapper.entityToView(e))
                 .collect(Collectors.toList());
     }

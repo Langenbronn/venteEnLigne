@@ -16,7 +16,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "stock")
-public class StockEntity implements Serializable {
+public class Stock implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -26,27 +26,27 @@ public class StockEntity implements Serializable {
 
     @JoinColumn(name = "product")
     @ManyToOne(fetch = FetchType.EAGER)
-    private ProductEntity productEntity;
+    private Product product;
 
     @JoinColumn(name = "seller")
     @ManyToOne(fetch = FetchType.EAGER)
-    private SellerEntity sellerEntity;
+    private Seller seller;
 
-    public StockEntity(int quantity) {
+    public Stock(int quantity) {
         this.quantity = quantity;
     }
 
-    public StockEntity(int quantity, ProductEntity productEntity, SellerEntity sellerEntity) {
+    public Stock(int quantity, Product product, Seller seller) {
         this.quantity = quantity;
-        this.productEntity = productEntity;
-        this.sellerEntity = sellerEntity;
+        this.product = product;
+        this.seller = seller;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StockEntity product = (StockEntity) o;
+        Stock product = (Stock) o;
         return id != null && Objects.equals(id, product.id);
     }
 

@@ -23,38 +23,20 @@ public class SellerController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
-        try {
-            SellerView sellerView = sellerService.create(sellerDto);
-            return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        SellerView sellerView = sellerService.create(sellerDto);
+        return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody SellerDto sellerDto) {
-        try {
-            SellerView sellerView = sellerService.update(id, sellerDto);
-            return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        SellerView sellerView = sellerService.update(id, sellerDto);
+        return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
-        try {
-            sellerService.delete(id);
-            return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
-        } catch (IllegalStateException ise) {
-            return new ResponseEntity<>(ise.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        sellerService.delete(id);
+        return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")

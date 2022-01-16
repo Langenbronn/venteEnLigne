@@ -1,0 +1,1 @@
+INSERT INTO public.customer(id, firstname, gender, lastname) VALUES (25, 'Arthur', 'Man', 'Cuvit');

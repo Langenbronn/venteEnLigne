@@ -1,4 +1,4 @@
-INSERT INTO CUSTOMER(id, firstname, gender, lastname) VALUES (1, 'Arthur', 'Man', 'Cuvit');
+INSERT INTO CUSTOMER(id, firstname, gender, lastname) VALUES ('f05157b5-e9fb-45d1-9242-4553bd742c0c', 'Arthur', 'Man', 'Cuvit');
 
 INSERT INTO SELLER(id, name)	VALUES (1, 'Philibert');
 INSERT INTO SELLER(id, name)	VALUES (2, 'Space Cowboys');

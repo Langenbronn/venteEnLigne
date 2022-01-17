@@ -28,3 +28,7 @@ INSERT INTO STOCK(id, quantity, product, seller) VALUES (11, 20, 6, 3);
 INSERT INTO STOCK(id, quantity, product, seller) VALUES (12, 9, 7, 3);
 INSERT INTO STOCK(id, quantity, product, seller) VALUES (13, 125, 2, 5);
 INSERT INTO STOCK(id, quantity, product, seller) VALUES (14, 50, 3, 5);
+
+INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES (1, 1, 30.71, 1);
+INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES (2, 1, 39.49, 10);
+INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES (3, 2, 2.99, 13);

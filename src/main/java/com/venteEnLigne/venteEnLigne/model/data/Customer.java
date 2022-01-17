@@ -15,9 +15,10 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "customer")
+@Table(name = "CUSTOMER")
 public class Customer implements Serializable {
     @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

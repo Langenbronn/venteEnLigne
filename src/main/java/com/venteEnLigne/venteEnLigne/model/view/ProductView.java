@@ -11,7 +11,6 @@ public class ProductView implements Serializable {
     private String name;
     private double price;
     private String description;
-    private int numberAvailable;
 
     public ProductView() {
     }

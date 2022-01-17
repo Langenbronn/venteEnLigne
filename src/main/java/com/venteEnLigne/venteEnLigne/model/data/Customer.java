@@ -16,9 +16,10 @@ import java.util.UUID;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "customer")
+@Table(name = "CUSTOMER")
 public class Customer implements Serializable {
     @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "UUID")
     private UUID id;
 

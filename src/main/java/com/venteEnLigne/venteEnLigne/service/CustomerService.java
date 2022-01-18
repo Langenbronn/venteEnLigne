@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -37,7 +38,7 @@ public class CustomerService {
         return customerMapper.entityToView(customer);
     }
 
-    public CustomerView update(long id, CustomerDto customerDto) {
+    public CustomerView update(UUID id, CustomerDto customerDto) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("customer " + id + " does not exist"));
 
@@ -49,14 +50,14 @@ public class CustomerService {
         return customerMapper.entityToView(customer);
     }
 
-    public void delete(long id) {
+    public void delete(UUID id) {
         if (customerRepository.findById(id).isEmpty()) {
             throw new NotFoundRequestException("product " + id + " don't exist");
         }
         customerRepository.deleteById(id);
     }
 
-    public Optional<CustomerView> getCustomerById(long id) {
+    public Optional<CustomerView> getCustomerById(UUID id) {
         Optional<Customer> customer = customerRepository.findById(id);
         return customer.map(product -> customerMapper.entityToView(product));
     }

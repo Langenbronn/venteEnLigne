@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -39,7 +40,7 @@ public class OrderedItemService {
         return ordererItemMapper.entityToView(orderedItem);
     }
 
-    public OrdererItemView update(long id, OrderedItemDto orderedItemDto) {
+    public OrdererItemView update(UUID id, OrderedItemDto orderedItemDto) {
         OrderedItem orderedItem = orderedItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));
 
@@ -50,14 +51,14 @@ public class OrderedItemService {
         return ordererItemMapper.entityToView(orderedItem);
     }
 
-    public void delete(long id) {
+    public void delete(UUID id) {
         if (orderedItemRepository.findById(id).isEmpty()) {
             throw new NotFoundRequestException("product " + id + " don't exist");
         }
         orderedItemRepository.deleteById(id);
     }
 
-    public Optional<OrdererItemView> getOrdererItemById(long id) {
+    public Optional<OrdererItemView> getOrdererItemById(UUID id) {
         Optional<OrderedItem> orderedItem = orderedItemRepository.findById(id);
         return orderedItem.map(product -> ordererItemMapper.entityToView(product));
     }

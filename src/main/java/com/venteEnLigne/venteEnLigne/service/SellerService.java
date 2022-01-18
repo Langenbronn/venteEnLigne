@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -44,7 +45,7 @@ public class SellerService {
         return sellerMapper.entityToView(sellerData);
     }
 
-    public SellerView update(long id, SellerDto sellerDto) {
+    public SellerView update(UUID id, SellerDto sellerDto) {
         Optional<Seller> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
@@ -58,14 +59,14 @@ public class SellerService {
         }
     }
 
-    public void delete(long id) throws IllegalStateException {
+    public void delete(UUID id) throws IllegalStateException {
         if (sellerRepository.findById(id).isEmpty()) {
             throw new NotFoundRequestException("seller " + id + " don't exist");
         }
         sellerRepository.deleteById(id);
     }
 
-    public Optional<SellerView> getSellerById(long id) {
+    public Optional<SellerView> getSellerById(UUID id) {
         Optional<Seller> sellerData = sellerRepository.findById(id);
         return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }

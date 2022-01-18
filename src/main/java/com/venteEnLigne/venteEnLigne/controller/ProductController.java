@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/products")
@@ -28,31 +29,19 @@ public class ProductController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody ProductDto productDto) {
+    public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody ProductDto productDto) {
         ProductView productView = productService.update(id, productDto);
         return new ResponseEntity<>(productView.getName() + " has been updated", HttpStatus.OK);
     }
 
-//    @PostMapping("/addSeller/{id}")
-//    public ResponseEntity<String> addSeller(@PathVariable("id") long id, @RequestBody long idSeller) {
-//        try {
-//            ProductView productView = productService.addSeller(id, idSeller);
-//            return new ResponseEntity<>("seller " + idSeller + " has been add", HttpStatus.OK);
-//        } catch (IllegalStateException ise) {
-//            return new ResponseEntity<>(ise.getMessage(), HttpStatus.NOT_FOUND);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
         productService.delete(id);
         return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<ProductView> getProduitById(@PathVariable("id") long id) {
+    public ResponseEntity<ProductView> getProduitById(@PathVariable("id") UUID id) {
         return productService.getProduitById(id).map(product -> new ResponseEntity<>(product, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

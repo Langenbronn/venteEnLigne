@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -49,7 +50,7 @@ public class StockService {
         return stockMapper.entityToView(stockData);
     }
 
-    public StockView update(long id, StockDto stockDto) {
+    public StockView update(UUID id, StockDto stockDto) {
         Optional<Stock> stockData = stockRepository.findById(id);
 
 //        TODO check for update idProduct, idSeller
@@ -65,14 +66,14 @@ public class StockService {
         }
     }
 
-    public void delete(long id) throws IllegalStateException {
+    public void delete(UUID id) throws IllegalStateException {
         if (stockRepository.findById(id).isEmpty()) {
             throw new NotFoundRequestException("stock " + id + " don't exist");
         }
         stockRepository.deleteById(id);
     }
 
-    public Optional<StockView> getStockById(long id) {
+    public Optional<StockView> getStockById(UUID id) {
         Optional<Stock> stockData = stockRepository.findById(id);
         return stockData.map(stock -> stockMapper.entityToView(stock));
     }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orderedItems")
@@ -23,19 +24,19 @@ public class OrderedItemController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody OrderedItemDto orderedItemDto) {
+    public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody OrderedItemDto orderedItemDto) {
         OrdererItemView ordererItemView = orderedItemService.update(id, orderedItemDto);
         return new ResponseEntity<>(ordererItemView.getId() + " has been updated", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
         orderedItemService.delete(id);
         return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<OrdererItemView> getOrdererItemById(@PathVariable("id") long id) {
+    public ResponseEntity<OrdererItemView> getOrdererItemById(@PathVariable("id") UUID id) {
         return orderedItemService.getOrdererItemById(id).map(stock -> new ResponseEntity<>(stock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

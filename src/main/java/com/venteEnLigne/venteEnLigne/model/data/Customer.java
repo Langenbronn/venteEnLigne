@@ -19,7 +19,6 @@ import java.util.UUID;
 @Table(name = "CUSTOMER")
 public class Customer implements Serializable {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "UUID")
     private UUID id;
 

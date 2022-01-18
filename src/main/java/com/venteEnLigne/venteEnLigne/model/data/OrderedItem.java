@@ -16,7 +16,7 @@ import java.util.UUID;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "orderedItem")
+@Table(name = "ordereditem")
 public class OrderedItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

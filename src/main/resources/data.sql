@@ -29,6 +29,6 @@ INSERT INTO STOCK(id, quantity, product, seller) VALUES ('fdfce467-f473-43dc-860
 INSERT INTO STOCK(id, quantity, product, seller) VALUES ('7c4031b3-2408-46d7-88f4-cf993d298b90', 125, '022e462d-b25a-4758-93bc-2da567e2d166', '436f5d51-41d7-4ed8-9b5e-a9135f52a3a8');
 INSERT INTO STOCK(id, quantity, product, seller) VALUES ('a0a53552-ec1a-4996-8f5d-e186c57f4447', 50, '1e2f4303-b4a6-4a97-9bbf-b06494d21e79', '436f5d51-41d7-4ed8-9b5e-a9135f52a3a8');
 
-INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES (1, 1, 30.71, 1);
-INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES (2, 1, 39.49, 10);
-INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES (3, 2, 2.99, 13);
+INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES ('dc0de9ac-7327-427b-b807-2aca760253c5', 1, 30.71, '5af07b82-e094-4759-aa4a-1962b28c0444');
+INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES ('f5e2acd4-8996-42bf-b8b9-e362a15cec43', 1, 39.49, '492d93eb-e15d-42ce-8370-aed31233bf9e');
+INSERT INTO ORDEREDITEM(id, quantity, price, stock) VALUES ('91b5fc38-db54-4621-a786-994b29fa4e0a', 2, 2.99, 'c736525f-1b42-4e9d-ad75-8feea459ecad');

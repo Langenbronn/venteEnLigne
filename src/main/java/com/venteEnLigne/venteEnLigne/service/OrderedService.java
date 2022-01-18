@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -39,7 +40,7 @@ public class OrderedService {
 
 
         List<OrderedItem> orderedItems = new ArrayList<>();
-        for (Long idOrderedItem : orderedDto.getIdOrderedItems()) {
+        for (UUID idOrderedItem : orderedDto.getIdOrderedItems()) {
             OrderedItem orderedItem = orderedItemRepository.findById(idOrderedItem)
                     .orElseThrow(() -> new NotFoundRequestException("orderedItem " + idOrderedItem + " does not exist"));
 
@@ -51,26 +52,14 @@ public class OrderedService {
         return ordererMapper.entityToView(ordered);
     }
 
-//    public OrdererView update(long id, OrderedDto orderedDto) {
-//        Ordered ordered = orderedRepository.findById(id)
-//                .orElseThrow(() -> new NotFoundRequestException("orderedItem " + id + " does not exist"));
-//
-//        ordered.setId(ordered.getId());
-//        ordered.s(customerDto.getFirstname());
-//        ordered.setLastname(customerDto.getLastname());
-//        ordered.setGender(customerDto.getGender());
-//        orderedRepository.save(ordered);
-//        return ordererMapper.entityToView(ordered);
-//    }
-
-    public void delete(long id) {
+    public void delete(UUID id) {
         if (orderedRepository.findById(id).isEmpty()) {
             throw new NotFoundRequestException("orderedItem " + id + " don't exist");
         }
         orderedRepository.deleteById(id);
     }
 
-    public Optional<OrdererView> getCustomerById(long id) {
+    public Optional<OrdererView> getCustomerById(UUID id) {
         Optional<Ordered> orderedData = orderedRepository.findById(id);
         return orderedData.map(ordered -> ordererMapper.entityToView(ordered));
     }

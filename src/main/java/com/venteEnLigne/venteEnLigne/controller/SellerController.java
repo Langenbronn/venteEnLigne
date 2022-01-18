@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/sellers")
@@ -28,19 +29,19 @@ public class SellerController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody SellerDto sellerDto) {
+    public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
         SellerView sellerView = sellerService.update(id, sellerDto);
         return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
         sellerService.delete(id);
         return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<SellerView> getProduitById(@PathVariable("id") long id) {
+    public ResponseEntity<SellerView> getProduitById(@PathVariable("id") UUID id) {
         return sellerService.getSellerById(id).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

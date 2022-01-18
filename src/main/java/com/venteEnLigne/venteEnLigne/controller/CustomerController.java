@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -23,19 +24,19 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody CustomerDto customerDto) {
         CustomerView customerView = customerService.update(id, customerDto);
         return new ResponseEntity<>(customerView.getFirstname() + " - " + customerView.getLastname() + " has been updated", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
         customerService.delete(id);
         return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<CustomerView> getCustomerById(@PathVariable("id") long id) {
+    public ResponseEntity<CustomerView> getCustomerById(@PathVariable("id") UUID id) {
         return customerService.getCustomerById(id).map(product -> new ResponseEntity<>(product, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

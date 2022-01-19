@@ -12,6 +12,7 @@ public class OrdererItemView implements Serializable {
     private int quantity;
     private double price;
     private StockView stockView;
+    private OrdererView ordererView;
 
     public OrdererItemView() {
     }

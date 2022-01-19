@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -32,10 +33,15 @@ public class OrderedItem implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Stock stock;
 
-    public OrderedItem(int quantity, double price, Stock stock) {
+    @JoinColumn(name = "ordered")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Ordered ordered;
+
+    public OrderedItem(int quantity, double price, Stock stock, Ordered ordered) {
         this.quantity = quantity;
         this.price = price;
         this.stock = stock;
+        this.ordered = ordered;
     }
 
     @Override

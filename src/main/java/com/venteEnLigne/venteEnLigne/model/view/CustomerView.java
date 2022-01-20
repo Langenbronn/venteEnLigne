@@ -1,5 +1,6 @@
 package com.venteEnLigne.venteEnLigne.model.view;
 
+import com.venteEnLigne.venteEnLigne.model.Gender;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ public class CustomerView implements Serializable {
 
     private String firstname;
     private String lastname;
-    private String gender;
+    private Gender gender;
 
     public CustomerView() {
     }

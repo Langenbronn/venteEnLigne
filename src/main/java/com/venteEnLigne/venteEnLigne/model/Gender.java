@@ -1,7 +1,7 @@
 package com.venteEnLigne.venteEnLigne.model;
 
 public enum Gender {
-    Mam("Man"),
+    Man("Man"),
     Woman("Woman"),
     Other("Other");
 

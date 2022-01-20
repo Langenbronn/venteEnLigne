@@ -1,5 +1,6 @@
 package com.venteEnLigne.venteEnLigne.model.dto;
 
+import com.venteEnLigne.venteEnLigne.model.Gender;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -8,6 +9,6 @@ import java.io.Serializable;
 public class CustomerDto implements Serializable {
     private String firstname;
     private String lastname;
-    private String gender;
+    private Gender gender;
 
 }

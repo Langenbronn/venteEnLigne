@@ -1,4 +1,5 @@
 INSERT INTO CUSTOMER(id, firstname, gender, lastname) VALUES ('f05157b5-e9fb-45d1-9242-4553bd742c0c', 'Arthur', 'Man', 'Cuvit');
+INSERT INTO CUSTOMER(id, firstname, gender, lastname) VALUES ('896157b5-e9fb-45d1-9258-4553bd742c0c', 'Bob', 'Man', 'Cuvit');
 
 INSERT INTO SELLER(id, name) VALUES ('6f19bc24-c001-46dc-8504-88d291984f79', 'Philibert');
 INSERT INTO SELLER(id, name) VALUES ('62768a8e-0313-44ad-bfe2-5f358d84f9d7', 'Space Cowboys');
@@ -28,3 +29,9 @@ INSERT INTO STOCK(id, quantity, product, seller) VALUES ('c9b734c9-0718-4cdc-936
 INSERT INTO STOCK(id, quantity, product, seller) VALUES ('fdfce467-f473-43dc-860a-3f1f1b229b99', 9, '6aeb6450-cc08-4854-abcb-acbcd486822d', '9ec87b9c-1b50-401b-b9e8-20a4fe6693d3');
 INSERT INTO STOCK(id, quantity, product, seller) VALUES ('7c4031b3-2408-46d7-88f4-cf993d298b90', 125, '022e462d-b25a-4758-93bc-2da567e2d166', '436f5d51-41d7-4ed8-9b5e-a9135f52a3a8');
 INSERT INTO STOCK(id, quantity, product, seller) VALUES ('a0a53552-ec1a-4996-8f5d-e186c57f4447', 50, '1e2f4303-b4a6-4a97-9bbf-b06494d21e79', '436f5d51-41d7-4ed8-9b5e-a9135f52a3a8');
+
+INSERT INTO ORDERED(id, customer) VALUES ('0c57142d-7356-461d-a004-10b9ccb4ccd0', 'f05157b5-e9fb-45d1-9242-4553bd742c0c');
+
+INSERT INTO ORDEREDITEM(id, quantity, price, stock, ordered) VALUES ('dc0de9ac-7327-427b-b807-2aca760253c5', 1, 30.71, '5af07b82-e094-4759-aa4a-1962b28c0444', '0c57142d-7356-461d-a004-10b9ccb4ccd0');
+INSERT INTO ORDEREDITEM(id, quantity, price, stock, ordered) VALUES ('f5e2acd4-8996-42bf-b8b9-e362a15cec43', 1, 39.49, '492d93eb-e15d-42ce-8370-aed31233bf9e', '0c57142d-7356-461d-a004-10b9ccb4ccd0');
+INSERT INTO ORDEREDITEM(id, quantity, price, stock, ordered) VALUES ('91b5fc38-db54-4621-a786-994b29fa4e0a', 2, 2.99, 'c736525f-1b42-4e9d-ad75-8feea459ecad', '0c57142d-7356-461d-a004-10b9ccb4ccd0');

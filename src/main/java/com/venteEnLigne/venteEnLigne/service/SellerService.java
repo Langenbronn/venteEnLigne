@@ -28,14 +28,6 @@ public class SellerService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public ResponseEntity<HttpStatus> initData() {
-        sellerRepository.saveAll(Arrays.asList(new Seller("Space Cowboys")
-                , new Seller("Domino")
-                , new Seller("Saturn")
-                , new Seller("Ikea")));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     public SellerView create(@RequestBody SellerDto sellerDto) throws IllegalStateException {
 
         if (sellerRepository.findByName(sellerDto.getName()).isPresent()) {

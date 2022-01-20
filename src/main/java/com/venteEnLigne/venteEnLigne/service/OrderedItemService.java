@@ -1,12 +1,14 @@
 package com.venteEnLigne.venteEnLigne.service;
 
 import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
+import com.venteEnLigne.venteEnLigne.model.data.Ordered;
 import com.venteEnLigne.venteEnLigne.model.data.OrderedItem;
 import com.venteEnLigne.venteEnLigne.model.data.Stock;
 import com.venteEnLigne.venteEnLigne.model.dto.OrderedItemDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.OrdererItemMapper;
 import com.venteEnLigne.venteEnLigne.model.view.OrdererItemView;
 import com.venteEnLigne.venteEnLigne.repository.OrderedItemRepository;
+import com.venteEnLigne.venteEnLigne.repository.OrderedRepository;
 import com.venteEnLigne.venteEnLigne.repository.StockRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,20 @@ public class OrderedItemService {
     OrderedItemRepository orderedItemRepository;
     @Autowired
     StockRepository stockRepository;
+    @Autowired
+    OrderedRepository orderedRepository;
 
     public OrdererItemView create(@RequestBody OrderedItemDto orderedItemDto) throws IllegalStateException {
         Stock stock = stockRepository.findById(orderedItemDto.getIdStock())
                 .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItemDto.getIdStock() + " does not exist"));
 
+        Ordered ordered = orderedRepository.findById(orderedItemDto.getIdOrdered())
+                .orElseThrow(() -> new NotFoundRequestException("ordered " + orderedItemDto.getIdStock() + " does not exist"));
+
         OrderedItem orderedItem = orderedItemRepository.save(new OrderedItem(orderedItemDto.getQuantity(),
                 orderedItemDto.getPrice(),
-                stock
+                stock,
+                ordered
         ));
         return ordererItemMapper.entityToView(orderedItem);
     }

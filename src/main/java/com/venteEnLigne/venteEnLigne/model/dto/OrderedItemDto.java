@@ -10,4 +10,5 @@ public class OrderedItemDto implements Serializable {
     private int quantity;
     private double price;
     private UUID idStock;
+    private UUID idOrdered;
 }

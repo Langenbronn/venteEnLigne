@@ -9,5 +9,4 @@ import java.util.UUID;
 @Data
 public class OrderedDto implements Serializable {
     private UUID idCustomer;
-    private List<UUID> idOrderedItems;
 }

@@ -32,14 +32,6 @@ public class ProductService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public ResponseEntity<HttpStatus> initData() {
-        productRepository.saveAll(Arrays.asList(new Product("Unlock ! Game Adventures", 30.71, "Jeux", "Dans Unlock! Games Adventures, plongez dans l'univers de Mysterium, Aventuriers du Rail et Pandemic")
-                , new Product("7 Wonders : Architects", 35.00, "Jeux", "7 Wonders Architects est un nouveau jeu dans le monde de 7 Wonders. ")
-                , new Product("Thorgun", 2.99, "Inconnu", "Plaid, gris-vert clair120x160 cm")
-                , new Product("GODMORGON / ODENSVIK", 559.00, "Meuble", "Meuble lavabo 4tir, effet chêne blanchi/Dalskär mitigeur lavabo123x49x64 cm")));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     public ProductView create(@RequestBody ProductDto productDto) throws IllegalStateException {
         if (productRepository.findByName(productDto.getName()).isPresent()) {
             throw new BadRequestException("product " + productDto.getName() + " does already exist");

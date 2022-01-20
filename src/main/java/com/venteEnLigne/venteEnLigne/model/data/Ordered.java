@@ -27,13 +27,8 @@ public class Ordered implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
-    @JoinColumn(name = "ordereditem")
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<OrderedItem> orderedItems;
-
-    public Ordered(Customer customer, List<OrderedItem> orderedItems) {
+    public Ordered(Customer customer) {
         this.customer = customer;
-        this.orderedItems = orderedItems;
     }
 
     @Override

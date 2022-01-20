@@ -41,16 +41,14 @@ public class OrderedService {
                 .orElseThrow(() -> new NotFoundRequestException("customer " + orderedDto.getIdCustomer() + " does not exist"));
 
 
-        List<OrderedItem> orderedItems = new ArrayList<>();
-        for (UUID idOrderedItem : orderedDto.getIdOrderedItems()) {
-            OrderedItem orderedItem = orderedItemRepository.findById(idOrderedItem)
-                    .orElseThrow(() -> new NotFoundRequestException("orderedItem " + idOrderedItem + " does not exist"));
-
-            orderedItems.add(orderedItem);
-        }
-        Ordered ordered = orderedRepository.save(new Ordered(customer,
-                orderedItems
-        ));
+//        List<OrderedItem> orderedItems = new ArrayList<>();
+//        for (UUID idOrderedItem : orderedDto.getIdOrderedItems()) {
+//            OrderedItem orderedItem = orderedItemRepository.findById(idOrderedItem)
+//                    .orElseThrow(() -> new NotFoundRequestException("orderedItem " + idOrderedItem + " does not exist"));
+//
+//            orderedItems.add(orderedItem);
+//        }
+        Ordered ordered = orderedRepository.save(new Ordered(customer));
         return ordererMapper.entityToView(ordered);
     }
 //TODO

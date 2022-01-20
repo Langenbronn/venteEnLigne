@@ -17,11 +17,6 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @GetMapping("/initData")
-    public ResponseEntity<HttpStatus> initData() {
-        return productService.initData();
-    }
-
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody ProductDto productDto) {
         ProductView productView = productService.create(productDto);

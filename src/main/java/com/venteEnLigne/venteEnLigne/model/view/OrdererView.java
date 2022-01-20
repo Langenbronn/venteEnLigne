@@ -9,8 +9,7 @@ import java.util.UUID;
 @Data
 public class OrdererView implements Serializable {
     private UUID id;
-
-    private List<OrdererItemView> ordererItemViews;
+    private CustomerView customerView;
 
     public OrdererView() {
     }

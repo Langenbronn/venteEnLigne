@@ -17,11 +17,6 @@ public class SellerController {
     @Autowired
     SellerService sellerService;
 
-    @GetMapping("/initData")
-    public ResponseEntity<HttpStatus> initData() {
-        return sellerService.initData();
-    }
-
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
         SellerView sellerView = sellerService.create(sellerDto);

@@ -13,7 +13,8 @@ public interface OrdererItemMapper {
     OrdererItemMapper INSTANCE = Mappers.getMapper(OrdererItemMapper.class);
 
     @Mappings({
-            @Mapping(source = "stock", target = "stockView")
+            @Mapping(source = "stock", target = "stockView"),
+            @Mapping(source = "ordered", target = "ordererView")
     })
     OrdererItemView entityToView(OrderedItem orderedItem);
 

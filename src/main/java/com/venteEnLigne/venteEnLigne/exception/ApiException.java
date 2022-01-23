@@ -1,36 +1,32 @@
 package com.venteEnLigne.venteEnLigne.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 public class ApiException {
 
-    private final String message;
-    //    private final Throwable throwable;
     private final HttpStatus httpStatus;
-    private final ZonedDateTime timesstamp;
+    private final String message;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private final LocalDateTime timestamp;
 
-    public ApiException(String message, Throwable throwable, HttpStatus httpStatus, ZonedDateTime timesstamp) {
+    public ApiException(String message, HttpStatus httpStatus, LocalDateTime timestamp) {
         this.message = message;
-//        this.throwable = throwable;
         this.httpStatus = httpStatus;
-        this.timesstamp = timesstamp;
+        this.timestamp = timestamp;
     }
 
     public String getMessage() {
         return message;
     }
 
-//    public Throwable getThrowable() {
-//        return throwable;
-//    }
-
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
 
-    public ZonedDateTime getTimesstamp() {
-        return timesstamp;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 }

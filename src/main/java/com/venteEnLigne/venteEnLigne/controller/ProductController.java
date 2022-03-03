@@ -41,8 +41,8 @@ public class ProductController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<ProductView>> finddAll() {
-        return new ResponseEntity<>(productService.finddAll(), HttpStatus.OK);
+    public ResponseEntity<List<ProductView>> findAll() {
+        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
 }

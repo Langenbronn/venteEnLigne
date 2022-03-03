@@ -42,8 +42,8 @@ public class OrderedController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<OrdererView>> finddAll() {
-        return new ResponseEntity<>(orderedService.finddAll(), HttpStatus.OK);
+    public ResponseEntity<List<OrdererView>> findAll() {
+        return new ResponseEntity<>(orderedService.findAll(), HttpStatus.OK);
     }
 
 }

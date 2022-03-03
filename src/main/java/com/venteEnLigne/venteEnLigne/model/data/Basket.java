@@ -16,8 +16,8 @@ import java.util.UUID;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "ordered")
-public class Ordered implements Serializable {
+@Table(name = "basket")
+public class Basket implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -26,7 +26,7 @@ public class Ordered implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
-    public Ordered(Customer customer) {
+    public Basket(Customer customer) {
         this.customer = customer;
     }
 
@@ -34,7 +34,7 @@ public class Ordered implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Ordered product = (Ordered) o;
+        Basket product = (Basket) o;
         return id != null && Objects.equals(id, product.id);
     }
 

@@ -9,12 +9,8 @@ import com.venteEnLigne.venteEnLigne.model.view.SellerView;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,7 +24,7 @@ public class SellerService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public SellerView create(@RequestBody SellerDto sellerDto) throws IllegalStateException {
+    public SellerView create(SellerDto sellerDto) throws IllegalStateException {
 
         if (sellerRepository.findByName(sellerDto.getName()).isPresent()) {
             throw new BadRequestException("seller " + sellerDto.getName() + " does already exist");
@@ -41,11 +37,11 @@ public class SellerService {
         Optional<Seller> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
-            Seller _seller = sellerData.get();
-            _seller.setId(_seller.getId());
-            _seller.setName(sellerDto.getName());
-            sellerRepository.save(_seller);
-            return sellerMapper.entityToView(_seller);
+            Seller seller = sellerData.get();
+            seller.setId(seller.getId());
+            seller.setName(sellerDto.getName());
+            sellerRepository.save(seller);
+            return sellerMapper.entityToView(seller);
         } else {
             throw new NotFoundRequestException("seller " + id + " don't exist");
         }
@@ -63,7 +59,7 @@ public class SellerService {
         return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }
 
-    public List<SellerView> finddAll() {
+    public List<SellerView> findAll() {
         List<Seller> sellerData = sellerRepository.findAll();
         return sellerData.stream()
                 .map(e -> sellerMapper.entityToView(e))

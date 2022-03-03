@@ -30,9 +30,9 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") UUID id) {
         customerService.delete(id);
-        return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/read/{id}")
@@ -41,8 +41,8 @@ public class CustomerController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<CustomerView>> finddAll() {
-        return new ResponseEntity<>(customerService.finddAll(), HttpStatus.OK);
+    public ResponseEntity<List<CustomerView>> findAll() {
+        return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
     }
 
 }

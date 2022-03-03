@@ -3,11 +3,8 @@ package com.venteEnLigne.venteEnLigne.service;
 import com.venteEnLigne.venteEnLigne.exception.NotFoundRequestException;
 import com.venteEnLigne.venteEnLigne.model.data.Customer;
 import com.venteEnLigne.venteEnLigne.model.data.Ordered;
-import com.venteEnLigne.venteEnLigne.model.data.OrderedItem;
 import com.venteEnLigne.venteEnLigne.model.dto.OrderedDto;
-import com.venteEnLigne.venteEnLigne.model.dto.OrderedItemDto;
 import com.venteEnLigne.venteEnLigne.model.mapper.OrdererMapper;
-import com.venteEnLigne.venteEnLigne.model.view.OrdererItemView;
 import com.venteEnLigne.venteEnLigne.model.view.OrdererView;
 import com.venteEnLigne.venteEnLigne.repository.CustomerRepository;
 import com.venteEnLigne.venteEnLigne.repository.OrderedItemRepository;
@@ -15,9 +12,7 @@ import com.venteEnLigne.venteEnLigne.repository.OrderedRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +31,7 @@ public class OrderedService {
     @Autowired
     OrderedItemRepository orderedItemRepository;
 
-    public OrdererView create(@RequestBody OrderedDto orderedDto) throws IllegalStateException {
+    public OrdererView create(OrderedDto orderedDto) throws IllegalStateException {
         Customer customer = customerRepository.findById(orderedDto.getIdCustomer())
                 .orElseThrow(() -> new NotFoundRequestException("customer " + orderedDto.getIdCustomer() + " does not exist"));
 
@@ -85,7 +80,7 @@ public class OrderedService {
         return orderedData.map(ordered -> ordererMapper.entityToView(ordered));
     }
 
-    public List<OrdererView> finddAll() {
+    public List<OrdererView> findAll() {
         List<Ordered> ordereds = orderedRepository.findAll();
         return ordereds.stream()
                 .map(ordered -> ordererMapper.entityToView(ordered))

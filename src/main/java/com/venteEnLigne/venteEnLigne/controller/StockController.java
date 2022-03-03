@@ -41,8 +41,8 @@ public class StockController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<StockView>> finddAll() {
-        return new ResponseEntity<>(stockService.finddAll(), HttpStatus.OK);
+    public ResponseEntity<List<StockView>> findAll() {
+        return new ResponseEntity<>(stockService.findAll(), HttpStatus.OK);
     }
 
 }

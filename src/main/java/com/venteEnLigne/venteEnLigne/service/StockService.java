@@ -14,7 +14,6 @@ import com.venteEnLigne.venteEnLigne.repository.StockRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,7 @@ public class StockService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public StockView create(@RequestBody StockDto stockDto) throws IllegalStateException {
+    public StockView create(StockDto stockDto) throws IllegalStateException {
         Seller seller = sellerRepository.findById(stockDto.getIdSeller())
                 .orElseThrow(() -> new NotFoundRequestException("seller " + stockDto.getIdSeller() + " does not exist"));
 
@@ -56,11 +55,11 @@ public class StockService {
 //        TODO check for update idProduct, idSeller
 
         if (stockData.isPresent()) {
-            Stock _stock = stockData.get();
-            _stock.setId(_stock.getId());
-            _stock.setQuantity(stockDto.getQuantity());
-            stockRepository.save(_stock);
-            return stockMapper.entityToView(_stock);
+            Stock stock = stockData.get();
+            stock.setId(stock.getId());
+            stock.setQuantity(stockDto.getQuantity());
+            stockRepository.save(stock);
+            return stockMapper.entityToView(stock);
         } else {
             throw new NotFoundRequestException("stock " + id + " don't exist");
         }
@@ -78,7 +77,7 @@ public class StockService {
         return stockData.map(stock -> stockMapper.entityToView(stock));
     }
 
-    public List<StockView> finddAll() {
+    public List<StockView> findAll() {
         List<Stock> stockEntities = stockRepository.findAll();
         return stockEntities.stream()
                 .map(e -> stockMapper.entityToView(e))

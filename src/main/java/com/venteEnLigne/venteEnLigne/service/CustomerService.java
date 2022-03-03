@@ -10,7 +10,6 @@ import com.venteEnLigne.venteEnLigne.repository.CustomerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +25,8 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
 
-    public CustomerView create(@RequestBody CustomerDto customerDto) throws IllegalStateException {
+    public CustomerView create(CustomerDto customerDto) throws IllegalStateException {
+//        TODO Avoir des meilleurs criteres de recherche d unicite
         if (customerRepository.findByFirstnameAndLastname(customerDto.getFirstname(), customerDto.getLastname()).isPresent()) {
             throw new BadRequestException("customer " + customerDto.getFirstname() + " - " + customerDto.getLastname() + " does already exist");
         }
@@ -62,7 +62,7 @@ public class CustomerService {
         return customer.map(product -> customerMapper.entityToView(product));
     }
 
-    public List<CustomerView> finddAll() {
+    public List<CustomerView> findAll() {
         List<Customer> customer = customerRepository.findAll();
         return customer.stream()
                 .map(e -> customerMapper.entityToView(e))

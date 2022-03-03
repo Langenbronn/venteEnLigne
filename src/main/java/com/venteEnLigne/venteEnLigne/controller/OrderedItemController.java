@@ -41,8 +41,8 @@ public class OrderedItemController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<OrdererItemView>> finddAll() {
-        return new ResponseEntity<>(orderedItemService.finddAll(), HttpStatus.OK);
+    public ResponseEntity<List<OrdererItemView>> findAll() {
+        return new ResponseEntity<>(orderedItemService.findAll(), HttpStatus.OK);
     }
 
 }

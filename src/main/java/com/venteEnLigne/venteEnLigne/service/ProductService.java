@@ -10,12 +10,8 @@ import com.venteEnLigne.venteEnLigne.repository.ProductRepository;
 import com.venteEnLigne.venteEnLigne.repository.SellerRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,7 +28,7 @@ public class ProductService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public ProductView create(@RequestBody ProductDto productDto) throws IllegalStateException {
+    public ProductView create(ProductDto productDto) throws IllegalStateException {
         if (productRepository.findByName(productDto.getName()).isPresent()) {
             throw new BadRequestException("product " + productDto.getName() + " does already exist");
         }
@@ -68,7 +64,7 @@ public class ProductService {
         return productData.map(product -> productMapper.entityToView(product));
     }
 
-    public List<ProductView> finddAll() {
+    public List<ProductView> findAll() {
         List<Product> productData = productRepository.findAll();
         return productData.stream()
                 .map(e -> productMapper.entityToView(e))

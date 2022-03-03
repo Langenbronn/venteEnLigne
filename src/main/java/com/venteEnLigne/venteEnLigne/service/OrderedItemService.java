@@ -13,7 +13,6 @@ import com.venteEnLigne.venteEnLigne.repository.StockRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,7 @@ public class OrderedItemService {
     @Autowired
     OrderedRepository orderedRepository;
 
-    public OrdererItemView create(@RequestBody OrderedItemDto orderedItemDto) throws IllegalStateException {
+    public OrdererItemView create(OrderedItemDto orderedItemDto) throws IllegalStateException {
         Stock stock = stockRepository.findById(orderedItemDto.getIdStock())
                 .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItemDto.getIdStock() + " does not exist"));
 
@@ -71,7 +70,7 @@ public class OrderedItemService {
         return orderedItem.map(product -> ordererItemMapper.entityToView(product));
     }
 
-    public List<OrdererItemView> finddAll() {
+    public List<OrdererItemView> findAll() {
         List<OrderedItem> orderedItem = orderedItemRepository.findAll();
         return orderedItem.stream()
                 .map(e -> ordererItemMapper.entityToView(e))

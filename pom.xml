@@ -8,10 +8,10 @@
         <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.venteenligne</groupId>
-    <artifactId>venteenligne</artifactId>
+    <groupId>com.onlinesale</groupId>
+    <artifactId>onlinesale</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>venteenligne</name>
+    <name>onlinesale</name>
     <description>Vente en ligne</description>
     <properties>
         <java.version>11</java.version>

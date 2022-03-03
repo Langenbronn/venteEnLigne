@@ -72,7 +72,7 @@ public class StockService {
         stockRepository.deleteById(id);
     }
 
-    public Optional<StockView> getStockById(UUID id) {
+    public Optional<StockView> findOne(UUID id) {
         Optional<Stock> stockData = stockRepository.findById(id);
         return stockData.map(stock -> stockMapper.entityToView(stock));
     }

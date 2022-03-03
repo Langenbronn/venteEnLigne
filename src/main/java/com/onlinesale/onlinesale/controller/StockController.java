@@ -17,30 +17,30 @@ public class StockController {
     @Autowired
     StockService stockService;
 
-    @PostMapping("/create")
+    @PostMapping("/{id}")
     public ResponseEntity<String> create(@RequestBody StockDto stockDto) {
         StockView stockView = stockService.create(stockDto);
         return new ResponseEntity<>(stockView.getId() + " has been created", HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody StockDto stockDto) {
         StockView stockView = stockService.update(id, stockDto);
         return new ResponseEntity<>(stockView.getId() + " has been updated", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") UUID id) {
         stockService.delete(id);
-        return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/read/{id}")
-    public ResponseEntity<StockView> getProduitById(@PathVariable("id") UUID id) {
-        return stockService.getStockById(id).map(stock -> new ResponseEntity<>(stock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping("/{id}")
+    public ResponseEntity<StockView> findOne(@PathVariable("id") UUID id) {
+        return stockService.findOne(id).map(stock -> new ResponseEntity<>(stock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<StockView>> findAll() {
         return new ResponseEntity<>(stockService.findAll(), HttpStatus.OK);
     }

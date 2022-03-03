@@ -54,7 +54,7 @@ public class SellerService {
         sellerRepository.deleteById(id);
     }
 
-    public Optional<SellerView> getSellerById(UUID id) {
+    public Optional<SellerView> findOne(UUID id) {
         Optional<Seller> sellerData = sellerRepository.findById(id);
         return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }

@@ -59,7 +59,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Optional<ProductView> getProduitById(UUID id) {
+    public Optional<ProductView> findOne(UUID id) {
         Optional<Product> productData = productRepository.findById(id);
         return productData.map(product -> productMapper.entityToView(product));
     }

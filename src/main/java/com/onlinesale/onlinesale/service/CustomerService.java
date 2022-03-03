@@ -57,7 +57,7 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    public Optional<CustomerView> getCustomerById(UUID id) {
+    public Optional<CustomerView> findOne(UUID id) {
         Optional<Customer> customer = customerRepository.findById(id);
         return customer.map(product -> customerMapper.entityToView(product));
     }

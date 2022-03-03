@@ -17,31 +17,31 @@ public class OrderedController {
     @Autowired
     OrderedService orderedService;
 
-    @PostMapping("/create")
+    @PostMapping("/{id}")
     public ResponseEntity<String> create(@RequestBody OrderedDto orderedDto) {
         OrdererView ordererView = orderedService.create(orderedDto);
         return new ResponseEntity<>(ordererView.getId() + " has been created", HttpStatus.CREATED);
     }
 
 //    TODO fix
-//    @PutMapping("/update/{id}")
+//    @PutMapping("/{id}")
 //    public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody OrderedDto orderedItemDto) {
 //        OrdererView ordererItemView = orderedService.update(id, orderedItemDto);
 //        return new ResponseEntity<>(ordererItemView.getId() + " has been updated", HttpStatus.CREATED);
 //    }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") UUID id) {
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") UUID id) {
         orderedService.delete(id);
-        return new ResponseEntity<>(id + " has been deleted", HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/read/{id}")
-    public ResponseEntity<OrdererView> getOrdererById(@PathVariable("id") UUID id) {
-        return orderedService.getOrdererById(id).map(stock -> new ResponseEntity<>(stock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping("/{id}")
+    public ResponseEntity<OrdererView> findOne(@PathVariable("id") UUID id) {
+        return orderedService.findOne(id).map(stock -> new ResponseEntity<>(stock, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<OrdererView>> findAll() {
         return new ResponseEntity<>(orderedService.findAll(), HttpStatus.OK);
     }

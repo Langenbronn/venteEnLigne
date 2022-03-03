@@ -65,7 +65,7 @@ public class OrderedItemService {
         orderedItemRepository.deleteById(id);
     }
 
-    public Optional<OrdererItemView> getOrdererItemById(UUID id) {
+    public Optional<OrdererItemView> findOne(UUID id) {
         Optional<OrderedItem> orderedItem = orderedItemRepository.findById(id);
         return orderedItem.map(product -> ordererItemMapper.entityToView(product));
     }

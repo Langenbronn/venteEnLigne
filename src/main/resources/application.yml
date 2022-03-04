@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: 1234
+    password: ${DB_PASSWORD}
     initialization-mode: always
   jpa:
     properties:

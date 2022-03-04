@@ -1,15 +1,10 @@
 package com.onlinesale.onlinesale.service;
 
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
-import com.onlinesale.onlinesale.repository.OrderedItemRepository;
-import com.onlinesale.onlinesale.repository.OrderedRepository;
-import com.onlinesale.onlinesale.repository.StockRepository;
 import com.onlinesale.onlinesale.model.data.Ordered;
 import com.onlinesale.onlinesale.model.data.OrderedItem;
 import com.onlinesale.onlinesale.model.data.Stock;
-import com.onlinesale.onlinesale.model.dto.OrderedItemDto;
-import com.onlinesale.onlinesale.model.mapper.OrdererItemMapper;
-import com.onlinesale.onlinesale.model.view.OrdererItemView;
+import com.onlinesale.onlinesale.repository.OrderedItemRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Data

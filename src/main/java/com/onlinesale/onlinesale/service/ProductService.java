@@ -2,8 +2,8 @@ package com.onlinesale.onlinesale.service;
 
 import com.onlinesale.onlinesale.exception.BadRequestException;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
-import com.onlinesale.onlinesale.repository.ProductRepository;
 import com.onlinesale.onlinesale.model.data.Product;
+import com.onlinesale.onlinesale.repository.ProductRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

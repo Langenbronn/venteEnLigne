@@ -28,7 +28,7 @@ public class StockController {
         return new ResponseEntity<>(stock.getId() + " has been created", HttpStatus.CREATED);
     }
 
-//    TODO stockDto avec seulement quantite
+    //    TODO stockDto avec seulement quantite
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody StockDto stockDto) {
         Stock stock = stockService.update(id, stockMapper.dtoToEntity(stockDto));

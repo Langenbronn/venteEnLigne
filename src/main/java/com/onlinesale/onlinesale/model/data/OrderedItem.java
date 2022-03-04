@@ -36,7 +36,7 @@ public class OrderedItem implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Ordered ordered;
 
-    public OrderedItem(int quantity, double price, Stock stock,Ordered ordered) {
+    public OrderedItem(int quantity, double price, Stock stock, Ordered ordered) {
         this.quantity = quantity;
         this.price = price;
         this.stock = stock;

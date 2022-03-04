@@ -1,7 +1,7 @@
 package com.onlinesale.onlinesale.model.mapper;
 
-import com.onlinesale.onlinesale.model.view.BasketView;
 import com.onlinesale.onlinesale.model.data.Basket;
+import com.onlinesale.onlinesale.model.view.BasketView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

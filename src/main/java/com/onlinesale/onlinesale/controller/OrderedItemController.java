@@ -4,7 +4,6 @@ import com.onlinesale.onlinesale.model.data.OrderedItem;
 import com.onlinesale.onlinesale.model.dto.OrderedItemDto;
 import com.onlinesale.onlinesale.model.mapper.OrdererItemMapper;
 import com.onlinesale.onlinesale.model.view.OrdererItemView;
-import com.onlinesale.onlinesale.model.view.StockView;
 import com.onlinesale.onlinesale.service.OrderedItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

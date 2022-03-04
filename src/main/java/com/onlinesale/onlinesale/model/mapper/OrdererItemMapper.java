@@ -28,5 +28,6 @@ public interface OrdererItemMapper {
         orderedItem.setStock(new Stock(orderedItemDto.getIdStock()));
         orderedItem.setOrdered(new Ordered(orderedItemDto.getIdOrdered()));
         return orderedItem;
-    };
+    }
+
 }

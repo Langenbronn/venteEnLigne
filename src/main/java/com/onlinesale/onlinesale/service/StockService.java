@@ -2,13 +2,10 @@ package com.onlinesale.onlinesale.service;
 
 import com.onlinesale.onlinesale.exception.BadRequestException;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
-import com.onlinesale.onlinesale.repository.ProductRepository;
-import com.onlinesale.onlinesale.repository.SellerRepository;
-import com.onlinesale.onlinesale.repository.StockRepository;
 import com.onlinesale.onlinesale.model.data.Product;
 import com.onlinesale.onlinesale.model.data.Seller;
 import com.onlinesale.onlinesale.model.data.Stock;
-import com.onlinesale.onlinesale.model.dto.StockDto;
+import com.onlinesale.onlinesale.repository.StockRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

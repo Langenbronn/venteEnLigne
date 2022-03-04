@@ -1,6 +1,7 @@
 package com.onlinesale.onlinesale.controller;
 
 import com.onlinesale.onlinesale.model.dto.SellerDto;
+import com.onlinesale.onlinesale.model.mapper.SellerMapper;
 import com.onlinesale.onlinesale.model.view.SellerView;
 import com.onlinesale.onlinesale.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,19 @@ import java.util.UUID;
 @RequestMapping("/api/sellers")
 public class SellerController {
     @Autowired
+    SellerMapper sellerMapper;
+    @Autowired
     SellerService sellerService;
 
     @PostMapping("/{id}")
     public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
-        SellerView sellerView = sellerService.create(sellerDto);
+        SellerView sellerView = sellerService.create(sellerMapper.dtoToEntity(sellerDto));
         return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
-        SellerView sellerView = sellerService.update(id, sellerDto);
+        SellerView sellerView = sellerService.update(id, sellerMapper.dtoToEntity(sellerDto));
         return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
     }
 
@@ -47,7 +50,7 @@ public class SellerController {
 
     @GetMapping("/name/{name}")
     public ResponseEntity<SellerView> findByName(@PathVariable("name") String name) {
-        return sellerService.getSellerByName(name).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return sellerService.getByName(name).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

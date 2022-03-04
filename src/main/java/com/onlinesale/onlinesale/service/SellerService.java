@@ -4,7 +4,6 @@ import com.onlinesale.onlinesale.exception.BadRequestException;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
 import com.onlinesale.onlinesale.repository.SellerRepository;
 import com.onlinesale.onlinesale.model.data.Seller;
-import com.onlinesale.onlinesale.model.dto.SellerDto;
 import com.onlinesale.onlinesale.model.mapper.SellerMapper;
 import com.onlinesale.onlinesale.model.view.SellerView;
 import lombok.Data;
@@ -24,22 +23,20 @@ public class SellerService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public SellerView create(SellerDto sellerDto) throws IllegalStateException {
+    public SellerView create(Seller seller) throws IllegalStateException {
 
-        if (sellerRepository.findByName(sellerDto.getName()).isPresent()) {
-            throw new BadRequestException("seller " + sellerDto.getName() + " does already exist");
+        if (sellerRepository.findByName(seller.getName()).isPresent()) {
+            throw new BadRequestException("seller " + seller.getName() + " does already exist");
         }
-        Seller sellerData = sellerRepository.save(new Seller(sellerDto.getName()));
+        Seller sellerData = sellerRepository.save(new Seller(seller.getName()));
         return sellerMapper.entityToView(sellerData);
     }
 
-    public SellerView update(UUID id, SellerDto sellerDto) {
+    public SellerView update(UUID id, Seller seller) {
         Optional<Seller> sellerData = sellerRepository.findById(id);
 
         if (sellerData.isPresent()) {
-            Seller seller = sellerData.get();
-            seller.setId(seller.getId());
-            seller.setName(sellerDto.getName());
+            seller.setId(id);
             sellerRepository.save(seller);
             return sellerMapper.entityToView(seller);
         } else {
@@ -66,7 +63,7 @@ public class SellerService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<SellerView> getSellerByName(String name) {
+    public Optional<SellerView> getByName(String name) {
         Optional<Seller> sellerData = sellerRepository.findByName(name);
         return sellerData.map(seller -> sellerMapper.entityToView(seller));
     }

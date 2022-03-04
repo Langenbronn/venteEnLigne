@@ -1,6 +1,7 @@
 package com.onlinesale.onlinesale.model.mapper;
 
 import com.onlinesale.onlinesale.model.data.Product;
+import com.onlinesale.onlinesale.model.dto.ProductDto;
 import com.onlinesale.onlinesale.model.view.ProductView;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -12,5 +13,5 @@ public interface ProductMapper {
 
     ProductView entityToView(Product product);
 
-    Product viewToEntity(ProductView productView);
+    Product dtoToEntity(ProductDto productDto);
 }

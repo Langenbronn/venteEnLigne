@@ -3,11 +3,7 @@ package com.onlinesale.onlinesale.service;
 import com.onlinesale.onlinesale.exception.BadRequestException;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
 import com.onlinesale.onlinesale.repository.ProductRepository;
-import com.onlinesale.onlinesale.repository.SellerRepository;
 import com.onlinesale.onlinesale.model.data.Product;
-import com.onlinesale.onlinesale.model.dto.ProductDto;
-import com.onlinesale.onlinesale.model.mapper.ProductMapper;
-import com.onlinesale.onlinesale.model.view.ProductView;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,41 +11,27 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Data
 @Service
 public class ProductService {
     @Autowired
-    ProductMapper productMapper;
-    @Autowired
     ProductRepository productRepository;
-    @Autowired
-    SellerRepository sellerRepository;
 
-    public ProductView create(ProductDto productDto) throws IllegalStateException {
-        if (productRepository.findByName(productDto.getName()).isPresent()) {
-            throw new BadRequestException("product " + productDto.getName() + " does already exist");
+    public Product create(Product product) throws IllegalStateException {
+        if (productRepository.findByName(product.getName()).isPresent()) {
+            throw new BadRequestException("product " + product.getName() + " does already exist");
         }
-
-        Product product = productRepository.save(new Product(productDto.getName(),
-                productDto.getPrice(),
-                productDto.getCategorie(),
-                productDto.getDescription()));
-        return productMapper.entityToView(product);
+        return productRepository.save(product);
     }
 
-    public ProductView update(UUID id, ProductDto productDto) {
-        Product productData = productRepository.findById(id)
+    public Product update(UUID id, Product product) {
+        productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));
 
-        productData.setId(productData.getId());
-        productData.setName(productDto.getName());
-        productData.setPrice(productDto.getPrice());
-        productData.setDescription(productDto.getDescription());
-        productRepository.save(productData);
-        return productMapper.entityToView(productData);
+        product.setId(id);
+        return productRepository.save(product);
     }
 
     public void delete(UUID id) {
@@ -59,15 +41,11 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Optional<ProductView> findOne(UUID id) {
-        Optional<Product> productData = productRepository.findById(id);
-        return productData.map(product -> productMapper.entityToView(product));
+    public Optional<Product> findOne(UUID id) {
+        return productRepository.findById(id);
     }
 
-    public List<ProductView> findAll() {
-        List<Product> productData = productRepository.findAll();
-        return productData.stream()
-                .map(e -> productMapper.entityToView(e))
-                .collect(Collectors.toList());
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 }

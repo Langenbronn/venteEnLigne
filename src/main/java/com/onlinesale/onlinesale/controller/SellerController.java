@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,14 +24,14 @@ public class SellerController {
 
     @PostMapping("/{id}")
     public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
-        Seller sellerView = sellerService.create(sellerMapper.dtoToEntity(sellerDto));
-        return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
+        Seller seller = sellerService.create(sellerMapper.dtoToEntity(sellerDto));
+        return new ResponseEntity<>(seller.getName() + " has been created", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
-        Seller sellerView = sellerService.update(id, sellerMapper.dtoToEntity(sellerDto));
-        return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
+        Seller seller = sellerService.update(id, sellerMapper.dtoToEntity(sellerDto));
+        return new ResponseEntity<>(seller.getName() + " has been updated", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -48,10 +47,10 @@ public class SellerController {
 
     @GetMapping
     public ResponseEntity<List<SellerView>> findAll() {
-        List<SellerView> sellersView = sellerService.findAll()
+        List<SellerView> sellerViews = sellerService.findAll()
                 .stream().map(seller -> sellerMapper.entityToView(seller))
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(sellersView, HttpStatus.OK);
+        return new ResponseEntity<>(sellerViews, HttpStatus.OK);
     }
 
     @GetMapping("/name/{name}")

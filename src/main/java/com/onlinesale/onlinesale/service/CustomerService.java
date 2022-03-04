@@ -4,9 +4,6 @@ import com.onlinesale.onlinesale.exception.BadRequestException;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
 import com.onlinesale.onlinesale.repository.CustomerRepository;
 import com.onlinesale.onlinesale.model.data.Customer;
-import com.onlinesale.onlinesale.model.dto.CustomerDto;
-import com.onlinesale.onlinesale.model.mapper.CustomerMapper;
-import com.onlinesale.onlinesale.model.view.CustomerView;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Data

@@ -4,7 +4,6 @@ import com.onlinesale.onlinesale.model.data.Customer;
 import com.onlinesale.onlinesale.model.dto.CustomerDto;
 import com.onlinesale.onlinesale.model.mapper.CustomerMapper;
 import com.onlinesale.onlinesale.model.view.CustomerView;
-import com.onlinesale.onlinesale.model.view.SellerView;
 import com.onlinesale.onlinesale.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

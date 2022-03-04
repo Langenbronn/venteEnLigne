@@ -23,16 +23,16 @@ public class StockService {
     @Autowired
     StockRepository stockRepository;
     @Autowired
-    ProductRepository productRepository;
+    ProductService productService;
     @Autowired
-    SellerRepository sellerRepository;
+    SellerService sellerService;
 
     public Stock create(Stock stock) throws IllegalStateException {
-        Seller seller = sellerRepository.findById(stock.getSeller().getId())
+        Seller seller = sellerService.findById(stock.getSeller().getId())
                 .orElseThrow(() -> new NotFoundRequestException("seller " + stock.getSeller().getId() + " does not exist"));
         stock.setSeller(seller);
 
-        Product product = productRepository.findById(stock.getProduct().getId())
+        Product product = productService.findById(stock.getProduct().getId())
                 .orElseThrow(() -> new NotFoundRequestException("product " + stock.getProduct().getId() + " does not exist"));
         stock.setProduct(product);
 
@@ -43,21 +43,12 @@ public class StockService {
         return stockRepository.save(stock);
     }
 
-//    TODO
-    public Stock update(UUID id, StockDto stockDto) {
-        Optional<Stock> stockData = stockRepository.findById(id);
+    public Stock update(UUID id, Stock stock) {
+        stockRepository.findById(id)
+                .orElseThrow(() -> new NotFoundRequestException("stock " + id + " does not exist"));
 
-//        TODO check for update idProduct, idSeller
-
-        if (stockData.isPresent()) {
-            Stock stock = stockData.get();
-            stock.setId(stock.getId());
-            stock.setQuantity(stockDto.getQuantity());
-            stockRepository.save(stock);
-            return stock;
-        } else {
-            throw new NotFoundRequestException("stock " + id + " don't exist");
-        }
+        stock.setId(id);
+        return stockRepository.save(stock);
     }
 
     public void delete(UUID id) throws IllegalStateException {

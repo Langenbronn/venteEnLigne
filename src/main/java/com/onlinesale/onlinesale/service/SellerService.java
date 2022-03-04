@@ -49,8 +49,12 @@ public class SellerService {
         return sellerRepository.findAll();
     }
 
-    public Optional<Seller> getByName(String name) {
+    public Optional<Seller> findByName(String name) {
         return sellerRepository.findByName(name);
+    }
+
+    public Optional<Seller> findById(UUID id) {
+        return sellerRepository.findById(id);
     }
 
 }

@@ -55,7 +55,7 @@ public class SellerController {
 
     @GetMapping("/name/{name}")
     public ResponseEntity<SellerView> findByName(@PathVariable("name") String name) {
-        return sellerService.getByName(name).map(seller -> new ResponseEntity<>(sellerMapper.entityToView(seller), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return sellerService.findByName(name).map(seller -> new ResponseEntity<>(sellerMapper.entityToView(seller), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

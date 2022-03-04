@@ -48,4 +48,8 @@ public class ProductService {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+
+    public Optional<Product> findById(UUID id) {
+        return productRepository.findById(id);
+    }
 }

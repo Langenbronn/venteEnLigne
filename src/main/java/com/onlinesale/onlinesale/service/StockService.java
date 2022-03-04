@@ -9,8 +9,6 @@ import com.onlinesale.onlinesale.model.data.Product;
 import com.onlinesale.onlinesale.model.data.Seller;
 import com.onlinesale.onlinesale.model.data.Stock;
 import com.onlinesale.onlinesale.model.dto.StockDto;
-import com.onlinesale.onlinesale.model.mapper.StockMapper;
-import com.onlinesale.onlinesale.model.view.StockView;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +16,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Data
 @Service
 public class StockService {
-    @Autowired
-    StockMapper stockMapper;
     @Autowired
     StockRepository stockRepository;
     @Autowired
@@ -32,24 +27,24 @@ public class StockService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public StockView create(StockDto stockDto) throws IllegalStateException {
-        Seller seller = sellerRepository.findById(stockDto.getIdSeller())
-                .orElseThrow(() -> new NotFoundRequestException("seller " + stockDto.getIdSeller() + " does not exist"));
+    public Stock create(Stock stock) throws IllegalStateException {
+        Seller seller = sellerRepository.findById(stock.getSeller().getId())
+                .orElseThrow(() -> new NotFoundRequestException("seller " + stock.getSeller().getId() + " does not exist"));
+        stock.setSeller(seller);
 
-        Product product = productRepository.findById(stockDto.getIdProduct())
-                .orElseThrow(() -> new NotFoundRequestException("product " + stockDto.getIdProduct() + " does not exist"));
+        Product product = productRepository.findById(stock.getProduct().getId())
+                .orElseThrow(() -> new NotFoundRequestException("product " + stock.getProduct().getId() + " does not exist"));
+        stock.setProduct(product);
 
-        Optional<Stock> stockEntity = stockRepository.findFirstBySellerIdAndProductId(stockDto.getIdSeller(), stockDto.getIdProduct());
-
-        if (stockEntity.isPresent()) {
+        if (stockRepository.findBySellerIdAndProductId(stock.getSeller().getId(), stock.getProduct().getId()).isPresent()) {
             throw new BadRequestException("stock: seller " + seller.getId() + " already have a stock of product " + product.getId());
         }
 
-        Stock stockData = stockRepository.save(new Stock(stockDto.getQuantity(), product, seller));
-        return stockMapper.entityToView(stockData);
+        return stockRepository.save(stock);
     }
 
-    public StockView update(UUID id, StockDto stockDto) {
+//    TODO
+    public Stock update(UUID id, StockDto stockDto) {
         Optional<Stock> stockData = stockRepository.findById(id);
 
 //        TODO check for update idProduct, idSeller
@@ -59,7 +54,7 @@ public class StockService {
             stock.setId(stock.getId());
             stock.setQuantity(stockDto.getQuantity());
             stockRepository.save(stock);
-            return stockMapper.entityToView(stock);
+            return stock;
         } else {
             throw new NotFoundRequestException("stock " + id + " don't exist");
         }
@@ -72,15 +67,11 @@ public class StockService {
         stockRepository.deleteById(id);
     }
 
-    public Optional<StockView> findOne(UUID id) {
-        Optional<Stock> stockData = stockRepository.findById(id);
-        return stockData.map(stock -> stockMapper.entityToView(stock));
+    public Optional<Stock> findOne(UUID id) {
+        return stockRepository.findById(id);
     }
 
-    public List<StockView> findAll() {
-        List<Stock> stockEntities = stockRepository.findAll();
-        return stockEntities.stream()
-                .map(e -> stockMapper.entityToView(e))
-                .collect(Collectors.toList());
+    public List<Stock> findAll() {
+        return stockRepository.findAll();
     }
 }

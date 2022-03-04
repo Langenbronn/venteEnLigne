@@ -24,6 +24,10 @@ public class Seller implements Serializable {
     @Column(name = "name", unique = true)
     private String name;
 
+    public Seller(UUID id) {
+        this.id = id;
+    }
+
     public Seller(String name) {
         this.name = name;
     }

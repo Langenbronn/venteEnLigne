@@ -31,6 +31,10 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
 
+    public Product(UUID id) {
+        this.id = id;
+    }
+
     public Product(String name, double price, String categorie, String description) {
         this.name = name;
         this.price = price;

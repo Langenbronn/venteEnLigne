@@ -1,5 +1,6 @@
 package com.onlinesale.onlinesale.controller;
 
+import com.onlinesale.onlinesale.model.data.Seller;
 import com.onlinesale.onlinesale.model.dto.SellerDto;
 import com.onlinesale.onlinesale.model.mapper.SellerMapper;
 import com.onlinesale.onlinesale.model.view.SellerView;
@@ -10,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/sellers")
@@ -22,13 +25,13 @@ public class SellerController {
 
     @PostMapping("/{id}")
     public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
-        SellerView sellerView = sellerService.create(sellerMapper.dtoToEntity(sellerDto));
+        Seller sellerView = sellerService.create(sellerMapper.dtoToEntity(sellerDto));
         return new ResponseEntity<>(sellerView.getName() + " has been created", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
-        SellerView sellerView = sellerService.update(id, sellerMapper.dtoToEntity(sellerDto));
+        Seller sellerView = sellerService.update(id, sellerMapper.dtoToEntity(sellerDto));
         return new ResponseEntity<>(sellerView.getName() + " has been updated", HttpStatus.CREATED);
     }
 
@@ -40,17 +43,20 @@ public class SellerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SellerView> findOne(@PathVariable("id") UUID id) {
-        return sellerService.findOne(id).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return sellerService.findOne(id).map(seller -> new ResponseEntity<>(sellerMapper.entityToView(seller), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
     public ResponseEntity<List<SellerView>> findAll() {
-        return new ResponseEntity<>(sellerService.findAll(), HttpStatus.OK);
+        List<SellerView> sellersView = sellerService.findAll()
+                .stream().map(seller -> sellerMapper.entityToView(seller))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(sellersView, HttpStatus.OK);
     }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<SellerView> findByName(@PathVariable("name") String name) {
-        return sellerService.getByName(name).map(seller -> new ResponseEntity<>(seller, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return sellerService.getByName(name).map(seller -> new ResponseEntity<>(sellerMapper.entityToView(seller), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

@@ -21,33 +21,22 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerService {
     @Autowired
-    CustomerMapper customerMapper;
-    @Autowired
     CustomerRepository customerRepository;
 
-    public CustomerView create(CustomerDto customerDto) throws IllegalStateException {
+    public Customer create(Customer customer) throws IllegalStateException {
 //        TODO Avoir des meilleurs criteres de recherche d unicite
-        if (customerRepository.findByFirstnameAndLastname(customerDto.getFirstname(), customerDto.getLastname()).isPresent()) {
-            throw new BadRequestException("customer " + customerDto.getFirstname() + " - " + customerDto.getLastname() + " does already exist");
+        if (customerRepository.findByFirstnameAndLastname(customer.getFirstname(), customer.getLastname()).isPresent()) {
+            throw new BadRequestException("customer " + customer.getFirstname() + " - " + customer.getLastname() + " does already exist");
         }
 
-        Customer customer = customerRepository.save(new Customer(customerDto.getFirstname(),
-                customerDto.getLastname(),
-                customerDto.getGender()
-        ));
-        return customerMapper.entityToView(customer);
+        return customerRepository.save(customer);
     }
 
-    public CustomerView update(UUID id, CustomerDto customerDto) {
-        Customer customer = customerRepository.findById(id)
+    public Customer update(UUID id, Customer customer) {
+        customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("customer " + id + " does not exist"));
-
-        customer.setId(customer.getId());
-        customer.setFirstname(customerDto.getFirstname());
-        customer.setLastname(customerDto.getLastname());
-        customer.setGender(customerDto.getGender());
-        customerRepository.save(customer);
-        return customerMapper.entityToView(customer);
+        customer.setId(id);
+        return customerRepository.save(customer);
     }
 
     public void delete(UUID id) {
@@ -57,15 +46,11 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    public Optional<CustomerView> findOne(UUID id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        return customer.map(product -> customerMapper.entityToView(product));
+    public Optional<Customer> findOne(UUID id) {
+        return customerRepository.findById(id);
     }
 
-    public List<CustomerView> findAll() {
-        List<Customer> customer = customerRepository.findAll();
-        return customer.stream()
-                .map(e -> customerMapper.entityToView(e))
-                .collect(Collectors.toList());
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
     }
 }

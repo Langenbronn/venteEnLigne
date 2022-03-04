@@ -31,8 +31,7 @@ public class SellerService {
                 .orElseThrow(() -> new NotFoundRequestException("seller " + id + " does not exist"));
 
         seller.setId(id);
-        sellerRepository.save(seller);
-        return seller;
+        return sellerRepository.save(seller);
     }
 
     public void delete(UUID id) throws IllegalStateException {

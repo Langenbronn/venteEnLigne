@@ -24,38 +24,32 @@ import java.util.stream.Collectors;
 @Service
 public class OrderedItemService {
     @Autowired
-    OrdererItemMapper ordererItemMapper;
-    @Autowired
     OrderedItemRepository orderedItemRepository;
     @Autowired
-    StockRepository stockRepository;
+    StockService stockService;
     @Autowired
-    OrderedRepository orderedRepository;
+    OrderedService orderedService;
 
-    public OrdererItemView create(OrderedItemDto orderedItemDto) throws IllegalStateException {
-        Stock stock = stockRepository.findById(orderedItemDto.getIdStock())
-                .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItemDto.getIdStock() + " does not exist"));
+    public OrderedItem create(OrderedItem orderedItemDto) throws IllegalStateException {
+        Stock stock = stockService.findById(orderedItemDto.getStock().getId())
+                .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItemDto.getStock().getId() + " does not exist"));
+        orderedItemDto.setStock(stock);
 
-        Ordered ordered = orderedRepository.findById(orderedItemDto.getIdOrdered())
-                .orElseThrow(() -> new NotFoundRequestException("ordered " + orderedItemDto.getIdStock() + " does not exist"));
+        Ordered ordered = orderedService.findById(orderedItemDto.getOrdered().getId())
+                .orElseThrow(() -> new NotFoundRequestException("ordered " + orderedItemDto.getOrdered().getId() + " does not exist"));
+        orderedItemDto.setOrdered(ordered);
 
-        OrderedItem orderedItem = orderedItemRepository.save(new OrderedItem(orderedItemDto.getQuantity(),
-                orderedItemDto.getPrice(),
-                stock,
-                ordered
-        ));
-        return ordererItemMapper.entityToView(orderedItem);
+        return orderedItemRepository.save(orderedItemDto);
     }
 
-    public OrdererItemView update(UUID id, OrderedItemDto orderedItemDto) {
-        OrderedItem orderedItem = orderedItemRepository.findById(id)
+    public OrderedItem update(UUID id, OrderedItem orderedItem) {
+        orderedItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));
 
-        orderedItem.setId(orderedItem.getId());
-        orderedItem.setQuantity(orderedItemDto.getQuantity());
-        orderedItem.setPrice(orderedItemDto.getPrice());
-        orderedItemRepository.save(orderedItem);
-        return ordererItemMapper.entityToView(orderedItem);
+        orderedItem.setId(id);
+        orderedItem.setQuantity(orderedItem.getQuantity());
+        orderedItem.setPrice(orderedItem.getPrice());
+        return orderedItemRepository.save(orderedItem);
     }
 
     public void delete(UUID id) {
@@ -65,15 +59,11 @@ public class OrderedItemService {
         orderedItemRepository.deleteById(id);
     }
 
-    public Optional<OrdererItemView> findOne(UUID id) {
-        Optional<OrderedItem> orderedItem = orderedItemRepository.findById(id);
-        return orderedItem.map(product -> ordererItemMapper.entityToView(product));
+    public Optional<OrderedItem> findOne(UUID id) {
+        return orderedItemRepository.findById(id);
     }
 
-    public List<OrdererItemView> findAll() {
-        List<OrderedItem> orderedItem = orderedItemRepository.findAll();
-        return orderedItem.stream()
-                .map(e -> ordererItemMapper.entityToView(e))
-                .collect(Collectors.toList());
+    public List<OrderedItem> findAll() {
+        return orderedItemRepository.findAll();
     }
 }

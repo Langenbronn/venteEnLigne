@@ -36,22 +36,11 @@ public class OrderedItem implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Ordered ordered;
 
-    @JoinColumn(name = "basket")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Basket basket;
-
     public OrderedItem(int quantity, double price, Stock stock,Ordered ordered) {
         this.quantity = quantity;
         this.price = price;
         this.stock = stock;
         this.ordered = ordered;
-    }
-
-    public OrderedItem(int quantity, double price, Stock stock,Basket basket) {
-        this.quantity = quantity;
-        this.price = price;
-        this.stock = stock;
-        this.basket = basket;
     }
 
     @Override

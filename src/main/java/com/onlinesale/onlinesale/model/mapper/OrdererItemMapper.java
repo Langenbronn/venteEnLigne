@@ -1,6 +1,9 @@
 package com.onlinesale.onlinesale.model.mapper;
 
+import com.onlinesale.onlinesale.model.data.Ordered;
 import com.onlinesale.onlinesale.model.data.OrderedItem;
+import com.onlinesale.onlinesale.model.data.Stock;
+import com.onlinesale.onlinesale.model.dto.OrderedItemDto;
 import com.onlinesale.onlinesale.model.view.OrdererItemView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,5 +21,12 @@ public interface OrdererItemMapper {
     })
     OrdererItemView entityToView(OrderedItem orderedItem);
 
-    OrderedItem viewToEntity(OrdererItemView ordererItemView);
+    default OrderedItem dtoToEntity(OrderedItemDto orderedItemDto) {
+        OrderedItem orderedItem = new OrderedItem();
+        orderedItem.setQuantity(orderedItemDto.getQuantity());
+        orderedItem.setPrice(orderedItemDto.getPrice());
+        orderedItem.setStock(new Stock(orderedItemDto.getIdStock()));
+        orderedItem.setOrdered(new Ordered(orderedItemDto.getIdOrdered()));
+        return orderedItem;
+    };
 }

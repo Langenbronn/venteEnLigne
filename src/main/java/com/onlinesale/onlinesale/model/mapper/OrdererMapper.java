@@ -1,6 +1,7 @@
 package com.onlinesale.onlinesale.model.mapper;
 
 import com.onlinesale.onlinesale.model.data.Ordered;
+import com.onlinesale.onlinesale.model.dto.OrderedDto;
 import com.onlinesale.onlinesale.model.view.OrdererView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,5 +18,5 @@ public interface OrdererMapper {
     })
     OrdererView entityToView(Ordered ordered);
 
-    Ordered viewToEntity(OrdererView ordererView);
+    Ordered dtoToEntity(OrderedDto orderedDto);
 }

@@ -33,6 +33,10 @@ public class Stock implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Seller seller;
 
+    public Stock(UUID id) {
+        this.id = id;
+    }
+
     public Stock(int quantity) {
         this.quantity = quantity;
     }

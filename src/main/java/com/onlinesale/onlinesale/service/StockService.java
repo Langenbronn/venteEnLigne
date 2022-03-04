@@ -65,4 +65,8 @@ public class StockService {
     public List<Stock> findAll() {
         return stockRepository.findAll();
     }
+
+    public Optional<Stock> findById(UUID id) {
+        return stockRepository.findById(id);
+    }
 }

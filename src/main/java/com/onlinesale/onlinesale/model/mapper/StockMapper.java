@@ -21,7 +21,7 @@ public interface StockMapper {
     })
     StockView entityToView(Stock stock);
 
-default Stock DtoToEntity(StockDto stockDto) {
+default Stock dtoToEntity(StockDto stockDto) {
         Stock stock = new Stock();
         stock.setQuantity(stockDto.getQuantity());
         stock.setSeller(new Seller(stockDto.getIdSeller()));

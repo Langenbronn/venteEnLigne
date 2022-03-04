@@ -24,14 +24,14 @@ public class StockController {
 
     @PostMapping("/{id}")
     public ResponseEntity<String> create(@RequestBody StockDto stockDto) {
-        Stock stock = stockService.create(stockMapper.DtoToEntity(stockDto));
+        Stock stock = stockService.create(stockMapper.dtoToEntity(stockDto));
         return new ResponseEntity<>(stock.getId() + " has been created", HttpStatus.CREATED);
     }
 
 //    TODO stockDto avec seulement quantite
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody StockDto stockDto) {
-        Stock stock = stockService.update(id, stockMapper.DtoToEntity(stockDto));
+        Stock stock = stockService.update(id, stockMapper.dtoToEntity(stockDto));
         return new ResponseEntity<>(stock.getId() + " has been updated", HttpStatus.CREATED);
     }
 

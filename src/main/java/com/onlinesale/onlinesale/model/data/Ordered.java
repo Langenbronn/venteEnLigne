@@ -26,6 +26,10 @@ public class Ordered implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
+    public Ordered(UUID id) {
+        this.id = id;
+    }
+
     public Ordered(Customer customer) {
         this.customer = customer;
     }

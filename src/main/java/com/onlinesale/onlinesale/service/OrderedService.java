@@ -1,14 +1,9 @@
 package com.onlinesale.onlinesale.service;
 
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
-import com.onlinesale.onlinesale.repository.CustomerRepository;
-import com.onlinesale.onlinesale.repository.OrderedItemRepository;
-import com.onlinesale.onlinesale.repository.OrderedRepository;
 import com.onlinesale.onlinesale.model.data.Customer;
 import com.onlinesale.onlinesale.model.data.Ordered;
-import com.onlinesale.onlinesale.model.dto.OrderedDto;
-import com.onlinesale.onlinesale.model.mapper.OrdererMapper;
-import com.onlinesale.onlinesale.model.view.OrdererView;
+import com.onlinesale.onlinesale.repository.OrderedRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,24 +11,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Data
 @Service
 public class OrderedService {
     @Autowired
-    OrdererMapper ordererMapper;
-    @Autowired
     OrderedRepository orderedRepository;
     @Autowired
-    CustomerRepository customerRepository;
-    @Autowired
-    OrderedItemRepository orderedItemRepository;
+    CustomerService customerService;
 
-    public OrdererView create(OrderedDto orderedDto) throws IllegalStateException {
-        Customer customer = customerRepository.findById(orderedDto.getIdCustomer())
-                .orElseThrow(() -> new NotFoundRequestException("customer " + orderedDto.getIdCustomer() + " does not exist"));
+    public Ordered create(Ordered ordered) throws IllegalStateException {
+        Customer customer = customerService.findById(ordered.getCustomer().getId())
+                .orElseThrow(() -> new NotFoundRequestException("customer " + ordered.getCustomer().getId() + " does not exist"));
+
+        ordered.setCustomer(customer);
 
 
 //        List<OrderedItem> orderedItems = new ArrayList<>();
@@ -43,8 +35,7 @@ public class OrderedService {
 //
 //            orderedItems.add(orderedItem);
 //        }
-        Ordered ordered = orderedRepository.save(new Ordered(customer));
-        return ordererMapper.entityToView(ordered);
+        return orderedRepository.save(ordered);
     }
 //TODO
 //    public OrdererView update(UUID id, OrderedDto orderedDto) {
@@ -75,15 +66,15 @@ public class OrderedService {
         orderedRepository.deleteById(id);
     }
 
-    public Optional<OrdererView> findOne(UUID id) {
-        Optional<Ordered> orderedData = orderedRepository.findById(id);
-        return orderedData.map(ordered -> ordererMapper.entityToView(ordered));
+    public Optional<Ordered> findOne(UUID id) {
+        return orderedRepository.findById(id);
     }
 
-    public List<OrdererView> findAll() {
-        List<Ordered> ordereds = orderedRepository.findAll();
-        return ordereds.stream()
-                .map(ordered -> ordererMapper.entityToView(ordered))
-                .collect(Collectors.toList());
+    public List<Ordered> findAll() {
+        return orderedRepository.findAll();
+    }
+
+    public Optional<Ordered> findById(UUID id) {
+        return orderedRepository.findById(id);
     }
 }

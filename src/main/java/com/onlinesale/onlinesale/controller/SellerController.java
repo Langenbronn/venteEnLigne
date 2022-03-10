@@ -7,6 +7,7 @@ import com.onlinesale.onlinesale.model.mapper.SellerMapper;
 import com.onlinesale.onlinesale.model.view.SellerView;
 import com.onlinesale.onlinesale.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,15 +54,19 @@ public class SellerController {
 
         return EntityModel.of(sellerView,
                 linkTo(methodOn(SellerController.class).findOne(id)).withSelfRel(),
-                linkTo(methodOn(SellerController.class).findAll()).withRel("sellersss"));
+                linkTo(methodOn(SellerController.class).findAll()).withRel("sellers"));
     }
 
     @GetMapping
-    public ResponseEntity<List<SellerView>> findAll() {
-        List<SellerView> sellerViews = sellerService.findAll()
-                .stream().map(seller -> sellerMapper.entityToView(seller))
+    public CollectionModel<EntityModel<SellerView>> findAll() {
+        List<EntityModel<SellerView>> sellerViews = sellerService.findAll()
+                .stream()
+                .map(seller -> sellerMapper.entityToView(seller))
+                .map(sellerView -> EntityModel.of(sellerView,
+                        linkTo(methodOn(SellerController.class).findOne(sellerView.getId())).withSelfRel(),
+                        linkTo(methodOn(SellerController.class).findAll()).withRel("sellers")))
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(sellerViews, HttpStatus.OK);
+        return CollectionModel.of(sellerViews, linkTo(methodOn(SellerController.class).findAll()).withSelfRel());
     }
 
     @GetMapping("/name/{name}")

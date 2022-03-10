@@ -33,7 +33,7 @@ public class SellerController {
     SellerModelAssembler sellerModelAssembler;
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> create(@RequestBody SellerDto sellerDto) {
+    public ResponseEntity<EntityModel<SellerView>> create(@RequestBody SellerDto sellerDto) {
         Seller seller = sellerService.create(sellerMapper.dtoToEntity(sellerDto));
         SellerView sellerView = sellerMapper.entityToView(seller);
         EntityModel<SellerView> entityModel = sellerModelAssembler.toModel(sellerView);
@@ -44,7 +44,7 @@ public class SellerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
+    public ResponseEntity<EntityModel<SellerView>> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
         Seller seller = sellerService.update(id, sellerMapper.dtoToEntity(sellerDto));
         SellerView sellerView = sellerMapper.entityToView(seller);
         EntityModel<SellerView> entityModel = sellerModelAssembler.toModel(sellerView);

@@ -10,6 +10,7 @@ import com.onlinesale.onlinesale.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,21 +33,32 @@ public class SellerController {
     SellerModelAssembler sellerModelAssembler;
 
     @PostMapping("/{id}")
-    public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
+    public ResponseEntity<?> create(@RequestBody SellerDto sellerDto) {
         Seller seller = sellerService.create(sellerMapper.dtoToEntity(sellerDto));
-        return new ResponseEntity<>(seller.getName() + " has been created", HttpStatus.CREATED);
+        SellerView sellerView = sellerMapper.entityToView(seller);
+        EntityModel<SellerView> entityModel = sellerModelAssembler.toModel(sellerView);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
+    public ResponseEntity<?> update(@PathVariable("id") UUID id, @RequestBody SellerDto sellerDto) {
         Seller seller = sellerService.update(id, sellerMapper.dtoToEntity(sellerDto));
-        return new ResponseEntity<>(seller.getName() + " has been updated", HttpStatus.CREATED);
+        SellerView sellerView = sellerMapper.entityToView(seller);
+        EntityModel<SellerView> entityModel = sellerModelAssembler.toModel(sellerView);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> delete(@PathVariable("id") UUID id) {
         sellerService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")

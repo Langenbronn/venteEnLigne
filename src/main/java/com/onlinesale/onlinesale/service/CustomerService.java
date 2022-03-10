@@ -28,6 +28,7 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+    //    TODO change
     public Customer update(UUID id, Customer customer) {
         customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("customer " + id + " does not exist"));

@@ -26,11 +26,11 @@ public class SellerService {
         return sellerRepository.save(seller);
     }
 
-    public Seller update(UUID id, Seller seller) {
-        sellerRepository.findById(id)
+    public Seller update(UUID id, Seller newSeller) {
+        Seller seller = sellerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("seller " + id + " does not exist"));
 
-        seller.setId(id);
+        seller.setName(newSeller.getName());
         return sellerRepository.save(seller);
     }
 

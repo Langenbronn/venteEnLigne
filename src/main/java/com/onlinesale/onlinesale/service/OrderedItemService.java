@@ -36,6 +36,7 @@ public class OrderedItemService {
         return orderedItemRepository.save(orderedItemDto);
     }
 
+//    TODO change
     public OrderedItem update(UUID id, OrderedItem orderedItem) {
         orderedItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));

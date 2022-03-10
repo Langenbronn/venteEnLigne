@@ -28,6 +28,7 @@ public class OrderedService {
         ordered.setCustomer(customer);
 
 
+        //    TODO change
 //        List<OrderedItem> orderedItems = new ArrayList<>();
 //        for (UUID idOrderedItem : orderedDto.getIdOrderedItems()) {
 //            OrderedItem orderedItem = orderedItemRepository.findById(idOrderedItem)

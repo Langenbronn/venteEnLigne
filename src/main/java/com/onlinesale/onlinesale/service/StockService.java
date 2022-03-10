@@ -40,6 +40,7 @@ public class StockService {
         return stockRepository.save(stock);
     }
 
+    //    TODO change
     public Stock update(UUID id, Stock stock) {
         stockRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("stock " + id + " does not exist"));

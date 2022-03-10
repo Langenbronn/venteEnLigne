@@ -26,6 +26,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    //    TODO change
     public Product update(UUID id, Product product) {
         productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));

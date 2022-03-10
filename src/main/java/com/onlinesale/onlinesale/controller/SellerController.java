@@ -1,5 +1,6 @@
 package com.onlinesale.onlinesale.controller;
 
+import com.onlinesale.onlinesale.controller.assembler.SellerModelAssembler;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
 import com.onlinesale.onlinesale.model.data.Seller;
 import com.onlinesale.onlinesale.model.dto.SellerDto;
@@ -27,6 +28,8 @@ public class SellerController {
     SellerMapper sellerMapper;
     @Autowired
     SellerService sellerService;
+    @Autowired
+    SellerModelAssembler sellerModelAssembler;
 
     @PostMapping("/{id}")
     public ResponseEntity<String> create(@RequestBody SellerDto sellerDto) {
@@ -52,9 +55,7 @@ public class SellerController {
                 .map(seller -> sellerMapper.entityToView(seller))
                 .orElseThrow(() -> new NotFoundRequestException("seller " + id + " does not exist"));
 
-        return EntityModel.of(sellerView,
-                linkTo(methodOn(SellerController.class).findOne(id)).withSelfRel(),
-                linkTo(methodOn(SellerController.class).findAll()).withRel("sellers"));
+        return sellerModelAssembler.toModel(sellerView);
     }
 
     @GetMapping
@@ -62,9 +63,7 @@ public class SellerController {
         List<EntityModel<SellerView>> sellerViews = sellerService.findAll()
                 .stream()
                 .map(seller -> sellerMapper.entityToView(seller))
-                .map(sellerView -> EntityModel.of(sellerView,
-                        linkTo(methodOn(SellerController.class).findOne(sellerView.getId())).withSelfRel(),
-                        linkTo(methodOn(SellerController.class).findAll()).withRel("sellers")))
+                .map(sellerModelAssembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(sellerViews, linkTo(methodOn(SellerController.class).findAll()).withSelfRel());
     }

@@ -26,12 +26,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    //    TODO change
-    public Product update(UUID id, Product product) {
-        productRepository.findById(id)
+    public Product update(UUID id, Product newProduct) {
+        Product product =productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));
 
-        product.setId(id);
+        product.setName(newProduct.getName());
+        product.setPrice(newProduct.getPrice());
+        product.setCategorie(newProduct.getCategorie());
+        product.setDescription(newProduct.getDescription());
         return productRepository.save(product);
     }
 

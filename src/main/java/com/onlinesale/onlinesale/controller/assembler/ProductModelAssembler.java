@@ -1,5 +1,6 @@
 package com.onlinesale.onlinesale.controller.assembler;
 
+import com.onlinesale.onlinesale.controller.ProductController;
 import com.onlinesale.onlinesale.controller.SellerController;
 import com.onlinesale.onlinesale.model.view.ProductView;
 import com.onlinesale.onlinesale.model.view.SellerView;
@@ -17,7 +18,7 @@ public class ProductModelAssembler implements RepresentationModelAssembler<Produ
     public EntityModel<ProductView> toModel(ProductView productView) {
 
         return EntityModel.of(productView,
-                linkTo(methodOn(SellerController.class).findOne(productView.getId())).withSelfRel(),
-                linkTo(methodOn(SellerController.class).findAll()).withRel("products"));
+                linkTo(methodOn(ProductController.class).findOne(productView.getId())).withSelfRel(),
+                linkTo(methodOn(ProductController.class).findAll()).withRel("products"));
     }
 }

@@ -66,7 +66,7 @@ public class CustomerController {
         return customerService.findOne(id)
                 .map(customerMapper::entityToView)
                 .map(customerModelAssembler::toModel)
-                .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));
+                .orElseThrow(() -> new NotFoundRequestException("custome " + id + " does not exist"));
     }
 
     @GetMapping

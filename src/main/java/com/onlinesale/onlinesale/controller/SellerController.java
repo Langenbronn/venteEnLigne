@@ -63,18 +63,17 @@ public class SellerController {
 
     @GetMapping("/{id}")
     public EntityModel<SellerView> findOne(@PathVariable("id") UUID id) {
-        SellerView sellerView = sellerService.findOne(id)
-                .map(seller -> sellerMapper.entityToView(seller))
+        return sellerService.findOne(id)
+                .map(sellerMapper::entityToView)
+                .map(sellerModelAssembler::toModel)
                 .orElseThrow(() -> new NotFoundRequestException("seller " + id + " does not exist"));
-
-        return sellerModelAssembler.toModel(sellerView);
     }
 
     @GetMapping
     public CollectionModel<EntityModel<SellerView>> findAll() {
         List<EntityModel<SellerView>> sellerViews = sellerService.findAll()
                 .stream()
-                .map(seller -> sellerMapper.entityToView(seller))
+                .map(sellerMapper::entityToView)
                 .map(sellerModelAssembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(sellerViews, linkTo(methodOn(SellerController.class).findAll()).withSelfRel());
@@ -82,11 +81,10 @@ public class SellerController {
 
     @GetMapping("/name/{name}")
     public EntityModel<SellerView>  findByName(@PathVariable("name") String name) {
-        SellerView sellerView = sellerService.findByName(name)
+        return sellerService.findByName(name)
                 .map(seller -> sellerMapper.entityToView(seller))
+                .map(sellerModelAssembler::toModel)
                 .orElseThrow(() -> new NotFoundRequestException("seller " + name + " does not exist"));
-
-        return sellerModelAssembler.toModel(sellerView);
     }
 
 }

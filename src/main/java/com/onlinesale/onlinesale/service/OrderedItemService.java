@@ -24,26 +24,25 @@ public class OrderedItemService {
     @Autowired
     OrderedService orderedService;
 
-    public OrderedItem create(OrderedItem orderedItemDto) throws IllegalStateException {
-        Stock stock = stockService.findById(orderedItemDto.getStock().getId())
-                .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItemDto.getStock().getId() + " does not exist"));
-        orderedItemDto.setStock(stock);
+    public OrderedItem create(OrderedItem orderedItem) throws IllegalStateException {
+        Stock stock = stockService.findById(orderedItem.getStock().getId())
+                .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItem.getStock().getId() + " does not exist"));
+        orderedItem.setStock(stock);
 
-        Ordered ordered = orderedService.findById(orderedItemDto.getOrdered().getId())
-                .orElseThrow(() -> new NotFoundRequestException("ordered " + orderedItemDto.getOrdered().getId() + " does not exist"));
-        orderedItemDto.setOrdered(ordered);
+        Ordered ordered = orderedService.findById(orderedItem.getOrdered().getId())
+                .orElseThrow(() -> new NotFoundRequestException("ordered " + orderedItem.getOrdered().getId() + " does not exist"));
+        orderedItem.setOrdered(ordered);
 
-        return orderedItemRepository.save(orderedItemDto);
+        return orderedItemRepository.save(orderedItem);
     }
 
 //    TODO change
-    public OrderedItem update(UUID id, OrderedItem orderedItem) {
-        orderedItemRepository.findById(id)
+    public OrderedItem update(UUID id, OrderedItem newOrderedItem) {
+        OrderedItem orderedItem =orderedItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));
 
-        orderedItem.setId(id);
-        orderedItem.setQuantity(orderedItem.getQuantity());
-        orderedItem.setPrice(orderedItem.getPrice());
+        orderedItem.setQuantity(newOrderedItem.getQuantity());
+        orderedItem.setPrice(newOrderedItem.getPrice());
         return orderedItemRepository.save(orderedItem);
     }
 

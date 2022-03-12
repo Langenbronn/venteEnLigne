@@ -80,7 +80,7 @@ public class SellerController {
     }
 
     @GetMapping("/name/{name}")
-    public EntityModel<SellerView>  findByName(@PathVariable("name") String name) {
+    public EntityModel<SellerView> findByName(@PathVariable("name") String name) {
         return sellerService.findByName(name)
                 .map(seller -> sellerMapper.entityToView(seller))
                 .map(sellerModelAssembler::toModel)

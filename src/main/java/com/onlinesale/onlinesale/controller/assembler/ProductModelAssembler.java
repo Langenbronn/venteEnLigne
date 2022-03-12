@@ -1,9 +1,7 @@
 package com.onlinesale.onlinesale.controller.assembler;
 
 import com.onlinesale.onlinesale.controller.ProductController;
-import com.onlinesale.onlinesale.controller.SellerController;
 import com.onlinesale.onlinesale.model.view.ProductView;
-import com.onlinesale.onlinesale.model.view.SellerView;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;

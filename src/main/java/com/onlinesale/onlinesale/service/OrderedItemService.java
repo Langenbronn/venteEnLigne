@@ -36,9 +36,9 @@ public class OrderedItemService {
         return orderedItemRepository.save(orderedItem);
     }
 
-//    TODO change
+    //    TODO change
     public OrderedItem update(UUID id, OrderedItem newOrderedItem) {
-        OrderedItem orderedItem =orderedItemRepository.findById(id)
+        OrderedItem orderedItem = orderedItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));
 
         orderedItem.setQuantity(newOrderedItem.getQuantity());

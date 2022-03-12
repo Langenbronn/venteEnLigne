@@ -27,7 +27,7 @@ public class ProductService {
     }
 
     public Product update(UUID id, Product newProduct) {
-        Product product =productRepository.findById(id)
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("product " + id + " does not exist"));
 
         product.setName(newProduct.getName());

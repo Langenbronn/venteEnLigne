@@ -1,7 +1,6 @@
 package com.onlinesale.onlinesale.controller.assembler;
 
 import com.onlinesale.onlinesale.controller.CustomerController;
-import com.onlinesale.onlinesale.controller.SellerController;
 import com.onlinesale.onlinesale.model.view.CustomerView;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;

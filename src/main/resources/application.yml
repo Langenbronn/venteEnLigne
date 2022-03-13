@@ -1,0 +1,36 @@
+#Global configuration
+spring:
+  application:
+    name: onlinesale
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: ${DB_PASSWORD}
+    initialization-mode: always
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: none
+  # Hibernate ddl auto (create, create-drop, validate, update)
+  #     ddl-auto: update
+#Tomcat configuration
+server:
+  port: 9001
+  servlet:
+    context-path: /vente-en-ligne
+#Log level configuration
+logging:
+  level:
+    root: ERROR
+    com:
+      onlinesale: INFO
+  org:
+    springframework:
+      boot:
+        web:
+          embedded:
+            tomcat: INFO

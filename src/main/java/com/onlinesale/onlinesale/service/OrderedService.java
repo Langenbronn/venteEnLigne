@@ -31,7 +31,7 @@ public class OrderedService {
 
     public void delete(UUID id) {
         if (orderedRepository.findById(id).isEmpty()) {
-            throw new NotFoundRequestException("orderedItem " + id + " don't exist");
+            throw new NotFoundRequestException("ordered " + id + " don't exist");
         }
         orderedRepository.deleteById(id);
     }

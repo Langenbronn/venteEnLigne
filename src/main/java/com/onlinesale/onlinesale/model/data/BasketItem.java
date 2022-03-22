@@ -16,29 +16,38 @@ import java.util.UUID;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "basket")
-public class Basket implements Serializable {
+@Table(name = "basketitem")
+public class BasketItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @JoinColumn(name = "customer")
+    @Column(name = "quantity")
+    private int quantity;
+
+    @Column(name = "price")
+    private double price;
+
+    @JoinColumn(name = "stock")
     @OneToOne(fetch = FetchType.EAGER)
-    private Customer customer;
+    private Stock stock;
 
-    public Basket(UUID id) {
-        this.id = id;
-    }
+    @JoinColumn(name = "basket")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Basket basket;
 
-    public Basket(Customer customer) {
-        this.customer = customer;
+    public BasketItem(int quantity, double price, Stock stock, Basket basket) {
+        this.quantity = quantity;
+        this.price = price;
+        this.stock = stock;
+        this.basket = basket;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Basket product = (Basket) o;
+        BasketItem product = (BasketItem) o;
         return id != null && Objects.equals(id, product.id);
     }
 

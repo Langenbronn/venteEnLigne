@@ -77,7 +77,7 @@ public class OrderedItemController {
                 .map(ordererItemMapper::entityToView)
                 .map(orderedItemModelAssembler::toModel)
                 .collect(Collectors.toList());
-        return CollectionModel.of(ordererItemViews, linkTo(methodOn(SellerController.class).findAll()).withSelfRel());
+        return CollectionModel.of(ordererItemViews, linkTo(methodOn(OrderedItemController.class).findAll()).withSelfRel());
     }
 
 }

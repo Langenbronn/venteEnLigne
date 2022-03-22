@@ -1,12 +1,13 @@
 package com.onlinesale.onlinesale.controller;
 
-import com.onlinesale.onlinesale.controller.assembler.OrderedModelAssembler;
+import com.onlinesale.onlinesale.controller.assembler.BasketModelAssembler;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
-import com.onlinesale.onlinesale.model.data.Ordered;
-import com.onlinesale.onlinesale.model.dto.OrderedDto;
-import com.onlinesale.onlinesale.model.mapper.OrdererMapper;
+import com.onlinesale.onlinesale.model.data.Basket;
+import com.onlinesale.onlinesale.model.dto.BasketDto;
+import com.onlinesale.onlinesale.model.mapper.BasketMapper;
+import com.onlinesale.onlinesale.model.view.BasketView;
 import com.onlinesale.onlinesale.model.view.OrdererView;
-import com.onlinesale.onlinesale.service.OrderedService;
+import com.onlinesale.onlinesale.service.BasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -23,20 +24,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/ordereds")
-public class OrderedController {
+@RequestMapping("/api/baskets")
+public class BasketController {
     @Autowired
-    OrdererMapper ordererMapper;
+    BasketMapper basketMapper;
     @Autowired
-    OrderedService orderedService;
+    BasketService basketService;
     @Autowired
-    OrderedModelAssembler orderedModelAssembler;
+    BasketModelAssembler basketModelAssembler;
 
     @PostMapping("/{id}")
-    public ResponseEntity<EntityModel<OrdererView>> create(@RequestBody OrderedDto orderedDto) {
-        Ordered ordered = orderedService.create(ordererMapper.dtoToEntity(orderedDto));
-        OrdererView ordererItemView = ordererMapper.entityToView(ordered);
-        EntityModel<OrdererView> entityModel = orderedModelAssembler.toModel(ordererItemView);
+    public ResponseEntity<EntityModel<BasketView>> create(@RequestBody BasketDto basketDto) {
+        Basket basket = basketService.create(basketMapper.dtoToEntity(basketDto));
+        BasketView basketView = basketMapper.entityToView(basket);
+        EntityModel<BasketView> entityModel = basketModelAssembler.toModel(basketView);
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -53,27 +54,27 @@ public class OrderedController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> delete(@PathVariable("id") UUID id) {
-        orderedService.delete(id);
+        basketService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public EntityModel<OrdererView> findOne(@PathVariable("id") UUID id) {
-        return orderedService.findOne(id)
-                .map(ordererMapper::entityToView)
-                .map(orderedModelAssembler::toModel)
-                .orElseThrow(() -> new NotFoundRequestException(" ordered " + id + " does not exist"));
+    public EntityModel<BasketView> findOne(@PathVariable("id") UUID id) {
+        return basketService.findOne(id)
+                .map(basketMapper::entityToView)
+                .map(basketModelAssembler::toModel)
+                .orElseThrow(() -> new NotFoundRequestException("basket " + id + " does not exist"));
 
     }
 
     @GetMapping
-    public CollectionModel<EntityModel<OrdererView>> findAll() {
-        List<EntityModel<OrdererView>> ordererViews = orderedService.findAll()
+    public CollectionModel<EntityModel<BasketView>> findAll() {
+        List<EntityModel<BasketView>> basketViews = basketService.findAll()
                 .stream()
-                .map(ordererMapper::entityToView)
-                .map(orderedModelAssembler::toModel)
+                .map(basketMapper::entityToView)
+                .map(basketModelAssembler::toModel)
                 .collect(Collectors.toList());
-        return CollectionModel.of(ordererViews, linkTo(methodOn(OrderedController.class).findAll()).withSelfRel());
+        return CollectionModel.of(basketViews, linkTo(methodOn(BasketController.class).findAll()).withSelfRel());
     }
 
 }

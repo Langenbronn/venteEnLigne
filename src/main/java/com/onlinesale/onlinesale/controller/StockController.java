@@ -77,7 +77,7 @@ public class StockController {
                 .map(stockMapper::entityToView)
                 .map(stockModelAssembler::toModel)
                 .collect(Collectors.toList());
-        return CollectionModel.of(stockViews, linkTo(methodOn(SellerController.class).findAll()).withSelfRel());
+        return CollectionModel.of(stockViews, linkTo(methodOn(StockController.class).findAll()).withSelfRel());
     }
 
 }

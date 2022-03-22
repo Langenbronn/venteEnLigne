@@ -1,6 +1,7 @@
 package com.onlinesale.onlinesale.model.mapper;
 
 import com.onlinesale.onlinesale.model.data.Basket;
+import com.onlinesale.onlinesale.model.dto.BasketDto;
 import com.onlinesale.onlinesale.model.view.BasketView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,5 +18,5 @@ public interface BasketMapper {
     })
     BasketView entityToView(Basket basket);
 
-    Basket viewToEntity(BasketView basketView);
+    Basket dtoToEntity(BasketDto basketDto);
 }

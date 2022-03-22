@@ -76,7 +76,7 @@ public class CustomerController {
                 .map(customerMapper::entityToView)
                 .map(customerModelAssembler::toModel)
                 .collect(Collectors.toList());
-        return CollectionModel.of(customerViews, linkTo(methodOn(SellerController.class).findAll()).withSelfRel());
+        return CollectionModel.of(customerViews, linkTo(methodOn(CustomerController.class).findAll()).withSelfRel());
     }
 
 }

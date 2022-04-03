@@ -36,6 +36,10 @@ public class BasketItem implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Basket basket;
 
+    public BasketItem(UUID id) {
+        this.id = id;
+    }
+
     public BasketItem(int quantity, double price, Stock stock, Basket basket) {
         this.quantity = quantity;
         this.price = price;

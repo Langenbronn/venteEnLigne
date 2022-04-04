@@ -32,8 +32,8 @@ public class BasketItem implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Stock stock;
 
-    @JoinColumn(name = "basket")
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="basket", nullable=false)
     private Basket basket;
 
     public BasketItem(UUID id) {

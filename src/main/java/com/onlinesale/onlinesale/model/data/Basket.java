@@ -27,8 +27,7 @@ public class Basket implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
-    @JoinColumn(name = "basketitem")
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="basket")
     private Set<BasketItem> basketItems;
 
     public Basket(UUID id) {

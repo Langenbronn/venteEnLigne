@@ -6,7 +6,6 @@ import com.onlinesale.onlinesale.model.data.Basket;
 import com.onlinesale.onlinesale.model.dto.BasketDto;
 import com.onlinesale.onlinesale.model.mapper.BasketMapper;
 import com.onlinesale.onlinesale.model.view.BasketView;
-import com.onlinesale.onlinesale.model.view.OrdererView;
 import com.onlinesale.onlinesale.service.BasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -44,12 +43,17 @@ public class BasketController {
                 .body(entityModel);
     }
 
-//    TODO fix
-//    @PutMapping("/{id}")
-//    public ResponseEntity<String> update(@PathVariable("id") UUID id, @RequestBody OrderedDto orderedItemDto) {
-//        OrdererView ordererItemView = orderedService.update(id, orderedItemDto);
-//        return new ResponseEntity<>(ordererItemView.getId() + " has been updated", HttpStatus.CREATED);
-//    }
+    @PutMapping("/{id}/orderer")
+    public ResponseEntity<?> update(@PathVariable("id") UUID id) {
+        basketService.updateToOrderer(id);
+        return ResponseEntity.noContent().build();
+//        BasketView basketView = basketMapper.entityToView(basket);
+//        EntityModel<BasketView> entityModel = basketModelAssembler.toModel(basketView);
+//
+//        return ResponseEntity
+//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+//                .body(entityModel);
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

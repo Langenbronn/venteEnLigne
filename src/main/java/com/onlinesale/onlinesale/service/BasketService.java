@@ -6,6 +6,7 @@ import com.onlinesale.onlinesale.repository.BasketRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -45,7 +46,7 @@ public class BasketService {
         return basketRepository.save(newBasket);
     }
 
-
+    @Transactional(rollbackFor = {Exception.class})
     public void updateToOrderer(UUID id) {
         Basket basket = this.findOne(id)
                 .orElseThrow(() -> new NotFoundRequestException("basket id " + id + " does not exist"));

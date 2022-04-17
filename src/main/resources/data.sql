@@ -38,6 +38,6 @@ INSERT INTO ORDEREDITEM(id, quantity, price, stock, ordered) VALUES ('91b5fc38-d
 
 INSERT INTO BASKET(id, customer) VALUES ('52eb9f0e-7185-4763-8126-342a1edc580a', 'f05157b5-e9fb-45d1-9242-4553bd742c0c');
 
-INSERT INTO BASKETITEM(id, quantity, price, stock, basket) VALUES ('4d7a9ba7-475e-4cab-bebb-ee195453b985', 1, 30.71, '5af07b82-e094-4759-aa4a-1962b28c0444', '52eb9f0e-7185-4763-8126-342a1edc580a');
-INSERT INTO BASKETITEM(id, quantity, price, stock, basket) VALUES ('1ea73316-0ee9-40a1-be61-5d167c8e41ef', 1, 39.49, '492d93eb-e15d-42ce-8370-aed31233bf9e', '52eb9f0e-7185-4763-8126-342a1edc580a');
-INSERT INTO BASKETITEM(id, quantity, price, stock, basket) VALUES ('c28ce999-d84e-48d6-8d6b-b8dabe217dae', 2, 2.99, 'c736525f-1b42-4e9d-ad75-8feea459ecad', '52eb9f0e-7185-4763-8126-342a1edc580a');
+INSERT INTO BASKETITEM(id, quantity, price, stock, basket) VALUES ('4d7a9ba7-475e-4cab-bebb-ee195453b985', 11, 66.66, '5af07b82-e094-4759-aa4a-1962b28c0444', '52eb9f0e-7185-4763-8126-342a1edc580a');
+INSERT INTO BASKETITEM(id, quantity, price, stock, basket) VALUES ('1ea73316-0ee9-40a1-be61-5d167c8e41ef', 21, 11.11, '492d93eb-e15d-42ce-8370-aed31233bf9e', '52eb9f0e-7185-4763-8126-342a1edc580a');
+INSERT INTO BASKETITEM(id, quantity, price, stock, basket) VALUES ('c28ce999-d84e-48d6-8d6b-b8dabe217dae', 22, 2.22, 'c736525f-1b42-4e9d-ad75-8feea459ecad', '52eb9f0e-7185-4763-8126-342a1edc580a');

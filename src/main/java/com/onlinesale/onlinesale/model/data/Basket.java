@@ -9,6 +9,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -26,8 +27,16 @@ public class Basket implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
+    @OneToMany(mappedBy="basket")
+    private Set<BasketItem> basketItems;
+
     public Basket(UUID id) {
         this.id = id;
+    }
+
+    public Basket(Customer customer, Set<BasketItem> basketItems) {
+        this.customer = customer;
+        this.basketItems = basketItems;
     }
 
     public Basket(Customer customer) {

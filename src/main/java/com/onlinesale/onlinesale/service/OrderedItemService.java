@@ -8,6 +8,7 @@ import com.onlinesale.onlinesale.repository.OrderedItemRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +25,13 @@ public class OrderedItemService {
     @Autowired
     OrderedService orderedService;
 
+    @Transactional(rollbackFor = {Exception.class})
     public OrderedItem create(OrderedItem orderedItem) throws IllegalStateException {
         Stock stock = stockService.findById(orderedItem.getStock().getId())
                 .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItem.getStock().getId() + " does not exist"));
         orderedItem.setStock(stock);
+
+        stockService.updateIncrement(stock.getId(), -orderedItem.getQuantity());
 
         Ordered ordered = orderedService.findById(orderedItem.getOrdered().getId())
                 .orElseThrow(() -> new NotFoundRequestException("ordered " + orderedItem.getOrdered().getId() + " does not exist"));
@@ -36,20 +40,31 @@ public class OrderedItemService {
         return orderedItemRepository.save(orderedItem);
     }
 
-    //    TODO change
+    @Transactional(rollbackFor = {Exception.class})
     public OrderedItem update(UUID id, OrderedItem newOrderedItem) {
         OrderedItem orderedItem = orderedItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));
+
+        Stock stock = stockService.findById(orderedItem.getStock().getId())
+                .orElseThrow(() -> new NotFoundRequestException("stock " + orderedItem.getStock().getId() + " does not exist"));
+        orderedItem.setStock(stock);
+
+        if (orderedItem.getQuantity() - newOrderedItem.getQuantity() != 0) {
+            stockService.updateIncrement(stock.getId(), orderedItem.getQuantity() - newOrderedItem.getQuantity());
+        }
 
         orderedItem.setQuantity(newOrderedItem.getQuantity());
         orderedItem.setPrice(newOrderedItem.getPrice());
         return orderedItemRepository.save(orderedItem);
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     public void delete(UUID id) {
-        if (orderedItemRepository.findById(id).isEmpty()) {
-            throw new NotFoundRequestException("ordered item " + id + " don't exist");
-        }
+        OrderedItem orderedItem = orderedItemRepository.findById(id)
+                .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));
+
+        stockService.updateIncrement(orderedItem.getStock().getId(), orderedItem.getQuantity());
+
         orderedItemRepository.deleteById(id);
     }
 

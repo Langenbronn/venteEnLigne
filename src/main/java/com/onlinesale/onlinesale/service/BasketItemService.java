@@ -30,7 +30,7 @@ public class BasketItemService {
                 .orElseThrow(() -> new NotFoundRequestException("stock " + basketItem.getStock().getId() + " does not exist"));
         basketItem.setStock(stock);
 
-        stockService.updateIncrement(stock.getId(), basketItem.getQuantity());
+        stockService.updateIncrement(stock.getId(), -basketItem.getQuantity());
 
         Basket basket = basketRepository.findById(basketItem.getBasket().getId())
                 .orElseThrow(() -> new NotFoundRequestException("basket " + basketItem.getBasket().getId() + " does not exist"));

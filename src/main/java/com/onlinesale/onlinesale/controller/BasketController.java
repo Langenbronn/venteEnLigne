@@ -1,11 +1,15 @@
 package com.onlinesale.onlinesale.controller;
 
 import com.onlinesale.onlinesale.controller.assembler.BasketModelAssembler;
+import com.onlinesale.onlinesale.controller.assembler.OrderedModelAssembler;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
 import com.onlinesale.onlinesale.model.data.Basket;
+import com.onlinesale.onlinesale.model.data.Ordered;
 import com.onlinesale.onlinesale.model.dto.BasketDto;
 import com.onlinesale.onlinesale.model.mapper.BasketMapper;
+import com.onlinesale.onlinesale.model.mapper.OrdererMapper;
 import com.onlinesale.onlinesale.model.view.BasketView;
+import com.onlinesale.onlinesale.model.view.OrdererView;
 import com.onlinesale.onlinesale.service.BasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -28,9 +32,13 @@ public class BasketController {
     @Autowired
     BasketMapper basketMapper;
     @Autowired
+    OrdererMapper ordererMapper;
+    @Autowired
     BasketService basketService;
     @Autowired
     BasketModelAssembler basketModelAssembler;
+    @Autowired
+    OrderedModelAssembler orderedModelAssembler;
 
     @PostMapping("/{id}")
     public ResponseEntity<EntityModel<BasketView>> create(@RequestBody BasketDto basketDto) {
@@ -44,15 +52,14 @@ public class BasketController {
     }
 
     @PutMapping("/{id}/orderer")
-    public ResponseEntity<?> update(@PathVariable("id") UUID id) {
-        basketService.updateToOrderer(id);
-        return ResponseEntity.noContent().build();
-//        BasketView basketView = basketMapper.entityToView(basket);
-//        EntityModel<BasketView> entityModel = basketModelAssembler.toModel(basketView);
-//
-//        return ResponseEntity
-//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-//                .body(entityModel);
+    public ResponseEntity<EntityModel<OrdererView>> updateToOrderer(@PathVariable("id") UUID id) {
+        Ordered ordered = basketService.updateToOrderer(id);
+        OrdererView ordererItemView = ordererMapper.entityToView(ordered);
+        EntityModel<OrdererView> entityModel = orderedModelAssembler.toModel(ordererItemView);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @DeleteMapping("/{id}")

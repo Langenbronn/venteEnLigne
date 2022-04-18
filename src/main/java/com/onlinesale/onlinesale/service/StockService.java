@@ -25,6 +25,7 @@ public class StockService {
     SellerService sellerService;
 
     public Stock create(Stock stock) throws IllegalStateException {
+
         Seller seller = sellerService.findById(stock.getSeller().getId())
                 .orElseThrow(() -> new NotFoundRequestException("seller " + stock.getSeller().getId() + " does not exist"));
         stock.setSeller(seller);
@@ -33,6 +34,10 @@ public class StockService {
                 .orElseThrow(() -> new NotFoundRequestException("product " + stock.getProduct().getId() + " does not exist"));
         stock.setProduct(product);
 
+        if(stock.getQuantity() < 0) {
+            throw new BadRequestException("stock : can't be less than 0");
+        }
+
         if (stockRepository.findBySellerIdAndProductId(stock.getSeller().getId(), stock.getProduct().getId()).isPresent()) {
             throw new BadRequestException("stock: seller " + seller.getId() + " already have a stock of product " + product.getId());
         }
@@ -40,11 +45,15 @@ public class StockService {
         return stockRepository.save(stock);
     }
 
-    public Stock update(UUID id, Stock newStock) {
+    public Stock updateIncrement(UUID id, int increment) {
         Stock stock = stockRepository.findById(id)
                 .orElseThrow(() -> new NotFoundRequestException("stock " + id + " does not exist"));
 
-        stock.setQuantity(newStock.getQuantity());
+        if (stock.getQuantity() + increment < 0) {
+            throw new BadRequestException("stock : not enough products");
+        }
+
+        stock.setQuantity(stock.getQuantity() + increment);
         return stockRepository.save(stock);
     }
 

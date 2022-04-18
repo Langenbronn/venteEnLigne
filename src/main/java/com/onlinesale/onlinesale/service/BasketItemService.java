@@ -7,6 +7,7 @@ import com.onlinesale.onlinesale.repository.BasketRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +24,13 @@ public class BasketItemService {
     @Autowired
     BasketRepository basketRepository;
 
+    @Transactional(rollbackFor = {Exception.class})
     public BasketItem create(BasketItem basketItem) throws IllegalStateException {
         Stock stock = stockService.findById(basketItem.getStock().getId())
                 .orElseThrow(() -> new NotFoundRequestException("stock " + basketItem.getStock().getId() + " does not exist"));
         basketItem.setStock(stock);
+
+        stockService.updateIncrement(stock.getId(), basketItem.getQuantity());
 
         Basket basket = basketRepository.findById(basketItem.getBasket().getId())
                 .orElseThrow(() -> new NotFoundRequestException("basket " + basketItem.getBasket().getId() + " does not exist"));
@@ -35,20 +39,32 @@ public class BasketItemService {
         return basketItemRepository.save(basketItem);
     }
 
-    //    TODO change
+    @Transactional(rollbackFor = {Exception.class})
     public BasketItem update(UUID id, BasketItem newBasketItem) {
         BasketItem basketItem = basketItemRepository.findById(id)
-                .orElseThrow(() -> new NotFoundRequestException("ordered item " + id + " does not exist"));
+                .orElseThrow(() -> new NotFoundRequestException("basket item " + id + " does not exist"));
+
+        Stock stock = stockService.findById(basketItem.getStock().getId())
+                .orElseThrow(() -> new NotFoundRequestException("stock " + basketItem.getStock().getId() + " does not exist"));
+        basketItem.setStock(stock);
+
+        if (basketItem.getQuantity() - newBasketItem.getQuantity() != 0) {
+            stockService.updateIncrement(stock.getId(), basketItem.getQuantity() - newBasketItem.getQuantity());
+        }
 
         basketItem.setQuantity(newBasketItem.getQuantity());
         basketItem.setPrice(newBasketItem.getPrice());
         return basketItemRepository.save(basketItem);
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     public void delete(UUID id) {
-        if (basketItemRepository.findById(id).isEmpty()) {
-            throw new NotFoundRequestException("product " + id + " don't exist");
-        }
+        BasketItem basketItem = basketItemRepository.findById(id)
+                .orElseThrow(() -> new NotFoundRequestException("basket item " + id + " does not exist"));
+
+        stockService.updateIncrement(basketItem.getStock().getId(), basketItem.getQuantity());
+
+
         basketItemRepository.deleteById(id);
     }
 

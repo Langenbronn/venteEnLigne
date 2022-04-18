@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class Stock implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Positive
     @Column(name = "quantity")
     private int quantity;
 

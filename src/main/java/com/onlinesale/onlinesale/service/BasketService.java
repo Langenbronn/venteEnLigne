@@ -47,7 +47,7 @@ public class BasketService {
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public void updateToOrderer(UUID id) {
+    public Ordered updateToOrderer(UUID id) {
         Basket basket = this.findOne(id)
                 .orElseThrow(() -> new NotFoundRequestException("basket id " + id + " does not exist"));
 
@@ -69,6 +69,7 @@ public class BasketService {
             ));
         }
 
+        return ordered;
 
     }
 

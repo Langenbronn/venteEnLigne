@@ -4,6 +4,7 @@ import com.onlinesale.onlinesale.controller.assembler.StockModelAssembler;
 import com.onlinesale.onlinesale.exception.NotFoundRequestException;
 import com.onlinesale.onlinesale.model.data.Stock;
 import com.onlinesale.onlinesale.model.dto.StockDto;
+import com.onlinesale.onlinesale.model.dto.StockIncrementDto;
 import com.onlinesale.onlinesale.model.mapper.StockMapper;
 import com.onlinesale.onlinesale.model.view.StockView;
 import com.onlinesale.onlinesale.service.StockService;
@@ -44,9 +45,9 @@ public class StockController {
     }
 
     //    TODO stockDto avec seulement quantite
-    @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<StockView>> update(@PathVariable("id") UUID id, @RequestBody StockDto stockDto) {
-        Stock stock = stockService.update(id, stockMapper.dtoToEntity(stockDto));
+    @PutMapping("/{id}/increment")
+    public ResponseEntity<EntityModel<StockView>> updateIncrement(@PathVariable("id") UUID id, @RequestBody StockIncrementDto stockDto) {
+        Stock stock = stockService.updateIncrement(id, stockDto.getQuantity());
         StockView stockView = stockMapper.entityToView(stock);
         EntityModel<StockView> entityModel = stockModelAssembler.toModel(stockView);
 
